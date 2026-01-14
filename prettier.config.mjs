@@ -1,0 +1,22 @@
+export default {
+  semi: true,
+  singleQuote: true,
+  tabWidth: 2,
+  trailingComma: 'es5',
+  printWidth: 100,
+  endOfLine: 'auto',
+  plugins: ['@ianvs/prettier-plugin-sort-imports'],
+  importOrder: [
+    '^react$',
+    '^react-dom$',
+    '^react-router',
+    '^mobx',
+    '<THIRD_PARTY_MODULES>',
+    '',
+    '^@/(.*)$',
+    '',
+    '^[./]',
+  ],
+  importOrderSeparation: true,
+  importOrderSortSpecifiers: true,
+};

@@ -1,0 +1,52 @@
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  background: transparent;
+}
+
+.menuButton {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  svg {
+    fill: var(--clr-white, #fff);
+  }
+
+  &:hover {
+    svg {
+      fill: var(--clr-red, red);
+    }
+  }
+
+  @media screen and (max-width: 900px) {
+    display: flex;
+  }
+}
+
+.logo {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: clamp(150px, 15vw, 300px);
+  height: fit-content;
+
+  svg {
+    fill: #fff;
+    transition: fill 0.3s ease-in-out;
+  }
+
+  &:hover {
+    svg {
+      fill: red;
+    }
+  }
+}
