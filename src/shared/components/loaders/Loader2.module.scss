@@ -1,0 +1,38 @@
+.loader {
+  --color: #970091;
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader::before,
+.loader::after {
+  position: absolute;
+  content: "";
+  height: 8em;
+  width: 8em;
+  border: 1em solid var(--color);
+  border-radius: 50%;
+  animation: loader_79178 1s linear infinite;
+}
+
+.loader::after {
+  opacity: 0;
+  animation-delay: 0.5s;
+}
+
+@keyframes loader_79178 {
+  0% {
+    border: 1em solid var(--color);
+    transform: scale(0);
+    opacity: 1;
+  }
+
+  100% {
+    border: 0 solid var(--color);
+    transform: scale(1);
+    opacity: 0;
+  }
+}
