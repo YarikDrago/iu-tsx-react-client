@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router';
+import { observer } from 'mobx-react';
 
+import appData from '@/app.data';
 import Cross45Icon from '@/assets/icons/x-45-lg.svg';
-import { LINK_LIST } from '@/layout/Header/Navigation/Navigation/Navigation';
+import { logout } from '@/function/api/logout';
 
 import * as styles from './ModalNavigation.module.scss';
 
@@ -24,22 +26,37 @@ const ModalNavigation = ({ isOpened, handleClose }: ModalNavigationProps) => {
     return () => window.removeEventListener('resize', changeWindowSizeVariables);
   }, []);
 
+  async function logoutWrapper() {
+    handleClose();
+    await logout();
+  }
+
   return (
     <div className={`${styles.modalNavigator} ${isOpened ? '' : styles.isHidden}`}>
       <ul className={styles.list}>
-        {LINK_LIST.map((link, id) => {
-          return (
-            <li key={id}>
-              <Link
-                to={link.path}
-                className={link.path === location.pathname ? styles.selected : ''}
-                onClick={() => handleClose()}
-              >
-                {link.label}
-              </Link>
+        {appData.nickname === '' ? (
+          <>
+            <li>
+              <Link to={'/login'}>Log in</Link>
             </li>
-          );
-        })}
+            <li>
+              <Link to={'/signup'}>Sign up</Link>
+            </li>
+          </>
+        ) : (
+          <>
+            <li>USER: {appData.nickname}</li>
+            <li>Settings</li>
+            <li
+              className={styles.button}
+              onClick={() => {
+                logoutWrapper();
+              }}
+            >
+              Log out
+            </li>
+          </>
+        )}
       </ul>
       <button className={styles.closeBtn} onClick={() => handleClose()}>
         <Cross45Icon />
@@ -48,4 +65,4 @@ const ModalNavigation = ({ isOpened, handleClose }: ModalNavigationProps) => {
   );
 };
 
-export default ModalNavigation;
+export default observer(ModalNavigation);

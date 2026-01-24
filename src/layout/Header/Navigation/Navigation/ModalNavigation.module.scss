@@ -19,13 +19,12 @@
     padding-top: 100px;
     padding-left: 100px;
     font-family: 'Roboto', sans-serif;
-    font-family:
-      Roboto Condensed,
-      Arial Narrow,
-      Arial,
-      Helvetica CY,
-      Helvetica,
-      sans-serif;
+    font-family: Roboto Condensed,
+    Arial Narrow,
+    Arial,
+    Helvetica CY,
+    Helvetica,
+    sans-serif;
     font-weight: 500;
     font-size: 12px;
 
@@ -37,22 +36,23 @@
       font-weight: 500;
       list-style: none;
       color: #fff;
+    }
 
-      a {
-        text-decoration: none;
+    a, .button {
+      cursor: pointer;
+      text-decoration: none;
+      color: #fff;
+
+      &:visited {
         color: #fff;
+      }
 
-        &:visited {
-          color: #fff;
-        }
+      &:hover {
+        color: #ea0000;
+      }
 
-        &:hover {
-          color: #ea0000;
-        }
-
-        &.selected {
-          color: #ea0000;
-        }
+      &.selected {
+        color: #ea0000;
       }
     }
 
