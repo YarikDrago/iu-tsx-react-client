@@ -1,0 +1,15 @@
+.button {
+  --clr: #970091;
+
+  border: 2px solid var(--clr);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: transparent;
+}
+
+.icon {
+  transform: translateY(15%);
+  fill: var(--clr);
+}
