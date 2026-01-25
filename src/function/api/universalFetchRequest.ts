@@ -14,13 +14,11 @@ export async function universalFetchRequest(
       'Content-Type': 'application/json',
     };
 
-    const reqBody = {};
-
     const init: RequestInit = {
       // TODO change to universal
       method,
       headers,
-      body: JSON.stringify(reqBody),
+      credentials: 'include',
     };
     /* Add body to the request if it is not GET or HEAD method */
     if (method !== HTMLRequestMethods.GET && method !== HTMLRequestMethods.HEAD) {
