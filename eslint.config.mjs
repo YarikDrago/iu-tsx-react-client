@@ -59,6 +59,7 @@ export default [
       ],
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off', // для TypeScript проектов
+      'no-undef': 'off', // Disable for TypeScript projects
     },
   },
   {
