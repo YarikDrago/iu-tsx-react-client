@@ -21,6 +21,7 @@ const AuthForm = ({ isRegistration = false }: Props) => {
   const [repeatPassword, setRepeatPassword] = React.useState('');
   const [errorMsg, setErrorMsg] = React.useState('');
   const [isLaoding, setIsLoading] = React.useState(false);
+  const [successRegistration, setSuccessRegistration] = React.useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     try {
@@ -30,6 +31,7 @@ const AuthForm = ({ isRegistration = false }: Props) => {
       if (isRegistration) {
         // const data = await signup(email, nickname, password);
         await signup(email, nickname, password);
+        setSuccessRegistration(true);
         // TODO show info about success registration
         console.log('registration was successful');
       } else {
@@ -54,80 +56,89 @@ const AuthForm = ({ isRegistration = false }: Props) => {
 
   return (
     <form className={styles.form}>
-      <h3>{isRegistration ? 'Create Your Account' : 'Welcome'}</h3>
-      {isRegistration && (
+      {!successRegistration ? (
         <>
-          <p>Nickname</p>
+          <h3>{isRegistration ? 'Create Your Account' : 'Welcome'}</h3>
+          {isRegistration && (
+            <>
+              <p>Nickname</p>
+              <input
+                type="text"
+                placeholder={'nickname'}
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
+              />
+            </>
+          )}
+          <p>Email</p>
           <input
             type="text"
-            placeholder={'nickname'}
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-          />
-        </>
-      )}
-      <p>Email</p>
-      <input
-        type="text"
-        value={email}
-        onChange={(e) => {
-          setErrorMsg('');
-          setEmail(e.target.value);
-        }}
-      />
-      <p>Password</p>
-      <input
-        className={'border-2'}
-        type="text"
-        value={password}
-        onChange={(e) => {
-          setErrorMsg('');
-          setPassword(e.target.value);
-        }}
-      />
-      {isRegistration && (
-        <>
-          <p>Confirm password</p>
-          <input
-            type="text"
-            value={repeatPassword}
+            value={email}
             onChange={(e) => {
               setErrorMsg('');
-              setRepeatPassword(e.target.value);
+              setEmail(e.target.value);
             }}
           />
+          <p>Password</p>
+          <input
+            className={'border-2'}
+            type="text"
+            value={password}
+            onChange={(e) => {
+              setErrorMsg('');
+              setPassword(e.target.value);
+            }}
+          />
+          {isRegistration && (
+            <>
+              <p>Confirm password</p>
+              <input
+                type="text"
+                value={repeatPassword}
+                onChange={(e) => {
+                  setErrorMsg('');
+                  setRepeatPassword(e.target.value);
+                }}
+              />
+            </>
+          )}
+          <button
+            type="submit"
+            className={styles.submitButton}
+            onClick={handleSubmit}
+            disabled={isLaoding}
+          >
+            {isLaoding ? <Loader2 /> : <p>Continue</p>}
+          </button>
+          <div className={'actions'}>
+            {isRegistration ? (
+              <p>
+                Already have an account?{' '}
+                <Link to={'/login'} className={styles.link}>
+                  Log In
+                </Link>
+              </p>
+            ) : (
+              <>
+                <div className={styles.line}>
+                  <p>Don't have an account?</p>
+                  <Link to={'/signup'} className={styles.link}>
+                    Sign Up
+                  </Link>
+                </div>
+                <Link to={'/'} className={styles.link}>
+                  Forgot password?
+                </Link>
+              </>
+            )}
+          </div>
+        </>
+      ) : (
+        <>
+          <p>Check your email to finish signing up</p>
+          <Link to={'/'}>Main</Link>
         </>
       )}
-      <button
-        type="submit"
-        className={styles.submitButton}
-        onClick={handleSubmit}
-        disabled={isLaoding}
-      >
-        {isLaoding ? <Loader2 /> : <p>Continue</p>}
-      </button>
-      <div className={'actions'}>
-        {isRegistration ? (
-          <p>
-            Already have an account?{' '}
-            <Link to={'/login'} className={styles.link}>
-              Log In
-            </Link>
-          </p>
-        ) : (
-          <>
-            <div className={styles.line}>
-              <p>Don't have an account?</p>
-              <Link to={'/signup'} className={styles.link}>
-                Sign Up
-              </Link>
-            </div>
-            <Link to={'/'} className={styles.link}>
-              Forgot password?
-            </Link>
-          </>
-        )}
-      </div>
 
       {errorMsg && <p className={styles.errorMsg}>{errorMsg}</p>}
     </form>
