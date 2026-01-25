@@ -1,19 +1,11 @@
 import appData from '@/app.data';
+import { universalFetchRequest } from '@/function/api/universalFetchRequest';
+import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 
 export async function logout() {
   try {
-    const url = `${process.env.API_URL}/auth/logout`;
-    const headers = {
-      'Content-Type': 'application/json',
-    };
-    const init = {
-      method: 'POST',
-      headers,
-    };
-    const response = await fetch(url, init);
+    const data = await universalFetchRequest('auth/logout', HTMLRequestMethods.POST, {});
 
-    // const response = await
-    const data = await response.json();
     console.log('response:', data);
     appData.nickname = '';
     return data;

@@ -1,29 +1,16 @@
+import { universalFetchRequest } from '@/function/api/universalFetchRequest';
+import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
+
 export async function login(password: string, email: string) {
   try {
-    const url = `${process.env.API_URL}/auth/login`;
-    const headers = {
-      'Content-Type': 'application/json',
-    };
-    const reqBody = {
+    const body = {
       email: email,
       password: password,
     };
 
-    const init = {
-      // TODO change to universal
-      method: 'POST',
-      headers,
-      body: JSON.stringify(reqBody),
-    };
-
-    console.log('url:', url);
-
-    const response = await fetch(url, init);
-    // const response = await
-    const data = await response.json();
+    const data = await universalFetchRequest('auth/login', HTMLRequestMethods.POST, body);
 
     console.log('response:', data);
-
     console.log('log end');
 
     return data;
