@@ -7,7 +7,7 @@ export async function logout() {
     const data = await universalFetchRequest('auth/logout', HTMLRequestMethods.POST, {});
 
     console.log('response:', data);
-    appData.nickname = '';
+    appData.changeNickname('');
     return data;
   } catch (e) {
     console.log(e);

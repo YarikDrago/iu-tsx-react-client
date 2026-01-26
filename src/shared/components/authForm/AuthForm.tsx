@@ -37,7 +37,7 @@ const AuthForm = ({ isRegistration = false }: Props) => {
       } else {
         await login(password, email).then((res) => {
           console.log('res:', res);
-          appData.nickname = res.nickname || '';
+          appData.changeNickname(res.nickname || '');
           navigate('/');
         });
       }
