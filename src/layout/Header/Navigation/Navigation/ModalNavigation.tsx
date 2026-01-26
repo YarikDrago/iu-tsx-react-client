@@ -46,7 +46,9 @@ const ModalNavigation = ({ isOpened, handleClose }: ModalNavigationProps) => {
         ) : (
           <>
             <li>USER: {appData.nickname}</li>
-            <li>Settings</li>
+            <li>
+              <Link to={'/settings'}>Settings</Link>
+            </li>
             <li
               className={styles.button}
               onClick={() => {
