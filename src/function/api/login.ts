@@ -1,6 +1,10 @@
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 
+interface LoginResponse {
+  nickname: string;
+}
+
 export async function login(password: string, email: string) {
   try {
     const body = {
@@ -8,7 +12,11 @@ export async function login(password: string, email: string) {
       password: password,
     };
 
-    const data = await universalFetchRequest('auth/login', HTMLRequestMethods.POST, body);
+    const data: LoginResponse = await universalFetchRequest<LoginResponse>(
+      'auth/login',
+      HTMLRequestMethods.POST,
+      body
+    );
 
     console.log('response:', data);
     console.log('log end');

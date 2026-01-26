@@ -3,7 +3,12 @@ import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 
 export async function refreshTokens() {
   try {
-    const data = await universalFetchRequest('auth/refresh-tokens', HTMLRequestMethods.GET, {});
+    const data = await universalFetchRequest(
+      'auth/refresh-tokens',
+      HTMLRequestMethods.GET,
+      {},
+      { skipAutoRefresh: true }
+    );
     console.log('response:', data);
     return data;
   } catch (e) {
