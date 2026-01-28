@@ -4,7 +4,12 @@ import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 
 export async function logout() {
   try {
-    const data = await universalFetchRequest('auth/logout', HTMLRequestMethods.POST, {});
+    const data = await universalFetchRequest(
+      'auth/logout',
+      HTMLRequestMethods.POST,
+      {},
+      { skipAutoRefresh: true }
+    );
 
     console.log('response:', data);
     appData.changeNickname('');
