@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router';
 import { ActivateAsync } from '@/pages/activate/Activate.async';
 import { AuthAsync } from '@/pages/auth/Auth.async';
 import { MainAsync } from '@/pages/main/index.async';
+import { PredictionsAsync } from '@/pages/predictions/index.async';
 import { SettingsAsync } from '@/pages/settings/index.async';
 
 const AppRoutes = () => {
@@ -13,6 +14,7 @@ const AppRoutes = () => {
       <Route path={'/login'} element={<AuthAsync />} />
       <Route path={'/activate/:token'} element={<ActivateAsync />} />
       <Route path={'/settings'} element={<SettingsAsync />} />
+      <Route path={'/predictions'} element={<PredictionsAsync />} />
       <Route path={'/'} element={<MainAsync />} />
     </Routes>
   );
