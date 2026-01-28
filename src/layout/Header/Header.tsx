@@ -16,9 +16,9 @@ const Header = () => {
 
   return (
     <header className={styles.header}>
-      {location.pathname !== '/login' && location.pathname !== '/signup' ? (
+      {location.pathname === '/' ? <p>Portal</p> : <Link to={'/'}>Main</Link>}
+      {location.pathname !== '/login' && location.pathname !== '/signup' && (
         <>
-          <p>Portal</p>
           <PersonButton
             onClick={() => {
               console.log('clicked');
@@ -27,8 +27,6 @@ const Header = () => {
           />
           <ModalNavigation isOpened={isModalOpened} handleClose={() => setIsModalOpened(false)} />
         </>
-      ) : (
-        <Link to={'/'}>Main</Link>
       )}
     </header>
   );
