@@ -3,6 +3,8 @@ import Cookies from 'js-cookie';
 
 class AppData {
   private _nickname: string = '';
+  /* User roles */
+  role: string[] = [];
 
   public get nickname(): string {
     return this._nickname;
