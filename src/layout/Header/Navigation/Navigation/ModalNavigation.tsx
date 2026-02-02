@@ -46,6 +46,7 @@ const ModalNavigation = ({ isOpened, handleClose }: ModalNavigationProps) => {
         ) : (
           <>
             <li>USER: {appData.nickname}</li>
+            <li>Role: {appData.role.join(', ')}</li>
             <li>
               <Link to={'/settings'}>Settings</Link>
             </li>
