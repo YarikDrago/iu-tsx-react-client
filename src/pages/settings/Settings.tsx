@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { checkAccessToken } from '@/function/api/checkAccessToken';
 import { checkRefreshToken } from '@/function/api/checkRefreshToken';
 import { logout } from '@/function/api/logout';
+import { me } from '@/function/api/me';
 import { refreshTokens } from '@/function/api/refreshTokens';
 
 const Settings = () => {
@@ -44,6 +45,17 @@ const Settings = () => {
     }
   }
 
+  async function getGeneralUserInfo() {
+    try {
+      setError('');
+      setMsg('');
+      const user = await me();
+      console.log(user);
+    } catch (e) {
+      setError((e as Error).message);
+    }
+  }
+
   async function logoutWrapper() {
     try {
       setError('');
@@ -67,6 +79,7 @@ const Settings = () => {
       <button onClick={() => checkAccessTokenWrapper()}>Check access token</button>
       <button onClick={() => checkRefreshTokenWrapper()}>Check refresh token</button>
       <button onClick={() => refreshTokensWrapper()}>Refresh tokens</button>
+      <button onClick={() => getGeneralUserInfo()}>User general data</button>
       <button onClick={() => logoutWrapper()}>Log out</button>
       {msg && <p style={{ color: 'greenyellow', fontWeight: 'bold' }}>{msg}</p>}
       {error && <p style={{ color: 'red', fontWeight: 'bold' }}>{error}</p>}
