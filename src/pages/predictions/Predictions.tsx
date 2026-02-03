@@ -6,6 +6,7 @@ import { getAvailablePredictions } from '@/function/api/predictions/getAvailable
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 import AvailablePredictionTable from '@/pages/predictions/AvailablePredictionTable';
+import { FootballCompetitionsApi } from '@/pages/predictions/models/models';
 import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
 
 import * as styles from './Predictions.module.scss';
@@ -27,7 +28,11 @@ const Prediction = () => {
   async function getCompetitionsApi() {
     try {
       setError('');
-      const data = await universalFetchRequest('tournaments/api', HTMLRequestMethods.GET, {});
+      const data = await universalFetchRequest<FootballCompetitionsApi>(
+        'tournaments/api',
+        HTMLRequestMethods.GET,
+        {}
+      );
       console.log(data);
     } catch (e) {
       setError((e as Error).message);
