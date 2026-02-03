@@ -5,8 +5,9 @@ import appData from '@/app.data';
 import { getAvailablePredictions } from '@/function/api/predictions/getAvailablePredictions';
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
+import AllApiTournaments from '@/pages/predictions/allApiTournaments/AllApiTournaments';
 import AvailablePredictionTable from '@/pages/predictions/AvailablePredictionTable';
-import { FootballCompetitionsApi } from '@/pages/predictions/models/models';
+import { FootballCompetitionApi, FootballCompetitionsApi } from '@/pages/predictions/models/models';
 import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
 
 import * as styles from './Predictions.module.scss';
@@ -22,18 +23,20 @@ const Prediction = () => {
   const [showMode, setShowMode] = useState<ShowMode>('start');
   const [tournaments, setTournaments] = useState<Predictions[]>([]);
   const [error, setError] = useState<string>('');
+  const [competitions, setCompetitions] = useState<FootballCompetitionApi[] | null>(null);
 
   useRequireAccessToken();
 
   async function getCompetitionsApi() {
     try {
+      setCompetitions(null);
       setError('');
       const data = await universalFetchRequest<FootballCompetitionsApi>(
         'tournaments/api',
         HTMLRequestMethods.GET,
         {}
       );
-      console.log(data);
+      setCompetitions(data.competitions);
     } catch (e) {
       setError((e as Error).message);
     }
@@ -74,6 +77,7 @@ const Prediction = () => {
       </button>
       {error && <p className={styles.error}>{error}</p>}
       {showMode === 'available' && <AvailablePredictionTable data={tournaments} />}
+      {competitions && <AllApiTournaments competitions={competitions} />}
     </article>
   );
 };
