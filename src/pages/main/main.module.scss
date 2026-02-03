@@ -1,0 +1,12 @@
+.main{
+  a {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: #fff;
+    cursor: pointer;
+    &:hover{
+      color: #6bb8d3;
+    }
+  }
+}

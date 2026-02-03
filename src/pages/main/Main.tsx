@@ -4,10 +4,11 @@ import { observer } from 'mobx-react';
 
 import appData from '@/app.data';
 
+import * as styles from './main.module.scss';
+
 const Main = () => {
   return (
-    <article>
-      <h1>Main</h1>
+    <article className={styles.main}>
       {appData.nickname && (
         <div>
           <Link to={'/predictions'}>Predictions</Link>
