@@ -3,6 +3,7 @@ import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 
 interface LoginResponse {
   nickname: string;
+  roles: string[];
 }
 
 export async function login(password: string, email: string) {
