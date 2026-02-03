@@ -1,0 +1,28 @@
+.table {
+  box-sizing: border-box;
+  border-collapse: collapse;
+
+  tr{
+    height: 30px;
+    text-align: center;
+  }
+
+  th, td {
+    border: 1px solid #ccc;
+    padding: 5px 20px;
+  }
+}
+
+.status {
+  color: #ce90fb;
+  font-weight: bold;
+
+  &.inactive {
+    color: red;
+  }
+
+  &.active {
+    color: green;
+  }
+
+}

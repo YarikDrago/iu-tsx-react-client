@@ -1,0 +1,10 @@
+.predictions {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+}
