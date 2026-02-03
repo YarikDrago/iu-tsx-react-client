@@ -85,6 +85,7 @@ input {
 button {
   font-size: 16px;
   line-height: 20px;
+  height: 30px;
   font-weight: 500;
   border: none;
 
@@ -94,6 +95,15 @@ button {
 
   &:focus {
     outline: none;
+  }
+
+  &.admin {
+    background-color: #cb7cee;
+
+    &:hover {
+      color: #fff;
+      background-color: #a755c7;
+    }
   }
 }
 
