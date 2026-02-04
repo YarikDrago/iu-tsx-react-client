@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router';
 
 import { FootballCompetitionApi } from '@/pages/predictions/models/models';
 
@@ -9,6 +10,8 @@ interface Props {
 }
 
 const AllApiTournaments = ({ competitions }: Props) => {
+  const navigate = useNavigate();
+
   if (!competitions.length) return <p>No data to show</p>;
 
   return (
@@ -29,7 +32,10 @@ const AllApiTournaments = ({ competitions }: Props) => {
         </thead>
         <tbody>
           {competitions.map((competition) => (
-            <tr key={competition.id}>
+            <tr
+              key={competition.id}
+              onClick={() => navigate('/predictions/competition/' + competition.id)}
+            >
               <td className={styles.nameCell}>{competition.name}</td>
               <td>{competition.id}</td>
               <td>{competition.currentSeason.id}</td>
