@@ -1,0 +1,42 @@
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 720px;
+
+  td, th{
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    text-align: center;
+    height: 30px;
+  }
+
+  thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: rgba(20, 20, 20, 0.95);
+    color: rgba(255, 255, 255, 0.92);
+    font-weight: 600;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  tr:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+}
+
+.win{
+  color: #047b0e;
+}
+
+.lose{
+  color: #ff0000;
+}
+
+.draw{
+  color: #ff9900;
+}
