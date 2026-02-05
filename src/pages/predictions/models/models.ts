@@ -17,6 +17,8 @@ export interface FootballCompetitionApi extends FootballCompetitionBasicApi {
   currentSeason: FootballSeasonApi;
   numberOfAvailableSeasons: number;
   lastUpdated: string;
+  inDb: boolean;
+  isObservable: boolean;
 }
 
 export interface FootballAreaApi {
