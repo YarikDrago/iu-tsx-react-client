@@ -63,6 +63,18 @@
   monospace;
 }
 
+.action {
+  box-sizing: border-box;
+  padding: 5px;
+  display: flex;
+  gap: 10px;
+  button {
+    height: 100%;
+    width: 100%;
+    //width: 20px;
+  }
+}
+
 /* Round corners */
 .table thead tr:first-child th:first-child {
   border-top-left-radius: 12px;
