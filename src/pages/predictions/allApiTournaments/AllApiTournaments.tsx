@@ -28,6 +28,9 @@ const AllApiTournaments = ({ competitions }: Props) => {
             <th>ID</th>
             <th>Start</th>
             <th>End</th>
+            <th>In DB</th>
+            <th>Is observable</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -41,6 +44,12 @@ const AllApiTournaments = ({ competitions }: Props) => {
               <td>{competition.currentSeason.id}</td>
               <td className={styles.monoCell}>{competition.currentSeason.startDate}</td>
               <td className={styles.monoCell}>{competition.currentSeason.endDate}</td>
+              <td className={styles.monoCell}>{String(competition.inDb)}</td>
+              <td className={styles.monoCell}>{String(competition.isObservable)}</td>
+              <td className={[styles.monoCell, styles.action].join(' ')}>
+                <button>+</button>
+                <button>X</button>
+              </td>
             </tr>
           ))}
         </tbody>
