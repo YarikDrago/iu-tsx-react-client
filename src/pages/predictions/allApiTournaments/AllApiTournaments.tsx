@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
 
+import { universalFetchRequest } from '@/function/api/universalFetchRequest';
+import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 import { FootballCompetitionApi } from '@/pages/predictions/models/models';
 
 import * as styles from './AllApiTournaments.module.scss';
@@ -13,6 +15,17 @@ const AllApiTournaments = ({ competitions }: Props) => {
   const navigate = useNavigate();
 
   if (!competitions.length) return <p>No data to show</p>;
+
+  async function addCompetition(id: number) {
+    try {
+      const response = await universalFetchRequest('tournaments/add', HTMLRequestMethods.POST, {
+        competitionId: id,
+      });
+      console.log(response);
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   return (
     <div className={styles.tableWrap}>
@@ -47,8 +60,20 @@ const AllApiTournaments = ({ competitions }: Props) => {
               <td className={styles.monoCell}>{String(competition.inDb)}</td>
               <td className={styles.monoCell}>{String(competition.isObservable)}</td>
               <td className={[styles.monoCell, styles.action].join(' ')}>
-                <button>+</button>
-                <button>X</button>
+                {competition.inDb ? (
+                  <button className={styles.delete}>X</button>
+                ) : (
+                  <button
+                    className={styles.add}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addCompetition(competition.id);
+                    }}
+                  >
+                    {' '}
+                    +{' '}
+                  </button>
+                )}
               </td>
             </tr>
           ))}
