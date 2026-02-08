@@ -1,9 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
+import { observer } from 'mobx-react';
 
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 import { FootballCompetitionApi } from '@/pages/predictions/models/models';
+import OnOffButton from '@/shared/components/OnOffButton/OnOffButton';
 
 import * as styles from './AllApiTournaments.module.scss';
 
@@ -22,6 +24,33 @@ const AllApiTournaments = ({ competitions }: Props) => {
         competitionId: id,
       });
       console.log(response);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async function deleteCompetition(id: number) {
+    try {
+      const response = await universalFetchRequest(
+        `tournaments/${id}`,
+        HTMLRequestMethods.DELETE,
+        {}
+      );
+      console.log(response);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async function updateCompetitionObservableStatus(competition: FootballCompetitionApi) {
+    try {
+      const isObservable = !competition.isObservable;
+      const id = competition.id;
+      const response = await universalFetchRequest(`tournaments/${id}`, HTMLRequestMethods.PATCH, {
+        isObservable: isObservable,
+      });
+      console.log('Response:', response);
+      // TODO change status
     } catch (e) {
       console.error(e);
     }
@@ -58,11 +87,31 @@ const AllApiTournaments = ({ competitions }: Props) => {
               <td className={styles.monoCell}>{competition.currentSeason.startDate}</td>
               <td className={styles.monoCell}>{competition.currentSeason.endDate}</td>
               <td className={styles.monoCell}>{String(competition.inDb)}</td>
-              <td className={styles.monoCell}>{String(competition.isObservable)}</td>
+              <td className={[styles.monoCell].join(' ')}>
+                <OnOffButton
+                  isOn={competition.isObservable}
+                  disabled={!competition.inDb}
+                  className={[
+                    styles.button,
+                    competition.inDb ? (competition.isObservable ? styles.add : styles.delete) : '',
+                  ].join(' ')}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    updateCompetitionObservableStatus(competition);
+                  }}
+                />
+              </td>
               <td className={[styles.monoCell, styles.action].join(' ')}>
                 {competition.inDb ? (
-                  <button className={styles.delete}>X</button>
+                  <button
                     className={[styles.button, styles.delete].join(' ')}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      deleteCompetition(competition.id);
+                    }}
+                  >
+                    X
+                  </button>
                 ) : (
                   <button
                     className={[styles.button, styles.add].join(' ')}
@@ -84,4 +133,4 @@ const AllApiTournaments = ({ competitions }: Props) => {
   );
 };
 
-export default AllApiTournaments;
+export default observer(AllApiTournaments);
