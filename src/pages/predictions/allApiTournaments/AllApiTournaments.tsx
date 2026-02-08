@@ -62,9 +62,10 @@ const AllApiTournaments = ({ competitions }: Props) => {
               <td className={[styles.monoCell, styles.action].join(' ')}>
                 {competition.inDb ? (
                   <button className={styles.delete}>X</button>
+                    className={[styles.button, styles.delete].join(' ')}
                 ) : (
                   <button
-                    className={styles.add}
+                    className={[styles.button, styles.add].join(' ')}
                     onClick={(e) => {
                       e.stopPropagation();
                       addCompetition(competition.id);
