@@ -55,18 +55,39 @@ const Prediction = () => {
     }
   }
 
+  async function updateCompetitionsSeasons() {
+    try {
+      setError('');
+      const data = await universalFetchRequest('tournaments/seasons', HTMLRequestMethods.PATCH, {});
+      console.log(data);
+    } catch (e) {
+      console.log('error');
+      setError((e as Error).message);
+    }
+  }
+
   return (
     <article className={styles.predictions}>
       <h1>Predictions</h1>
       {appData.role.includes('admin') && (
-        <button
-          className={'admin'}
-          onClick={() => {
-            getCompetitionsApi();
-          }}
-        >
-          Show all API tournaments
-        </button>
+        <>
+          <button
+            className={'admin'}
+            onClick={() => {
+              getCompetitionsApi();
+            }}
+          >
+            Show all API tournaments
+          </button>
+          <button
+            className={'admin'}
+            onClick={() => {
+              updateCompetitionsSeasons();
+            }}
+          >
+            Update seasons
+          </button>
+        </>
       )}
       <button
         onClick={() => {
