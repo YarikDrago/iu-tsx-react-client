@@ -66,6 +66,17 @@ const Prediction = () => {
     }
   }
 
+  async function updateCompetitionsMatches() {
+    try {
+      setError('');
+      const data = await universalFetchRequest('tournaments/matches', HTMLRequestMethods.PATCH, {});
+      console.log(data);
+    } catch (e) {
+      console.log('error');
+      setError((e as Error).message);
+    }
+  }
+
   return (
     <article className={styles.predictions}>
       <h1>Predictions</h1>
@@ -86,6 +97,14 @@ const Prediction = () => {
             }}
           >
             Update seasons
+          </button>
+          <button
+            className={'admin'}
+            onClick={() => {
+              updateCompetitionsMatches();
+            }}
+          >
+            Update matches
           </button>
         </>
       )}
