@@ -31,6 +31,7 @@ const Prediction = () => {
     try {
       setCompetitions(null);
       setError('');
+      appData.showLoader();
       const data = await universalFetchRequest<FootballCompetitionsApi>(
         'tournaments/api',
         HTMLRequestMethods.GET,
@@ -39,6 +40,8 @@ const Prediction = () => {
       setCompetitions(data.competitions);
     } catch (e) {
       setError((e as Error).message);
+    } finally {
+      appData.hideLoader();
     }
   }
 
@@ -46,34 +49,43 @@ const Prediction = () => {
     try {
       setShowMode('start');
       setError('');
+      appData.showLoader();
       const data = await getAvailablePredictions();
       setTournaments(data);
       setShowMode('available');
     } catch (e) {
       console.log('error');
       setError((e as Error).message);
+    } finally {
+      appData.hideLoader();
     }
   }
 
   async function updateCompetitionsSeasons() {
     try {
       setError('');
+      appData.showLoader();
       const data = await universalFetchRequest('tournaments/seasons', HTMLRequestMethods.PATCH, {});
       console.log(data);
     } catch (e) {
       console.log('error');
       setError((e as Error).message);
+    } finally {
+      appData.hideLoader();
     }
   }
 
   async function updateCompetitionsMatches() {
     try {
       setError('');
+      appData.showLoader();
       const data = await universalFetchRequest('tournaments/matches', HTMLRequestMethods.PATCH, {});
       console.log(data);
     } catch (e) {
       console.log('error');
       setError((e as Error).message);
+    } finally {
+      appData.hideLoader();
     }
   }
 
