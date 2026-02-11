@@ -5,6 +5,7 @@ class AppData {
   private _nickname: string = '';
   /* User roles */
   role: string[] = [];
+  loadingCount = 0;
 
   public get nickname(): string {
     return this._nickname;
@@ -25,6 +26,18 @@ class AppData {
 
   checkNickname() {
     this._nickname = Cookies.get('nickname') || '';
+  }
+
+  showLoader() {
+    this.loadingCount++;
+  }
+
+  hideLoader() {
+    this.loadingCount = Math.max(0, this.loadingCount - 1);
+  }
+
+  get isLoading() {
+    return this.loadingCount > 0;
   }
 }
 

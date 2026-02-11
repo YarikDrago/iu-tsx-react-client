@@ -10,6 +10,7 @@ import Footer from '@/layout/Footer/Footer';
 import Header from '@/layout/Header/Header';
 import Main from '@/layout/Main/Main';
 import AppRoutes from '@/routes/AppRoutes';
+import { GlobalLoader } from '@/shared/components/loaders/GlobalLoader/GlobalLoader';
 
 import * as styles from './App.module.scss';
 
@@ -37,6 +38,7 @@ const App = () => {
         <AppRoutes />
       </Main>
       <Footer />
+      <GlobalLoader />
     </article>
   );
 };
