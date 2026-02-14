@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router';
 import { observer } from 'mobx-react';
 
 import appData from '@/app.data';
@@ -91,6 +92,7 @@ const Predictions = () => {
   return (
     <article className={styles.predictions}>
       <h1>Predictions</h1>
+      <Link to={'/predictions/groups'}>My Groups</Link>
       {appData.role.includes('admin') && (
         <>
           <button
