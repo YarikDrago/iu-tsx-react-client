@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 
+import appData from '@/app.data';
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
@@ -13,6 +14,7 @@ interface Group {
 const MyGroups = () => {
   const { ready } = useRequireAccessToken();
   const [groups, setGroups] = React.useState<Group[]>([]);
+  const [errorMsg, setErrorMsg] = React.useState('');
 
   useEffect(() => {
     if (!ready || groups.length) return;
@@ -29,13 +31,28 @@ const MyGroups = () => {
     setGroups(groups);
   }
 
+  async function deleteGroup(id: number) {
+    try {
+      appData.showLoader();
+      setErrorMsg('');
+      await universalFetchRequest(`tournaments/groups/${id}`, HTMLRequestMethods.DELETE, {});
+      setGroups(groups.filter((group) => group.id !== id));
+    } catch (e) {
+      setErrorMsg((e as Error).message);
+    } finally {
+      appData.hideLoader();
+    }
+  }
+
   return (
     <div>
       <p>My Groups</p>
+      {errorMsg !== '' && <p>{errorMsg}</p>}
       {groups.length ? (
         <table>
           <thead>
             <tr>
+              <th>ID</th>
               <th>Name</th>
               <th>Is owner</th>
               <th>Action</th>
@@ -44,9 +61,23 @@ const MyGroups = () => {
           <tbody>
             {groups.map((group) => (
               <tr key={group.id}>
+                <td>{String(group.id)}</td>
                 <td>{group.name}</td>
                 <td>{group.isOwner ? 'Yes' : 'No'}</td>
-                <td>{group.isOwner ? <button>Delete</button> : <button>Leave</button>}</td>
+                <td>
+                  {group.isOwner ? (
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        deleteGroup(group.id);
+                      }}
+                    >
+                      Delete
+                    </button>
+                  ) : (
+                    <button>Leave</button>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
