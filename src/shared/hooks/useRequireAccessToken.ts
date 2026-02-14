@@ -1,35 +1,49 @@
-import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 
 import { checkAccessToken } from '@/function/api/checkAccessToken';
+import { checkRefreshToken } from '@/function/api/checkRefreshToken';
+import { refreshTokens } from '@/function/api/refreshTokens';
 
-type Options = {
-  redirectTo?: string;
-};
+type RequireAccessTokenStatus = 'checking' | 'ready' | 'redirecting' | 'error';
 
-export function useRequireAccessToken(options: Options = {}) {
+export function useRequireAccessToken() {
   const navigate = useNavigate();
-  const location = useLocation();
 
-  const redirectTo = options.redirectTo ?? '/login';
+  const [status, setStatus] = useState<RequireAccessTokenStatus>('checking');
+  const [error, setError] = useState<string | null>(null);
+
+  const ready = status === 'ready';
 
   useEffect(() => {
     let cancelled = false;
 
     (async () => {
       try {
-        const res = await checkAccessToken();
+        setError(null);
+        setStatus('checking');
 
-        if (typeof res === 'object' && res && 'valid' in (res as Record<string, unknown>)) {
-          const valid = (res as { valid: boolean }).valid;
-          if (!valid && !cancelled) {
-            navigate(redirectTo, { replace: true, state: { from: location.pathname } });
-          }
+        const accessOk = await checkAccessToken();
+        if (accessOk) {
+          if (!cancelled) setStatus('ready');
+          return;
         }
-      } catch {
+
+        const refreshOk = await checkRefreshToken();
+        if (!refreshOk) {
+          if (!cancelled) {
+            setStatus('redirecting');
+            navigate('/auth', { replace: true });
+          }
+          return;
+        }
+
+        await refreshTokens();
+        if (!cancelled) setStatus('ready');
+      } catch (e) {
         if (!cancelled) {
-          console.log('Error while checking access token');
-          navigate(redirectTo, { replace: true, state: { from: location.pathname } });
+          setError((e as Error).message);
+          setStatus('error');
         }
       }
     })();
@@ -37,5 +51,7 @@ export function useRequireAccessToken(options: Options = {}) {
     return () => {
       cancelled = true;
     };
-  }, [navigate, location.pathname, redirectTo]);
+  }, [navigate]);
+
+  return { ready, status, error };
 }
