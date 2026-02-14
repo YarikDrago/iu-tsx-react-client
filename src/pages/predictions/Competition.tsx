@@ -7,6 +7,7 @@ import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 import AllApiTournaments from '@/pages/predictions/allApiTournaments/AllApiTournaments';
 import AvailablePredictionTable from '@/pages/predictions/AvailablePredictionTable';
+import { Competition } from '@/pages/predictions/models/competition.models';
 import {
   FootballCompetitionApi,
   FootballCompetitionsApi,
@@ -14,23 +15,6 @@ import {
 import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
 
 import * as styles from './Predictions.module.scss';
-
-export interface Competition {
-  id: number;
-  external_id: number;
-  name: string;
-  isObservable: boolean; // true
-  currentSeason: {
-    id: string;
-    external_id: string;
-    tournament_id: number;
-    start_date: string;
-    end_date: string;
-    isCurrent: boolean; // true
-    created_at: Date;
-    updated_at: Date;
-  };
-}
 
 type ShowMode = 'start' | 'available';
 

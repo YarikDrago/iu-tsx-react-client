@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 
-import { Competition } from '@/pages/predictions/Competition';
+import { Competition } from '@/pages/predictions/models/competition.models';
 
 type ShowParamsCommon = {
   competition: Competition | null;
