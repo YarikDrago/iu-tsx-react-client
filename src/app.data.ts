@@ -1,11 +1,14 @@
 import { makeAutoObservable } from 'mobx';
 import Cookies from 'js-cookie';
 
+import { GroupManagerData } from '@/pages/predictions/GroupManager/groupManager.data';
+
 class AppData {
   private _nickname: string = '';
   /* User roles */
   role: string[] = [];
   loadingCount = 0;
+  group = new GroupManagerData();
 
   public get nickname(): string {
     return this._nickname;
