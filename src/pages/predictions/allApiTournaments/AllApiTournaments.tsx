@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
-import { FootballCompetitionApi } from '@/pages/predictions/models/models';
+import { FootballCompetitionApi } from '@/pages/predictions/models/football_api.models';
 import OnOffButton from '@/shared/components/OnOffButton/OnOffButton';
 
 import * as styles from './AllApiTournaments.module.scss';

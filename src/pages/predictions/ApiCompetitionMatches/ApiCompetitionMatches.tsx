@@ -3,7 +3,7 @@ import { useParams } from 'react-router';
 
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
-import { FootballCompetitionMatchesApi } from '@/pages/predictions/models/models';
+import { FootballCompetitionMatchesApi } from '@/pages/predictions/models/football_api.models';
 
 import * as styles from './ApiCompetitionMatches.module.scss';
 
