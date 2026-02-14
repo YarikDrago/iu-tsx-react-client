@@ -18,7 +18,7 @@ import * as styles from './Predictions.module.scss';
 
 type ShowMode = 'start' | 'available';
 
-const Prediction = () => {
+const Predictions = () => {
   const [showMode, setShowMode] = useState<ShowMode>('start');
   const [tournaments, setTournaments] = useState<Competition[]>([]);
   const [error, setError] = useState<string>('');
@@ -133,4 +133,4 @@ const Prediction = () => {
   );
 };
 
-export default observer(Prediction);
+export default observer(Predictions);
