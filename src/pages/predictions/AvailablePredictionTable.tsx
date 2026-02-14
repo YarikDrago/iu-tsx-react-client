@@ -1,5 +1,6 @@
 import React from 'react';
 
+import appData from '@/app.data';
 import { Predictions } from '@/pages/predictions/Predictions';
 
 import * as styles from './AvailablePredictionTable.module.scss';
@@ -9,22 +10,40 @@ interface AvailablePredictionTableProps {
 }
 
 const AvailablePredictionTable = ({ data }: AvailablePredictionTableProps) => {
+  function createGroup(competition: Predictions) {
+    appData.group.show({
+      isNew: true,
+      competition,
+    });
+  }
+
   return (
     <table className={styles.table}>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Start</th>
+          <th>End</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
       <tbody>
         {data.map((tournament, idx) => (
           <tr key={idx}>
+            <td>{tournament.external_id}</td>
+            {/* Tournament external name */}
             <td>{tournament.name}</td>
-            <td
-              className={[
-                styles.status,
-                tournament.isActive ? styles.active : styles.inactive,
-              ].join(' ')}
-            >
-              {tournament.isActive ? 'Active' : 'Inactive'}
-            </td>
+            <td>{tournament.currentSeason.start_date}</td>
+            <td>{tournament.currentSeason.end_date}</td>
             <td>
-              <button>Add new</button>
+              <button
+                onClick={() => {
+                  createGroup(tournament);
+                }}
+              >
+                Create group
+              </button>
             </td>
           </tr>
         ))}
