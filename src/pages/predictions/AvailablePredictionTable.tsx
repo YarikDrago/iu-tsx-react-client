@@ -1,16 +1,16 @@
 import React from 'react';
 
 import appData from '@/app.data';
-import { Predictions } from '@/pages/predictions/Predictions';
+import { Competition } from '@/pages/predictions/Competition';
 
 import * as styles from './AvailablePredictionTable.module.scss';
 
 interface AvailablePredictionTableProps {
-  data: Predictions[];
+  data: Competition[];
 }
 
 const AvailablePredictionTable = ({ data }: AvailablePredictionTableProps) => {
-  function createGroup(competition: Predictions) {
+  function createGroup(competition: Competition) {
     appData.group.show({
       isNew: true,
       competition,

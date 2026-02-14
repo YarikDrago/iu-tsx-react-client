@@ -1,9 +1,9 @@
 import { makeAutoObservable } from 'mobx';
 
-import { Predictions } from '@/pages/predictions/Predictions';
+import { Competition } from '@/pages/predictions/Competition';
 
 type ShowParamsCommon = {
-  competition: Predictions | null;
+  competition: Competition | null;
 };
 
 type ShowParamsOptional = { isNew: true } | ({ isNew: false } & { oldName: string });
@@ -15,7 +15,7 @@ export class GroupManagerData {
   private _isNew = false;
   private _oldName: string = '';
   name: string = '';
-  competition: Predictions | null = null;
+  competition: Competition | null = null;
 
   constructor() {
     makeAutoObservable(this);

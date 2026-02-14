@@ -1,3 +1,3 @@
 import { lazy } from 'react';
 
-export const PredictionsAsync = lazy(() => import('./Predictions'));
+export const PredictionsAsync = lazy(() => import('./Competition'));

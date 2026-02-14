@@ -1,6 +1,6 @@
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
-import { Predictions } from '@/pages/predictions/Predictions';
+import { Competition } from '@/pages/predictions/Competition';
 
 /* Download available football tournaments from the DB */
 export async function getAvailablePredictions() {
@@ -8,6 +8,6 @@ export async function getAvailablePredictions() {
     'tournaments',
     HTMLRequestMethods.GET,
     {}
-  )) as Predictions[];
+  )) as Competition[];
   return data;
 }

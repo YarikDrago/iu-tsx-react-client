@@ -12,8 +12,7 @@ import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
 
 import * as styles from './Predictions.module.scss';
 
-// TODO rename to Competition
-export interface Predictions {
+export interface Competition {
   id: number;
   external_id: number;
   name: string;
@@ -34,7 +33,7 @@ type ShowMode = 'start' | 'available';
 
 const Prediction = () => {
   const [showMode, setShowMode] = useState<ShowMode>('start');
-  const [tournaments, setTournaments] = useState<Predictions[]>([]);
+  const [tournaments, setTournaments] = useState<Competition[]>([]);
   const [error, setError] = useState<string>('');
   const [competitions, setCompetitions] = useState<FootballCompetitionApi[] | null>(null);
 
