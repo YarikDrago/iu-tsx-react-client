@@ -22,13 +22,20 @@ const MyGroups = () => {
   }, [ready]);
 
   async function fetchGroups() {
-    const groups = await universalFetchRequest<Group[]>(
-      'tournaments/groups',
-      HTMLRequestMethods.GET,
-      {}
-    );
-
-    setGroups(groups);
+    try {
+      appData.showLoader();
+      setErrorMsg('');
+      const groups = await universalFetchRequest<Group[]>(
+        'tournaments/groups',
+        HTMLRequestMethods.GET,
+        {}
+      );
+      setGroups(groups);
+    } catch (e) {
+      setErrorMsg((e as Error).message);
+    } finally {
+      appData.hideLoader();
+    }
   }
 
   async function deleteGroup(id: number) {
