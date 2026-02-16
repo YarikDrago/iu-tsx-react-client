@@ -8,11 +8,11 @@ import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 import AllApiTournaments from '@/pages/predictions/allApiTournaments/AllApiTournaments';
 import AvailablePredictionTable from '@/pages/predictions/AvailablePredictionTable';
-import { Competition } from '@/pages/predictions/models/competition.models';
+import { Competition } from '@/pages/predictions/models/competition.dto';
 import {
   FootballCompetitionApi,
   FootballCompetitionsApi,
-} from '@/pages/predictions/models/football_api.models';
+} from '@/pages/predictions/models/football_api.dto';
 import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
 
 import * as styles from './Predictions.module.scss';

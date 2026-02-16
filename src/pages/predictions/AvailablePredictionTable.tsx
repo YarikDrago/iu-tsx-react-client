@@ -1,7 +1,7 @@
 import React from 'react';
 
 import appData from '@/app.data';
-import { Competition } from '@/pages/predictions/models/competition.models';
+import { Competition } from '@/pages/predictions/models/competition.dto';
 
 import * as styles from './AvailablePredictionTable.module.scss';
 
