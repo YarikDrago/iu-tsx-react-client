@@ -11,16 +11,18 @@ import { SettingsAsync } from '@/pages/settings/index.async';
 
 const AppRoutes = () => {
   return (
-    <Routes>
-      <Route path={'/signup'} element={<AuthAsync isRegistration={true} />} />
-      <Route path={'/login'} element={<AuthAsync />} />
-      <Route path={'/activate/:token'} element={<ActivateAsync />} />
-      <Route path={'/settings'} element={<SettingsAsync />} />
-      <Route path={'/predictions'} element={<PredictionsAsync />} />
-      <Route path={'/predictions/competition/:id'} element={<ApiCompetitionMatchesAsync />} />
-      <Route path={'/predictions/groups'} element={<MyGroupsAsync />} />
-      <Route path={'/'} element={<MainAsync />} />
-    </Routes>
+    <React.Suspense fallback={<div>Loading...</div>}>
+      <Routes>
+        <Route path={'/signup'} element={<AuthAsync isRegistration={true} />} />
+        <Route path={'/login'} element={<AuthAsync />} />
+        <Route path={'/activate/:token'} element={<ActivateAsync />} />
+        <Route path={'/settings'} element={<SettingsAsync />} />
+        <Route path={'/predictions'} element={<PredictionsAsync />} />
+        <Route path={'/predictions/competition/:id'} element={<ApiCompetitionMatchesAsync />} />
+        <Route path={'/predictions/groups'} element={<MyGroupsAsync />} />
+        <Route path={'/'} element={<MainAsync />} />
+      </Routes>
+    </React.Suspense>
   );
 };
 
