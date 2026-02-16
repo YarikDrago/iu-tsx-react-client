@@ -5,7 +5,9 @@ import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
 
-interface Group {
+import * as styles from './MyGroups.module.scss';
+
+export interface GroupSummary {
   id: number;
   name: string;
   isOwner: boolean;
@@ -56,7 +58,7 @@ const MyGroups = () => {
       <p>My Groups</p>
       {errorMsg !== '' && <p>{errorMsg}</p>}
       {groups.length ? (
-        <table>
+        <table className={styles.table}>
           <thead>
             <tr>
               <th>ID</th>

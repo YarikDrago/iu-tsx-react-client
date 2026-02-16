@@ -1,0 +1,24 @@
+.table {
+  box-sizing: border-box;
+  border-collapse: collapse;
+
+  tr {
+    height: 30px;
+    text-align: center;
+  }
+
+  th,
+  td {
+    border: 1px solid #ccc;
+    padding: 5px 20px;
+  }
+}
+
+.actionBlock {
+  display: flex;
+  gap: 10px;
+
+  button {
+    padding: 5px;
+  }
+}
