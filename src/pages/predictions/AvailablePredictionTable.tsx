@@ -14,6 +14,7 @@ const AvailablePredictionTable = ({ data }: AvailablePredictionTableProps) => {
     appData.group.show({
       isNew: true,
       competition,
+      season: null, // TODO write normal data
     });
   }
 

@@ -1,9 +1,12 @@
 import { makeAutoObservable } from 'mobx';
 
 import { Competition } from '@/pages/predictions/models/competition.dto';
+import { GroupMember } from '@/pages/predictions/models/groupMember.dto';
+import { Season } from '@/pages/predictions/models/season.dto';
 
 type ShowParamsCommon = {
   competition: Competition | null;
+  season: Season | null;
 };
 
 type ShowParamsOptional = { isNew: true } | ({ isNew: false } & { oldName: string });
@@ -16,6 +19,8 @@ export class GroupManagerData {
   private _oldName: string = '';
   name: string = '';
   competition: Competition | null = null;
+  season: Season | null = null;
+  members: GroupMember[] = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -29,7 +34,7 @@ export class GroupManagerData {
     return this._isNew;
   }
 
-  show(params: ShowParams = { isNew: true, competition: null }) {
+  show(params: ShowParams = { isNew: true, competition: null, season: null }) {
     this._isVisible = true;
     this._isNew = params.isNew;
     this.competition = params.competition;
