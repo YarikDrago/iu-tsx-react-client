@@ -5,11 +5,18 @@ import { GroupMember } from '@/pages/predictions/models/groupMember.dto';
 import { Season } from '@/pages/predictions/models/season.dto';
 
 type ShowParamsCommon = {
-  competition: Competition | null;
-  season: Season | null;
+  competition: Competition;
+  season: Season;
 };
 
-type ShowParamsOptional = { isNew: true } | ({ isNew: false } & { oldName: string });
+type ShowParamsOptional =
+  | { isNew: true }
+  | ({ isNew: false } & {
+      id: number;
+      oldName: string;
+      name: string;
+      inviteCode: string;
+    });
 
 type ShowParams = ShowParamsCommon & ShowParamsOptional;
 
@@ -17,10 +24,12 @@ export class GroupManagerData {
   private _isVisible: boolean = false;
   private _isNew = false;
   private _oldName: string = '';
+  id = -1;
   name: string = '';
   competition: Competition | null = null;
   season: Season | null = null;
   members: GroupMember[] = [];
+  inviteCode = '';
 
   constructor() {
     makeAutoObservable(this);
@@ -34,12 +43,20 @@ export class GroupManagerData {
     return this._isNew;
   }
 
-  show(params: ShowParams = { isNew: true, competition: null, season: null }) {
+  get oldName() {
+    return this._oldName;
+  }
+
+  show(params: ShowParams) {
     this._isVisible = true;
     this._isNew = params.isNew;
     this.competition = params.competition;
+    this.season = params.season;
 
+    this.id = params.isNew ? -1 : params.id;
     this._oldName = params.isNew ? '' : params.oldName;
+    this.name = params.isNew ? '' : params.name;
+    this.inviteCode = params.isNew ? '' : params.inviteCode;
   }
 
   hide() {
