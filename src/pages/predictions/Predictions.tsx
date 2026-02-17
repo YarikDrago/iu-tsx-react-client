@@ -23,13 +23,13 @@ const Predictions = () => {
   const [showMode, setShowMode] = useState<ShowMode>('start');
   const [tournaments, setTournaments] = useState<Competition[]>([]);
   const [error, setError] = useState<string>('');
-  const [competitions, setCompetitions] = useState<FootballCompetitionApi[] | null>(null);
+  const [competitionsApi, setCompetitionsApi] = useState<FootballCompetitionApi[] | null>(null);
 
   useRequireAccessToken();
 
   async function getCompetitionsApi() {
     try {
-      setCompetitions(null);
+      setCompetitionsApi(null);
       setError('');
       appData.showLoader();
       const data = await universalFetchRequest<FootballCompetitionsApi>(
@@ -37,7 +37,7 @@ const Predictions = () => {
         HTMLRequestMethods.GET,
         {}
       );
-      setCompetitions(data.competitions);
+      setCompetitionsApi(data.competitions);
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -130,7 +130,7 @@ const Predictions = () => {
       </button>
       {error && <p className={styles.error}>{error}</p>}
       {showMode === 'available' && <AvailablePredictionTable data={tournaments} />}
-      {competitions && <AllApiTournaments competitions={competitions} />}
+      {competitionsApi && <AllApiTournaments competitions={competitionsApi} />}
     </article>
   );
 };
