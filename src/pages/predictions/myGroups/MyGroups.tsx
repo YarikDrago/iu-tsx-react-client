@@ -40,19 +40,6 @@ const MyGroups = () => {
     }
   }
 
-  async function deleteGroup(id: number) {
-    try {
-      appData.showLoader();
-      setErrorMsg('');
-      await universalFetchRequest(`tournaments/groups/${id}`, HTMLRequestMethods.DELETE, {});
-      setGroups(groups.filter((group) => group.id !== id));
-    } catch (e) {
-      setErrorMsg((e as Error).message);
-    } finally {
-      appData.hideLoader();
-    }
-  }
-
   return (
     <div>
       <p>My Groups</p>
@@ -75,14 +62,15 @@ const MyGroups = () => {
                 <td>{group.isOwner ? 'Yes' : 'No'}</td>
                 <td>
                   {group.isOwner ? (
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        deleteGroup(group.id);
-                      }}
-                    >
-                      Delete
-                    </button>
+                    <div className={styles.actionBlock}>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                      >
+                        Manage
+                      </button>
+                    </div>
                   ) : (
                     <button>Leave</button>
                   )}
