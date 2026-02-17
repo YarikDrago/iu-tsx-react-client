@@ -9,5 +9,6 @@ export interface Group {
   createdAt: string;
   tournament: Competition;
   season: Season;
+  inviteCode: string;
   members: GroupMember[];
 }
