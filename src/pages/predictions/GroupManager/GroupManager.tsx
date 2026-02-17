@@ -25,14 +25,14 @@ const GroupManager = () => {
     try {
       console.log('create new group');
       console.log('tournament ID:', store.competition?.id);
-      console.log('season ID:', store.competition?.currentSeason.id);
+      console.log('season ID:', store.season?.external_id);
       setErrorMsg('');
       const response = await universalFetchRequest(
         `tournaments/${store.competition?.id}/groups`,
         HTMLRequestMethods.POST,
         {
           name: store.name,
-          seasonExternalId: store.competition?.currentSeason.id,
+          seasonExternalId: store.season?.external_id,
         }
       );
       console.log(response);
@@ -61,8 +61,7 @@ const GroupManager = () => {
             <h1>{store.isNew ? 'Create new group' : 'Group manager'}</h1>
             <h3>Tournament: {store.competition?.name}</h3>
             <h3>
-              Season: {store.competition?.currentSeason.start_date} -{' '}
-              {store.competition?.currentSeason.end_date}
+              Season: {store.season?.start_date} - {store.season?.end_date}
             </h3>
             <p>Group name</p>
             <input

@@ -15,7 +15,7 @@ export interface GroupSummary {
 
 const MyGroups = () => {
   const { ready } = useRequireAccessToken();
-  const [groups, setGroups] = React.useState<Group[]>([]);
+  const [groups, setGroups] = React.useState<GroupSummary[]>([]);
   const [errorMsg, setErrorMsg] = React.useState('');
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const MyGroups = () => {
     try {
       appData.showLoader();
       setErrorMsg('');
-      const groups = await universalFetchRequest<Group[]>(
+      const groups = await universalFetchRequest<GroupSummary[]>(
         'tournaments/groups',
         HTMLRequestMethods.GET,
         {}

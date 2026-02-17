@@ -3,7 +3,7 @@ export interface Competition {
   external_id: number;
   name: string;
   isObservable: boolean; // true
-  currentSeason: {
+  currentSeason?: {
     id: string;
     external_id: string;
     tournament_id: number;
