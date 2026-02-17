@@ -6,6 +6,7 @@ import { AuthAsync } from '@/pages/auth/Auth.async';
 import { MainAsync } from '@/pages/main/index.async';
 import { ApiCompetitionMatchesAsync } from '@/pages/predictions/ApiCompetitionMatches';
 import { PredictionsAsync } from '@/pages/predictions/index.async';
+import { JoinToGroupAsync } from '@/pages/predictions/JoinToGroup/index.async';
 import { MyGroupsAsync } from '@/pages/predictions/myGroups/index.async';
 import { SettingsAsync } from '@/pages/settings/index.async';
 
@@ -20,6 +21,7 @@ const AppRoutes = () => {
         <Route path={'/predictions'} element={<PredictionsAsync />} />
         <Route path={'/predictions/competition/:id'} element={<ApiCompetitionMatchesAsync />} />
         <Route path={'/predictions/groups'} element={<MyGroupsAsync />} />
+        <Route path={'/predictions/groups/join/'} element={<JoinToGroupAsync />} />
         <Route path={'/'} element={<MainAsync />} />
       </Routes>
     </React.Suspense>
