@@ -61,6 +61,17 @@ export class GroupManagerData {
 
   hide() {
     this._isVisible = false;
-    // TODO reset form
+    this.resetForm();
+  }
+
+  private resetForm() {
+    this.name = '';
+    this.inviteCode = '';
+    this.members = [];
+    this.competition = null;
+    this.season = null;
+    this.id = -1;
+    this._oldName = '';
+    this._isNew = false;
   }
 }
