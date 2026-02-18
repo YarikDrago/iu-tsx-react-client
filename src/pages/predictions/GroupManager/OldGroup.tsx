@@ -100,7 +100,22 @@ const OldGroup = () => {
                 <td>{member.user_id}</td>
                 <td>{member.nickname}</td>
                 <td>{member.status}</td>
-                <td>Action</td>
+                <td
+                  style={{
+                    display: 'flex',
+                    gap: '10px',
+                  }}
+                >
+                  {store.ownerId == member.user_id ? (
+                    <p>Owner</p>
+                  ) : (
+                    <>
+                      <button>+</button>
+                      <button>Del</button>
+                      <button>Suspend</button>
+                    </>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
