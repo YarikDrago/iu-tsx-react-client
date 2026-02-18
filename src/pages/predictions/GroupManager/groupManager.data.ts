@@ -16,6 +16,7 @@ type ShowParamsOptional =
       oldName: string;
       name: string;
       inviteCode: string;
+      members: GroupMember[];
     });
 
 type ShowParams = ShowParamsCommon & ShowParamsOptional;
@@ -57,6 +58,7 @@ export class GroupManagerData {
     this._oldName = params.isNew ? '' : params.oldName;
     this.name = params.isNew ? '' : params.name;
     this.inviteCode = params.isNew ? '' : params.inviteCode;
+    this.members = params.isNew ? [] : params.members;
   }
 
   hide() {

@@ -69,6 +69,7 @@ const MyGroups = () => {
         competition: groupInfo.tournament,
         season: groupInfo.season,
         inviteCode: groupInfo.inviteCode,
+        members: groupInfo.members,
       });
     } catch (e) {
       setErrorMsg((e as Error).message);
