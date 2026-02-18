@@ -15,6 +15,7 @@ type ShowParamsOptional =
       id: number;
       oldName: string;
       name: string;
+      ownerId: number;
       inviteCode: string;
       members: GroupMember[];
     });
@@ -28,6 +29,7 @@ export class GroupManagerData {
   id = -1;
   name: string = '';
   competition: Competition | null = null;
+  ownerId = -1;
   season: Season | null = null;
   members: GroupMember[] = [];
   inviteCode = '';
@@ -53,10 +55,10 @@ export class GroupManagerData {
     this._isNew = params.isNew;
     this.competition = params.competition;
     this.season = params.season;
-
     this.id = params.isNew ? -1 : params.id;
     this._oldName = params.isNew ? '' : params.oldName;
     this.name = params.isNew ? '' : params.name;
+    this.ownerId = params.isNew ? -1 : params.ownerId;
     this.inviteCode = params.isNew ? '' : params.inviteCode;
     this.members = params.isNew ? [] : params.members;
   }
@@ -75,5 +77,6 @@ export class GroupManagerData {
     this.id = -1;
     this._oldName = '';
     this._isNew = false;
+    this.ownerId = -1;
   }
 }

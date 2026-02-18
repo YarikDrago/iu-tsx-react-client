@@ -70,6 +70,7 @@ const MyGroups = () => {
         season: groupInfo.season,
         inviteCode: groupInfo.inviteCode,
         members: groupInfo.members,
+        ownerId: groupInfo.ownerId,
       });
     } catch (e) {
       setErrorMsg((e as Error).message);

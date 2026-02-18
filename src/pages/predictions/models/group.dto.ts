@@ -6,6 +6,7 @@ export interface Group {
   id: number;
   name: string;
   isOwner: boolean;
+  ownerId: number;
   createdAt: string;
   tournament: Competition;
   season: Season;
