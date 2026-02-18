@@ -9,6 +9,7 @@ import * as styles from '@/pages/predictions/GroupManager/GroupManager.module.sc
 const OldGroup = () => {
   const store = appData.group;
   const [errorMsg, setErrorMsg] = React.useState('');
+  const [showUsers, setShowUsers] = React.useState(false);
 
   async function changeGroupName() {
     try {
@@ -63,62 +64,107 @@ const OldGroup = () => {
   return (
     <>
       <h1>Group manager</h1>
-      <h3>Tournament: {store.competition?.name}</h3>
-      <h3>
-        Season: {store.season?.start_date} - {store.season?.end_date}
-      </h3>
-      <p>Group name</p>
-      <input
-        type="text"
-        placeholder={'group name'}
-        value={store.name}
-        onChange={(e) => {
-          store.name = e.target.value;
-        }}
-      />
       <div style={{ display: 'flex', gap: '10px' }}>
         <button
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            console.log('invite code:', store.inviteCode);
-            navigator.clipboard.writeText(
-              `${process.env.BASE_URL}/predictions/groups/join/?code=${store.inviteCode}`
-            );
-            alert('Invite link was copied to clipboard');
+            setShowUsers(false);
           }}
         >
-          Invite link
+          Main info
         </button>
         <button
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            changeInviteCode();
+            setShowUsers(true);
           }}
         >
-          Change invite code
+          Users
         </button>
       </div>
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          changeGroupName();
-        }}
-        disabled={store.name === store.oldName}
-      >
-        Change name
-      </button>
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          deleteGroup();
-        }}
-      >
-        Delete group
-      </button>
+      {showUsers ? (
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nickname</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {store.members.map((member) => (
+              <tr key={member.id}>
+                <td>{member.user_id}</td>
+                <td>{member.nickname}</td>
+                <td>{member.status}</td>
+                <td>Action</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <>
+          <h3>Tournament: {store.competition?.name}</h3>
+          <h3>
+            Season: {store.season?.start_date} - {store.season?.end_date}
+          </h3>
+          <p>Group name</p>
+          <input
+            type="text"
+            placeholder={'group name'}
+            value={store.name}
+            onChange={(e) => {
+              store.name = e.target.value;
+            }}
+          />
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('invite code:', store.inviteCode);
+                navigator.clipboard.writeText(
+                  `${process.env.BASE_URL}/predictions/groups/join/?code=${store.inviteCode}`
+                );
+                alert('Invite link was copied to clipboard');
+              }}
+            >
+              Invite link
+            </button>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                changeInviteCode();
+              }}
+            >
+              Change invite code
+            </button>
+          </div>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              changeGroupName();
+            }}
+            disabled={store.name === store.oldName}
+          >
+            Change name
+          </button>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              deleteGroup();
+            }}
+          >
+            Delete group
+          </button>
+        </>
+      )}
       {errorMsg !== '' && <p className={styles.error}>{errorMsg}</p>}
     </>
   );
