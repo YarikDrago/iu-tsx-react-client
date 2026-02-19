@@ -5,6 +5,7 @@ import appData from '@/app.data';
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 import * as styles from '@/pages/predictions/GroupManager/GroupManager.module.scss';
+import { GroupMember } from '@/pages/predictions/models/groupMember.dto';
 
 const OldGroup = () => {
   const store = appData.group;
@@ -61,6 +62,27 @@ const OldGroup = () => {
     }
   }
 
+  async function updateGroupMember(member: GroupMember, status: string) {
+    try {
+      appData.showLoader();
+      setErrorMsg('');
+      await universalFetchRequest(
+        `tournaments/groups/${store.id}/members/${member.user_id}`,
+        HTMLRequestMethods.PATCH,
+        { status: status }
+      );
+      if (status === 'delete') {
+        store.members = store.members.filter((m) => m.user_id !== member.user_id);
+      } else {
+        member.status = status;
+      }
+    } catch (e) {
+      setErrorMsg((e as Error).message);
+    } finally {
+      appData.hideLoader();
+    }
+  }
+
   return (
     <>
       <h1>Group manager</h1>
@@ -110,9 +132,33 @@ const OldGroup = () => {
                     <p>Owner</p>
                   ) : (
                     <>
-                      <button>+</button>
-                      <button>Del</button>
-                      <button>Suspend</button>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          updateGroupMember(member, 'verified');
+                        }}
+                      >
+                        +
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          updateGroupMember(member, 'suspended');
+                        }}
+                      >
+                        Suspend
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          updateGroupMember(member, 'delete');
+                        }}
+                      >
+                        Del
+                      </button>
                     </>
                   )}
                 </td>
