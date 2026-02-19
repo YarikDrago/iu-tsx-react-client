@@ -138,6 +138,7 @@ const OldGroup = () => {
                           e.stopPropagation();
                           updateGroupMember(member, 'verified');
                         }}
+                        disabled={member.status === 'verified'}
                       >
                         +
                       </button>
