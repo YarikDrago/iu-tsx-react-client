@@ -8,6 +8,7 @@ import { ApiCompetitionMatchesAsync } from '@/pages/predictions/ApiCompetitionMa
 import { PredictionsAsync } from '@/pages/predictions/index.async';
 import { JoinToGroupAsync } from '@/pages/predictions/JoinToGroup/index.async';
 import { MyGroupsAsync } from '@/pages/predictions/myGroups/index.async';
+import { ResetPasswordAsync } from '@/pages/resetPassword';
 import { SettingsAsync } from '@/pages/settings/index.async';
 
 const AppRoutes = () => {
@@ -17,6 +18,7 @@ const AppRoutes = () => {
         <Route path={'/signup'} element={<AuthAsync isRegistration={true} />} />
         <Route path={'/login'} element={<AuthAsync />} />
         <Route path={'/activate/:token'} element={<ActivateAsync />} />
+        <Route path={'/reset-password/:token'} element={<ResetPasswordAsync />} />
         <Route path={'/settings'} element={<SettingsAsync />} />
         <Route path={'/predictions'} element={<PredictionsAsync />} />
         <Route path={'/predictions/competition/:id'} element={<ApiCompetitionMatchesAsync />} />
