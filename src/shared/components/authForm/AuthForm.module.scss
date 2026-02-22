@@ -67,6 +67,9 @@
   }
 
   .link{
+    cursor: pointer;
+    border: none;
+    background: none;
     text-decoration: none;
     font-weight: bold;
     color: #9191ff;
@@ -113,6 +116,51 @@
       cursor: not-allowed;
       box-shadow: none;
       transform: none;
+    }
+  }
+
+  .sendButton {
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    margin-top: 10px;
+
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: linear-gradient(135deg, rgba(124, 92, 255, 0.55), rgba(0, 198, 255, 0.35));
+    color: var(--text);
+
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+    transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease,
+    border-color 140ms ease;
+
+    &:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      border-color: rgba(0, 198, 255, 0.35);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
+    }
+
+    &:active {
+      transform: translateY(0);
+      filter: brightness(0.98);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28),
+      0 0 0 4px rgba(0, 198, 255, 0.18);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+      filter: none;
     }
   }
 

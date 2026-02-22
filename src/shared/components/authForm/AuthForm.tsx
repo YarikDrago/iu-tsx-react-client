@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router';
 import appData from '@/app.data';
 import { login } from '@/function/api/login';
 import { signup } from '@/function/api/signup';
+import { universalFetchRequest } from '@/function/api/universalFetchRequest';
+import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 import Loader2 from '@/shared/components/loaders/Loader2';
 
 import * as styles from './AuthForm.module.scss';
@@ -22,6 +24,7 @@ const AuthForm = ({ isRegistration = false }: Props) => {
   const [errorMsg, setErrorMsg] = React.useState('');
   const [isLaoding, setIsLoading] = React.useState(false);
   const [successRegistration, setSuccessRegistration] = React.useState(false);
+  const [forgotPassword, setForgotPassword] = React.useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     try {
@@ -48,6 +51,20 @@ const AuthForm = ({ isRegistration = false }: Props) => {
       setIsLoading(false);
     }
   };
+
+  async function sendResetPasswordRequest() {
+    try {
+      setErrorMsg('');
+      appData.showLoader();
+      await universalFetchRequest('auth/forgot-password', HTMLRequestMethods.POST, {
+        email: email,
+      });
+    } catch (e) {
+      setErrorMsg((e as Error).message || 'Something went wrong');
+    } finally {
+      appData.hideLoader();
+    }
+  }
 
   // function validateForm() {
   //   return email.length > 0 && password.length > 0;
@@ -127,9 +144,33 @@ const AuthForm = ({ isRegistration = false }: Props) => {
                     Sign Up
                   </Link>
                 </div>
-                <Link to={'/'} className={styles.link}>
-                  Forgot password?
-                </Link>
+                {forgotPassword ? (
+                  <div style={{ marginTop: '20px' }}>
+                    <p>
+                      Click the "Send" button to receive an email with a link to reset your
+                      password.
+                    </p>
+                    <button
+                      className={styles.sendButton}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        sendResetPasswordRequest();
+                      }}
+                    >
+                      Send
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    className={styles.link}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setForgotPassword(true);
+                    }}
+                  >
+                    Forgot password?
+                  </button>
+                )}
               </>
             )}
           </div>
