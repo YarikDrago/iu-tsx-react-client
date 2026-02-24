@@ -2,7 +2,7 @@ import { Competition } from '@/pages/predictions/models/competition.dto';
 import { Season } from '@/pages/predictions/models/season.dto';
 
 export interface MatchDto {
-  id: string;
+  id: number;
   external_id: string;
   season_id: number;
   season?: Season;
