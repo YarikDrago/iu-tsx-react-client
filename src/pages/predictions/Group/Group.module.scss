@@ -1,0 +1,32 @@
+.table {
+  box-sizing: border-box;
+  border-collapse: collapse;
+
+  //tbody tr:nth-child(even) {
+  //  background: rgba(255, 255, 255, 0.03);
+  //}
+
+  tr {
+    height: 30px;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  tbody {
+    tr {
+      &:nth-child(even) {
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.06);
+      }
+    }
+  }
+
+  th,
+  td {
+    border: 1px solid #ccc;
+    padding: 5px 20px;
+  }
+}
