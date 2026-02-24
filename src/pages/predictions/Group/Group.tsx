@@ -117,7 +117,7 @@ const Group = () => {
                       <td>{match.away_team || '???'}</td>
                       <td>{match.start_time || 'scheduled'}</td>
                       <td>{match.status}</td>
-                      <td>{`${match.home_score || 'null'} - ${match.away_score || 'null'}`}</td>
+                      <td>{`${String(match.home_score)} - ${String(match.away_score)}`}</td>
                       {members.map((member) => {
                         let predictionHome = 'null';
                         let predictionAway = 'null';
