@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router';
 
 import appData from '@/app.data';
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
@@ -24,6 +25,7 @@ export interface GroupSummary {
 
 const MyGroups = () => {
   const { ready } = useRequireAccessToken();
+  const navigate = useNavigate();
   const [groups, setGroups] = React.useState<GroupSummary[]>([]);
   const [errorMsg, setErrorMsg] = React.useState('');
 
@@ -97,7 +99,12 @@ const MyGroups = () => {
           </thead>
           <tbody>
             {groups.map((group) => (
-              <tr key={group.id}>
+              <tr
+                onClick={() => {
+                  navigate(`/predictions/groups/${group.id}`);
+                }}
+                key={group.id}
+              >
                 <td>{String(group.id)}</td>
                 <td>{group.name}</td>
                 <td>{group.tournament.name}</td>
