@@ -4,6 +4,7 @@ import { useParams } from 'react-router';
 import appData from '@/app.data';
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
+import PredictionEditor from '@/pages/predictions/Group/PredictionEditor';
 import { Competition } from '@/pages/predictions/models/competition.dto';
 import { GroupMember } from '@/pages/predictions/models/groupMember.dto';
 import { MatchDto } from '@/pages/predictions/models/match.dto';
@@ -30,12 +31,14 @@ interface GroupData {
 interface PredictionTable {
   // key- user_id
   [key: number]: {
-    // key- match_id
-    [key: number]: {
-      home_score: number | null;
-      away_score: number | null;
-    };
+    // key- match_id, value - prediction index in array
+    [key: number]: number | null;
   };
+}
+
+export interface TEditPrediction {
+  match: MatchDto;
+  prediction: PredictionDto | null;
 }
 
 const Group = () => {
@@ -45,6 +48,7 @@ const Group = () => {
   const [group, setGroup] = React.useState<GroupData | null>(null);
   const [members, setMembers] = React.useState<GroupMember[]>([]);
   const [predictionTable, setPredictionTable] = React.useState<PredictionTable>({});
+  const [editPrediction, setEditPrediction] = React.useState<TEditPrediction | null>(null);
 
   useEffect(() => {
     if (!ready) return;
@@ -71,11 +75,8 @@ const Group = () => {
       sortedMembers.forEach((member) => {
         newPredictionData[member.user_id] = {};
       });
-      group.predictions.forEach((prediction) => {
-        newPredictionData[prediction.user_id][prediction.match_id] = {
-          home_score: prediction.home_score,
-          away_score: prediction.away_score,
-        };
+      group.predictions.forEach((prediction, idx) => {
+        newPredictionData[prediction.user_id][prediction.match_id] = idx;
       });
       setPredictionTable(newPredictionData);
       setGroup(group);
@@ -111,7 +112,20 @@ const Group = () => {
               <tbody>
                 {group.matches.map((match, idx) => {
                   return (
-                    <tr key={match.id}>
+                    <tr
+                      key={match.id}
+                      onClick={() => {
+                        console.log('click');
+                        setEditPrediction({
+                          match: match,
+                          prediction:
+                            predictionTable[appData.userId]?.[match.id] !== null &&
+                            predictionTable[appData.userId]?.[match.id] !== undefined
+                              ? group?.predictions[predictionTable[appData.userId][match.id]!]
+                              : null,
+                        });
+                      }}
+                    >
                       <td>{idx + 1}</td>
                       <td>{match.home_team || '???'}</td>
                       <td>{match.away_team || '???'}</td>
@@ -121,16 +135,11 @@ const Group = () => {
                       {members.map((member) => {
                         let predictionHome = 'null';
                         let predictionAway = 'null';
-                        if (
-                          predictionTable[member.user_id] &&
-                          predictionTable[member.user_id][match.id]
-                        ) {
-                          predictionHome = String(
-                            predictionTable[member.user_id][match.id].home_score
-                          );
-                          predictionAway = String(
-                            predictionTable[member.user_id][match.id].away_score
-                          );
+                        const predictionIdx = predictionTable[member.user_id]?.[match.id];
+                        if (predictionIdx !== null && predictionIdx !== undefined) {
+                          const prediction = group.predictions[predictionIdx];
+                          predictionHome = String(prediction.home_score);
+                          predictionAway = String(prediction.away_score);
                         }
                         return <td key={member.id}>{`${predictionHome} - ${predictionAway}`}</td>;
                       })}
@@ -143,6 +152,14 @@ const Group = () => {
         </>
       )}
       {errorMsg !== '' && <p>{errorMsg}</p>}
+      {editPrediction && (
+        <PredictionEditor
+          editData={editPrediction}
+          onClose={() => {
+            setEditPrediction(null);
+          }}
+        />
+      )}
     </div>
   );
 };
