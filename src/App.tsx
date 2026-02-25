@@ -22,6 +22,7 @@ const App = () => {
       await me()
         .then((data) => {
           appData.changeNickname(data.nickname);
+          appData.changeUserId(data.userId);
           appData.role = data.roles;
         })
         .catch(() => {

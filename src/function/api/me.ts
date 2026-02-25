@@ -3,6 +3,7 @@ import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 
 interface MeResponse {
   nickname: string;
+  userId: number;
   roles: string[];
 }
 
