@@ -7,7 +7,7 @@ import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 import PredictionEditor from '@/pages/predictions/Group/PredictionEditor';
 import { Competition } from '@/pages/predictions/models/competition.dto';
 import { GroupMember } from '@/pages/predictions/models/groupMember.dto';
-import { MatchDto } from '@/pages/predictions/models/match.dto';
+import { MatchDto, MatchStatus } from '@/pages/predictions/models/match.dto';
 import { PredictionDto } from '@/pages/predictions/models/prediction.dto';
 import { Season } from '@/pages/predictions/models/season.dto';
 import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
@@ -37,6 +37,7 @@ interface PredictionTable {
 }
 
 export interface TEditPrediction {
+  groupId: number;
   match: MatchDto;
   prediction: PredictionDto | null;
 }
@@ -121,6 +122,7 @@ const Group = () => {
                         )
                           return;
                         setEditPrediction({
+                          groupId: group?.group.id,
                           match: match,
                           prediction:
                             predictionTable[appData.userId]?.[match.id] !== null &&
