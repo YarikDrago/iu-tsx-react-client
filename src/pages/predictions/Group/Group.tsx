@@ -129,8 +129,12 @@ const Group = () => {
                       <td>{idx + 1}</td>
                       <td>{match.home_team || '???'}</td>
                       <td>{match.away_team || '???'}</td>
-                      <td>{match.start_time || 'scheduled'}</td>
-                      <td>{match.status}</td>
+                      <td className={match.status === MatchStatus.FINISHED ? styles.finished : ''}>
+                        {match.start_time || 'scheduled'}
+                      </td>
+                      <td className={match.status === MatchStatus.FINISHED ? styles.finished : ''}>
+                        {match.status}
+                      </td>
                       <td>{`${String(match.home_score)} - ${String(match.away_score)}`}</td>
                       {members.map((member) => {
                         let predictionHome = 'null';
