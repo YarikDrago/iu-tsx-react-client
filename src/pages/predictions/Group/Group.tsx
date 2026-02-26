@@ -115,7 +115,11 @@ const Group = () => {
                     <tr
                       key={match.id}
                       onClick={() => {
-                        console.log('click');
+                        if (
+                          match.status === MatchStatus.FINISHED ||
+                          match.status === MatchStatus.IN_PLAY
+                        )
+                          return;
                         setEditPrediction({
                           match: match,
                           prediction:
