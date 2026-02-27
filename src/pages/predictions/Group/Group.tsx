@@ -133,8 +133,32 @@ const Group = () => {
                       }}
                     >
                       <td>{idx + 1}</td>
-                      <td>{match.home_team || '???'}</td>
-                      <td>{match.away_team || '???'}</td>
+                      <td
+                        className={
+                          match.away_score === null || match.home_score === null
+                            ? ''
+                            : match.home_score === match.away_score
+                              ? styles.draw
+                              : match.home_score > match.away_score
+                                ? styles.win
+                                : styles.lose
+                        }
+                      >
+                        {match.home_team || '???'}
+                      </td>
+                      <td
+                        className={
+                          match.away_score === null || match.home_score === null
+                            ? ''
+                            : match.home_score === match.away_score
+                              ? styles.draw
+                              : match.home_score < match.away_score
+                                ? styles.win
+                                : styles.lose
+                        }
+                      >
+                        {match.away_team || '???'}
+                      </td>
                       <td className={match.status === MatchStatus.FINISHED ? styles.finished : ''}>
                         {match.start_time || 'scheduled'}
                       </td>
@@ -145,13 +169,21 @@ const Group = () => {
                       {members.map((member) => {
                         let predictionHome = 'null';
                         let predictionAway = 'null';
+                        // TODO change on real calculated value
+                        const gainedPoints = 0;
                         const predictionIdx = predictionTable[member.user_id]?.[match.id];
                         if (predictionIdx !== null && predictionIdx !== undefined) {
                           const prediction = group.predictions[predictionIdx];
                           predictionHome = String(prediction.home_score);
                           predictionAway = String(prediction.away_score);
                         }
-                        return <td key={member.id}>{`${predictionHome} - ${predictionAway}`}</td>;
+                        let text = `${predictionHome} - ${predictionAway}`;
+                        if (
+                          match.status === MatchStatus.FINISHED ||
+                          match.status === MatchStatus.IN_PLAY
+                        )
+                          text += ` (${gainedPoints})`;
+                        return <td key={member.id}>{text}</td>;
                       })}
                     </tr>
                   );
