@@ -87,7 +87,7 @@ export async function universalFetchRequest<TResponse = unknown>(
   body: any,
   options: UniversalFetchOptions = {}
 ): Promise<TResponse> {
-  const url = `${process.env.API_URL}/${path}`;
+  const url = `${process.env.API_URL}/api/${path}`;
 
   const headers = {
     'Content-Type': 'application/json',
