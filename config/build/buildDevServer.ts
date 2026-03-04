@@ -10,6 +10,19 @@ export function buildDevServer(options: BuildOptions): DevServerConfiguration {
     port: options.port,
     open: true,
     hot: true,
+    proxy: [
+      {
+        /* Prefixes that will be replaced with the target url */
+        context: ['/api'],
+        // TODO change and use variable (env)
+        target: `http:localhost:6600/api`,
+        changeOrigin: true,
+        secure: false,
+        /* remove prefix /api from the url
+         * This prefix is added from the .env.proxy file */
+        // pathRewrite: { '^/api': '' },
+      },
+    ],
     client: {
       overlay: {
         errors: true,
