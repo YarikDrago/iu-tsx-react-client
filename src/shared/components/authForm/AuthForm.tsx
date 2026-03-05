@@ -24,7 +24,10 @@ const AuthForm = ({ isRegistration = false }: Props) => {
   const [errorMsg, setErrorMsg] = React.useState('');
   const [isLaoding, setIsLoading] = React.useState(false);
   const [successRegistration, setSuccessRegistration] = React.useState(false);
-  const [forgotPassword, setForgotPassword] = React.useState(false);
+  const [formType, setFormType] = React.useState<'login' | 'signup' | 'forgot'>(
+    isRegistration ? 'signup' : 'login'
+  );
+  // const [forgotPassword, setForgotPassword] = React.useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     try {
@@ -72,47 +75,71 @@ const AuthForm = ({ isRegistration = false }: Props) => {
   //   // TODO add more complex validation
   // }
 
+  let mainTitleText: string = 'Log In';
+
+  switch (formType) {
+    case 'login':
+      mainTitleText = 'Welcome back!';
+      break;
+    case 'signup':
+      mainTitleText = 'Create your account';
+      break;
+    case 'forgot':
+      mainTitleText = 'Forgot Password?';
+      break;
+  }
+
   return (
     <form className={styles.form}>
       {!successRegistration ? (
         <>
-          <h3>{isRegistration ? 'Create Your Account' : 'Welcome'}</h3>
-          {isRegistration && (
-            <>
-              <p>Nickname</p>
-              <input
-                type="text"
-                placeholder={'nickname'}
-                value={nickname}
-                onChange={(e) => setNickname(e.target.value)}
-              />
-            </>
-          )}
+          <h3>{mainTitleText}</h3>
           <p>Email</p>
           <input
             type="text"
+            placeholder={'Email'}
             value={email}
             onChange={(e) => {
               setErrorMsg('');
               setEmail(e.target.value);
             }}
           />
-          <p>Password</p>
-          <input
-            className={'border-2'}
-            type="text"
-            value={password}
-            onChange={(e) => {
-              setErrorMsg('');
-              setPassword(e.target.value);
-            }}
-          />
-          {isRegistration && (
+          {formType === 'signup' && (
+            <>
+              <p>Nickname</p>
+              <input
+                type="text"
+                placeholder={'nickname'}
+                value={nickname}
+                onChange={(e) => {
+                  setErrorMsg('');
+                  setNickname(e.target.value);
+                }}
+              />
+            </>
+          )}
+          {formType !== 'forgot' && (
+            <>
+              <p>Password</p>
+              <input
+                className={'border-2'}
+                type="password"
+                value={password}
+                placeholder={'Password'}
+                onChange={(e) => {
+                  setErrorMsg('');
+                  setPassword(e.target.value);
+                }}
+              />
+            </>
+          )}
+          {formType === 'signup' && (
             <>
               <p>Confirm password</p>
               <input
                 type="text"
                 value={repeatPassword}
+                placeholder={'Confirm password'}
                 onChange={(e) => {
                   setErrorMsg('');
                   setRepeatPassword(e.target.value);
@@ -120,58 +147,97 @@ const AuthForm = ({ isRegistration = false }: Props) => {
               />
             </>
           )}
-          <button
-            type="submit"
-            className={styles.submitButton}
-            onClick={handleSubmit}
-            disabled={isLaoding}
-          >
-            {isLaoding ? <Loader2 /> : <p>Continue</p>}
-          </button>
+          {formType !== 'forgot' && (
+            <>
+              <button
+                type="submit"
+                className={styles.submitButton}
+                onClick={handleSubmit}
+                disabled={isLaoding}
+              >
+                {isLaoding ? <Loader2 /> : <p>Continue</p>}
+              </button>
+            </>
+          )}
           <div className={'actions'}>
-            {isRegistration ? (
+            {formType === 'signup' && (
               <p>
                 Already have an account?{' '}
-                <Link to={'/login'} className={styles.link}>
+                <Link
+                  to={'/login'}
+                  onClick={() => {
+                    setErrorMsg('');
+                    setFormType('login');
+                  }}
+                  className={styles.link}
+                >
                   Log In
                 </Link>
               </p>
-            ) : (
+            )}
+            {formType === 'login' && (
               <>
                 <div className={styles.line}>
                   <p>Don't have an account?</p>
-                  <Link to={'/signup'} className={styles.link}>
+                  <Link
+                    to={'/signup'}
+                    onClick={() => {
+                      setErrorMsg('');
+                      setFormType('signup');
+                    }}
+                    className={styles.link}
+                  >
                     Sign Up
                   </Link>
                 </div>
-                {forgotPassword ? (
-                  <div style={{ marginTop: '20px' }}>
-                    <p>
-                      Click the "Send" button to receive an email with a link to reset your
-                      password.
-                    </p>
-                    <button
-                      className={styles.sendButton}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        sendResetPasswordRequest();
-                      }}
-                    >
-                      Send
-                    </button>
-                  </div>
-                ) : (
-                  <button
-                    className={styles.link}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setForgotPassword(true);
-                    }}
-                  >
-                    Forgot password?
-                  </button>
-                )}
+                <button
+                  type="button"
+                  className={styles.link}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setErrorMsg('');
+                    setFormType('forgot');
+                  }}
+                >
+                  Forgot password?
+                </button>
               </>
+            )}
+            {formType === 'forgot' && (
+              <div
+                style={{
+                  marginTop: '20px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '10px',
+                }}
+              >
+                <p>
+                  Click the "Send" button to receive an email with a link to reset your password.
+                </p>
+                <button
+                  className={styles.sendButton}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setErrorMsg('');
+                    sendResetPasswordRequest();
+                  }}
+                >
+                  Send
+                </button>
+                <button
+                  type="button"
+                  className={`${styles.link} ${styles.forgotLogin}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setErrorMsg('');
+                    setFormType('login');
+                  }}
+                >
+                  Log In
+                </button>
+              </div>
             )}
           </div>
         </>
