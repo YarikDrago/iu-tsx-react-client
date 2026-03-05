@@ -27,6 +27,7 @@ const AuthForm = ({ isRegistration = false }: Props) => {
   const [formType, setFormType] = React.useState<'login' | 'signup' | 'forgot'>(
     isRegistration ? 'signup' : 'login'
   );
+  const [successLinkSend, setSuccessLinkSend] = React.useState(false);
   // const [forgotPassword, setForgotPassword] = React.useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -62,6 +63,7 @@ const AuthForm = ({ isRegistration = false }: Props) => {
       await universalFetchRequest('auth/forgot-password', HTMLRequestMethods.POST, {
         email: email,
       });
+      setSuccessLinkSend(true);
     } catch (e) {
       setErrorMsg((e as Error).message || 'Something went wrong');
     } finally {
@@ -94,16 +96,20 @@ const AuthForm = ({ isRegistration = false }: Props) => {
       {!successRegistration ? (
         <>
           <h3>{mainTitleText}</h3>
-          <p>Email</p>
-          <input
-            type="text"
-            placeholder={'Email'}
-            value={email}
-            onChange={(e) => {
-              setErrorMsg('');
-              setEmail(e.target.value);
-            }}
-          />
+          {!successLinkSend && (
+            <>
+              <p>Email</p>
+              <input
+                type="text"
+                placeholder={'Email'}
+                value={email}
+                onChange={(e) => {
+                  setErrorMsg('');
+                  setEmail(e.target.value);
+                }}
+              />
+            </>
+          )}
           {formType === 'signup' && (
             <>
               <p>Nickname</p>
@@ -213,19 +219,30 @@ const AuthForm = ({ isRegistration = false }: Props) => {
                   gap: '10px',
                 }}
               >
-                <p>
-                  Click the "Send" button to receive an email with a link to reset your password.
-                </p>
-                <button
-                  className={styles.sendButton}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setErrorMsg('');
-                    sendResetPasswordRequest();
-                  }}
-                >
-                  Send
-                </button>
+                {successLinkSend ? (
+                  <>
+                    <p>
+                      Link was sent to your email. Check your inbox and follow the link to reset
+                      your password.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p>
+                      Click the "Send" button to receive an email with a link to reset your
+                      password.
+                    </p>
+                    <button
+                      className={styles.sendButton}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        sendResetPasswordRequest();
+                      }}
+                    >
+                      Send
+                    </button>
+                  </>
+                )}
                 <button
                   type="button"
                   className={`${styles.link} ${styles.forgotLogin}`}
