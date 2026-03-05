@@ -15,7 +15,7 @@ export function buildDevServer(options: BuildOptions): DevServerConfiguration {
         /* Prefixes that will be replaced with the target url */
         context: ['/api'],
         // TODO change and use variable (env)
-        target: `http:localhost:6600/api`,
+        target: 'http://localhost:6600',
         changeOrigin: true,
         secure: false,
         /* remove prefix /api from the url
