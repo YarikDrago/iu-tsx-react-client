@@ -5,6 +5,7 @@ import './default.scss';
 import { observer } from 'mobx-react';
 
 import appData from '@/app.data';
+import bg from '@/assets/images/background.jpg';
 import { me } from '@/function/api/me';
 import Footer from '@/layout/Footer/Footer';
 import Header from '@/layout/Header/Header';
@@ -15,6 +16,12 @@ import { GlobalLoader } from '@/shared/components/loaders/GlobalLoader/GlobalLoa
 import { socket } from '@/shared/ws/socket';
 
 import * as styles from './App.module.scss';
+
+const style = {
+  backgroundImage: `url(${bg})`,
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+};
 
 const App = () => {
   useEffect(() => {
@@ -54,7 +61,7 @@ const App = () => {
   }, []);
 
   return (
-    <article className={styles.app}>
+    <article className={styles.app} style={style}>
       <Header />
       <Main>
         <AppRoutes />
