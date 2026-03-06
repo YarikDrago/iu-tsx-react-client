@@ -7,9 +7,9 @@ const Auth = ({ isRegistration = false }: { isRegistration?: boolean }) => {
     <article
       style={{
         display: 'flex',
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        height: '100vh',
       }}
     >
       <AuthForm isRegistration={isRegistration} />
