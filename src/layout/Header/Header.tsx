@@ -16,7 +16,13 @@ const Header = () => {
 
   return (
     <header className={styles.header}>
-      {location.pathname === '/' ? <p>Portal</p> : <Link to={'/'}>Main</Link>}
+      {location.pathname === '/' ? (
+        <p></p>
+      ) : (
+        <Link to={'/'} className={styles.button}>
+          Main
+        </Link>
+      )}
       {location.pathname !== '/login' && location.pathname !== '/signup' && (
         <>
           <PersonButton
