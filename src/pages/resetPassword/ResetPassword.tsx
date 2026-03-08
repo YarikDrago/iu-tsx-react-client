@@ -5,6 +5,8 @@ import appData from '@/app.data';
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 
+import * as styles from './ResetPassword.module.scss';
+
 const ResetPassword = () => {
   const { token } = useParams<{ token: string }>();
   const [password, setPassword] = React.useState('');
@@ -61,8 +63,8 @@ const ResetPassword = () => {
   }
 
   return (
-    <section>
-      <form action="" onSubmit={handleSubmit}>
+    <section className={styles.container}>
+      <form className={styles.form} action="" onSubmit={handleSubmit}>
         {success ? (
           <p>Password was reset successfully</p>
         ) : (
@@ -73,6 +75,7 @@ const ResetPassword = () => {
                 <input
                   type="password"
                   value={password}
+                  placeholder={'Password'}
                   onChange={(e) => {
                     setError('');
                     setPassword(e.target.value);
@@ -82,18 +85,19 @@ const ResetPassword = () => {
                 <input
                   type="password"
                   value={repeatPassword}
+                  placeholder={'Repeat password'}
                   onChange={(e) => {
                     setError('');
                     setRepeatPassword(e.target.value);
                   }}
                 />
-                <button type={'submit'} disabled={!isvalid}>
+                <button className={styles.submitButton} type={'submit'} disabled={!isvalid}>
                   Reset
                 </button>
               </>
             )}
 
-            {error && <p>{error}</p>}
+            {error && <p className={styles.errorMsg}>{error}</p>}
           </>
         )}
       </form>
