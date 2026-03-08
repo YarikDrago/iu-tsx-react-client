@@ -1,12 +1,4 @@
 .form {
-  --text: rgba(255, 255, 255, 0.92);
-  --muted: rgba(255, 255, 255, 0.72);
-  --stroke: rgba(255, 255, 255, 0.18);
-  --strokeHover: rgba(0, 198, 255, 0.32);
-
-  --accent: #7c5cff;
-  --accent2: #00c6ff;
-
   color: var(--text);
 
   box-sizing: border-box;
@@ -32,32 +24,7 @@
 
 
   input {
-    width: 100%;
     height: 46px;
-    padding: 11px 12px;
-    border-radius: 5px;
-
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
-    border: 1px solid var(--stroke);
-    color: var(--text);
-
-    outline: none;
-    transition: border-color 140ms ease, box-shadow 140ms ease, filter 140ms ease;
-
-    &::placeholder {
-      color: var(--muted);
-    }
-
-    &:hover {
-      border-color: var(--strokeHover);
-    }
-
-    &:focus-visible {
-      border-color: rgba(0, 198, 255, 0.7);
-      box-shadow:
-              0 0 0 4px rgba(0, 198, 255, 0.14),
-              0 0 22px rgba(0, 198, 255, 0.18);
-    }
   }
 
   .line{
