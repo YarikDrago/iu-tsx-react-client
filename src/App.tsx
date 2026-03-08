@@ -67,6 +67,7 @@ const App = () => {
         <AppRoutes />
       </Main>
       <Footer />
+      <div id={'modal-root'}></div>
       {appData.group.isVisible && <GroupManager />}
       <GlobalLoader />
     </article>

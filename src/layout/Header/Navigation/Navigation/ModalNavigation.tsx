@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { Link } from 'react-router';
 import { observer } from 'mobx-react';
 
@@ -26,12 +27,16 @@ const ModalNavigation = ({ isOpened, handleClose }: ModalNavigationProps) => {
     return () => window.removeEventListener('resize', changeWindowSizeVariables);
   }, []);
 
+  const portalRoot = useMemo(() => {
+    return document.getElementById('modal-root') ?? document.body;
+  }, []);
+
   async function logoutWrapper() {
     handleClose();
     await logout();
   }
 
-  return (
+  const content = (
     <div className={`${styles.modalNavigator} ${isOpened ? '' : styles.isHidden}`}>
       <ul className={styles.list}>
         {appData.nickname === '' ? (
@@ -66,6 +71,8 @@ const ModalNavigation = ({ isOpened, handleClose }: ModalNavigationProps) => {
       </button>
     </div>
   );
+
+  return createPortal(content, portalRoot);
 };
 
 export default observer(ModalNavigation);
