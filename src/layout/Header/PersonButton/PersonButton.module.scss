@@ -2,6 +2,7 @@
   --clr: #fff;
   --clr-hover: #32ffce;
 
+  color: var(--clr);
   border: 2px solid var(--clr);
   width: 40px;
   height: 40px;
@@ -12,6 +13,7 @@
   transition: all 0.3s ease-in-out;
 
   &:hover {
+    color: var(--clr-hover);
     border-color: var(--clr-hover);
     .icon {
       fill: var(--clr-hover);
