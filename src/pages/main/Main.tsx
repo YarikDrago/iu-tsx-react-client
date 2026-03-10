@@ -1,17 +1,32 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { useNavigate } from 'react-router';
 import { observer } from 'mobx-react';
 
 import appData from '@/app.data';
+import stadiumImage from '@/assets/images/stadium_s.jpg';
 
 import * as styles from './main.module.scss';
 
 const Main = () => {
+  const navigate = useNavigate();
+
   return (
     <article className={styles.main}>
       {appData.nickname && (
-        <div>
-          <Link to={'/predictions'}>Predictions</Link>
+        <div className={styles.cardsBox}>
+          <div
+            className={styles.card}
+            style={
+              {
+                ['--card-bg' as any]: `url(${stadiumImage})`,
+              } as React.CSSProperties
+            }
+            onClick={() => {
+              navigate('/predictions');
+            }}
+          >
+            <h1>Prediction games</h1>
+          </div>
         </div>
       )}
     </article>
