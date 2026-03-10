@@ -1,0 +1,28 @@
+.container {
+  padding: 0 10px;
+  //font-size: 1.1rem;
+  font-weight: 500;
+  color: #fff;
+  text-decoration: none;
+
+  a, p {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.1rem;
+  }
+
+   .link{
+    display: flex;
+    gap: 0.5rem;
+
+    &:hover{
+      color: #32ffce;
+    }
+  }
+}
+
+.element{
+  display: flex;
+  gap: 0.5rem;
+}
