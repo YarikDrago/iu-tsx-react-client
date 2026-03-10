@@ -11,22 +11,23 @@ import { JoinToGroupAsync } from '@/pages/predictions/JoinToGroup/index.async';
 import { MyGroupsAsync } from '@/pages/predictions/myGroups/index.async';
 import { ResetPasswordAsync } from '@/pages/resetPassword';
 import { SettingsAsync } from '@/pages/settings/index.async';
+import { routes } from '@/routes/routes';
 
 const AppRoutes = () => {
   return (
     <React.Suspense fallback={<div>Loading...</div>}>
       <Routes>
-        <Route path={'/signup'} element={<AuthAsync isRegistration={true} />} />
-        <Route path={'/login'} element={<AuthAsync />} />
-        <Route path={'/activate/:token'} element={<ActivateAsync />} />
-        <Route path={'/reset-password/:token'} element={<ResetPasswordAsync />} />
-        <Route path={'/settings'} element={<SettingsAsync />} />
-        <Route path={'/predictions'} element={<PredictionsAsync />} />
-        <Route path={'/predictions/competition/:id'} element={<ApiCompetitionMatchesAsync />} />
-        <Route path={'/predictions/groups'} element={<MyGroupsAsync />} />
-        <Route path={'/predictions/groups/:id'} element={<GroupAsync />} />
-        <Route path={'/predictions/groups/join/'} element={<JoinToGroupAsync />} />
-        <Route path={'/'} element={<MainAsync />} />
+        <Route path={routes.signUp.href} element={<AuthAsync isRegistration={true} />} />
+        <Route path={routes.login.href} element={<AuthAsync />} />
+        <Route path={routes.activate.href} element={<ActivateAsync />} />
+        <Route path={routes.resetPassword.href} element={<ResetPasswordAsync />} />
+        <Route path={routes.settings.href} element={<SettingsAsync />} />
+        <Route path={routes.predictions.href} element={<PredictionsAsync />} />
+        <Route path={routes.apiCompetition.href} element={<ApiCompetitionMatchesAsync />} />
+        <Route path={routes.myGroups.href} element={<MyGroupsAsync />} />
+        <Route path={routes.group.href} element={<GroupAsync />} />
+        <Route path={routes.joinGroup.href} element={<JoinToGroupAsync />} />
+        <Route path={routes.home.href} element={<MainAsync />} />
       </Routes>
     </React.Suspense>
   );
