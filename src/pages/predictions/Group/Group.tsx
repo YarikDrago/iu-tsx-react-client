@@ -10,6 +10,8 @@ import { GroupMember } from '@/pages/predictions/models/groupMember.dto';
 import { MatchDto, MatchStatus } from '@/pages/predictions/models/match.dto';
 import { PredictionDto } from '@/pages/predictions/models/prediction.dto';
 import { Season } from '@/pages/predictions/models/season.dto';
+import { routes } from '@/routes/routes';
+import { Breadcrumbs } from '@/shared/components/Breadcrumbs/Breadcrumbs';
 import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
 
 import * as styles from './Group.module.scss';
@@ -90,6 +92,7 @@ const Group = () => {
 
   return (
     <div>
+      <Breadcrumbs items={[routes.home, routes.predictions, routes.myGroups, routes.group]} />
       {group && (
         <>
           <div>

@@ -13,6 +13,8 @@ import {
   FootballCompetitionApi,
   FootballCompetitionsApi,
 } from '@/pages/predictions/models/football_api.dto';
+import { routes } from '@/routes/routes';
+import { Breadcrumbs } from '@/shared/components/Breadcrumbs/Breadcrumbs';
 import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
 
 import * as styles from './Predictions.module.scss';
@@ -91,6 +93,7 @@ const Predictions = () => {
 
   return (
     <article className={styles.predictions}>
+      <Breadcrumbs items={[routes.home, routes.predictions]} />
       <h1>Predictions</h1>
       <Link to={'/predictions/groups'}>My Groups</Link>
       {appData.role.includes('admin') && (

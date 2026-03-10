@@ -8,6 +8,8 @@ import { Competition } from '@/pages/predictions/models/competition.dto';
 import { Group } from '@/pages/predictions/models/group.dto';
 import { GroupMember } from '@/pages/predictions/models/groupMember.dto';
 import { Season } from '@/pages/predictions/models/season.dto';
+import { routes } from '@/routes/routes';
+import { Breadcrumbs } from '@/shared/components/Breadcrumbs/Breadcrumbs';
 import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
 
 import * as styles from './MyGroups.module.scss';
@@ -82,7 +84,8 @@ const MyGroups = () => {
   }
 
   return (
-    <div>
+    <article>
+      <Breadcrumbs items={[routes.home, routes.predictions, routes.myGroups]} />
       <p>My Groups</p>
       {errorMsg !== '' && <p>{errorMsg}</p>}
       {groups.length ? (
@@ -135,7 +138,7 @@ const MyGroups = () => {
       ) : (
         <p>No groups</p>
       )}
-    </div>
+    </article>
   );
 };
 
