@@ -12,6 +12,21 @@
       color: #6bb8d3;
     }
   }
+
+  .menu{
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 300px;
+    max-width: 400px;
+
+    a{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
 }
 
 .error {

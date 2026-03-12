@@ -94,43 +94,46 @@ const Predictions = () => {
   return (
     <article className={styles.predictions}>
       <Breadcrumbs items={[routes.home, routes.predictions]} />
-      <h1>Predictions</h1>
-      <Link to={'/predictions/groups'}>My Groups</Link>
-      {appData.role.includes('admin') && (
-        <>
-          <button
-            className={'admin'}
-            onClick={() => {
-              getCompetitionsApi();
-            }}
-          >
-            Show all API tournaments
-          </button>
-          <button
-            className={'admin'}
-            onClick={() => {
-              updateCompetitionsSeasons();
-            }}
-          >
-            Update seasons
-          </button>
-          <button
-            className={'admin'}
-            onClick={() => {
-              updateCompetitionsMatches();
-            }}
-          >
-            Update matches
-          </button>
-        </>
-      )}
-      <button
-        onClick={() => {
-          showAvailable();
-        }}
-      >
-        Show available
-      </button>
+      <div className={styles.menu}>
+        <Link className={'button'} to={'/predictions/groups'}>
+          My Groups
+        </Link>
+        {appData.role.includes('admin') && (
+          <>
+            <button
+              className={'admin'}
+              onClick={() => {
+                getCompetitionsApi();
+              }}
+            >
+              Show all API tournaments
+            </button>
+            <button
+              className={'admin'}
+              onClick={() => {
+                updateCompetitionsSeasons();
+              }}
+            >
+              Update seasons
+            </button>
+            <button
+              className={'admin'}
+              onClick={() => {
+                updateCompetitionsMatches();
+              }}
+            >
+              Update matches
+            </button>
+          </>
+        )}
+        <button
+          onClick={() => {
+            showAvailable();
+          }}
+        >
+          Show available
+        </button>
+      </div>
       {error && <p className={styles.error}>{error}</p>}
       {showMode === 'available' && <AvailablePredictionTable data={tournaments} />}
       {competitionsApi && <AllApiTournaments competitions={competitionsApi} />}
