@@ -14,29 +14,10 @@ const ResetPassword = () => {
   const [error, setError] = React.useState('');
   const [success, setSuccess] = React.useState(false);
   const [isvalid, setIsValid] = React.useState(false);
-  const [tokenIsValid, setTokenIsValid] = React.useState(false);
-
-  useEffect(() => {
-    checkToken();
-  }, []);
 
   useEffect(() => {
     validateForm();
   }, [password, repeatPassword]);
-
-  async function checkToken() {
-    try {
-      appData.showLoader();
-      await universalFetchRequest('auth/reset-password/verify', HTMLRequestMethods.POST, {
-        token: token,
-      });
-      setTokenIsValid(true);
-    } catch (e) {
-      setError((e as Error).message);
-    } finally {
-      appData.hideLoader();
-    }
-  }
 
   const handleSubmit = async (e: FormEvent) => {
     try {
@@ -69,34 +50,31 @@ const ResetPassword = () => {
           <p>Password was reset successfully</p>
         ) : (
           <>
-            {tokenIsValid && (
-              <>
-                <p>Password</p>
-                <input
-                  type="password"
-                  value={password}
-                  placeholder={'Password'}
-                  onChange={(e) => {
-                    setError('');
-                    setPassword(e.target.value);
-                  }}
-                />
-                <p>Repeat password</p>
-                <input
-                  type="password"
-                  value={repeatPassword}
-                  placeholder={'Repeat password'}
-                  onChange={(e) => {
-                    setError('');
-                    setRepeatPassword(e.target.value);
-                  }}
-                />
-                <button className={styles.submitButton} type={'submit'} disabled={!isvalid}>
-                  Reset
-                </button>
-              </>
-            )}
-
+            <>
+              <p>Password</p>
+              <input
+                type="password"
+                value={password}
+                placeholder={'Password'}
+                onChange={(e) => {
+                  setError('');
+                  setPassword(e.target.value);
+                }}
+              />
+              <p>Repeat password</p>
+              <input
+                type="password"
+                value={repeatPassword}
+                placeholder={'Repeat password'}
+                onChange={(e) => {
+                  setError('');
+                  setRepeatPassword(e.target.value);
+                }}
+              />
+              <button className={styles.submitButton} type={'submit'} disabled={!isvalid}>
+                Reset
+              </button>
+            </>
             {error && <p className={styles.errorMsg}>{error}</p>}
           </>
         )}
