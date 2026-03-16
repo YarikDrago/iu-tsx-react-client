@@ -2,47 +2,25 @@
   box-sizing: border-box;
   border-collapse: collapse;
 
-  //tbody tr:nth-child(even) {
-  //  background: rgba(255, 255, 255, 0.03);
-  //}
-
-  tr {
-    height: 30px;
-    text-align: center;
-    cursor: pointer;
-  }
-
   tbody {
     tr {
-      &:nth-child(even) {
-        background: rgba(255, 255, 255, 0.03);
-      }
-
-      &:hover {
-        background: rgba(255, 255, 255, 0.06);
-      }
+      cursor: pointer;
     }
-  }
-
-  th,
-  td {
-    border: 1px solid #ccc;
-    padding: 5px 20px;
   }
 }
 
-.finished{
+.finished {
   color: #646464;
 }
 
-.win{
+.win {
   color: #047b0e;
 }
 
-.lose{
+.lose {
   color: #ff0000;
 }
 
-.draw{
+.draw {
   color: #ff9900;
 }
