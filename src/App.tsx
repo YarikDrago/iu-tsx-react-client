@@ -18,10 +18,8 @@ import { socket } from '@/shared/ws/socket';
 import * as styles from './App.module.scss';
 
 const style = {
-  backgroundImage: `url(${bg})`,
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-};
+  ['--app-bg' as never]: `url(${bg})`,
+} as React.CSSProperties;
 
 const App = () => {
   useEffect(() => {
@@ -53,7 +51,6 @@ const App = () => {
     socket.on('connect', onConnect);
     socket.on('lastUpdate', onLastUpdate);
 
-    /* Important: remove subscriptions when unmounting to avoid duplicating event handlers */
     return () => {
       socket.off('connect', onConnect);
       socket.off('lastUpdate', onLastUpdate);
