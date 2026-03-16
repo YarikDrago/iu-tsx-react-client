@@ -31,7 +31,7 @@ export const routes: { [key: string]: BreadcrumbItem } = {
   },
   apiCompetition: {
     href: '/predictions/competition/:id',
-    label: 'Competition',
+    label: 'API Competition',
   },
   myGroups: {
     href: '/predictions/groups',

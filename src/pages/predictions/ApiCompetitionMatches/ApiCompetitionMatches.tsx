@@ -4,6 +4,8 @@ import { useParams } from 'react-router';
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 import { FootballCompetitionMatchesApi } from '@/pages/predictions/models/football_api.dto';
+import { routes } from '@/routes/routes';
+import { Breadcrumbs } from '@/shared/components/Breadcrumbs/Breadcrumbs';
 
 import * as styles from './ApiCompetitionMatches.module.scss';
 
@@ -41,6 +43,7 @@ const ApiCompetitionMatches = () => {
 
   return (
     <article>
+      <Breadcrumbs items={[routes.home, routes.predictions, routes.apiCompetition]} />
       <div>
         {competition && (
           <>
