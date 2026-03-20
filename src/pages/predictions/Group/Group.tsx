@@ -99,100 +99,106 @@ const Group = () => {
             <h1>{group.group.name}</h1>
             <h3>{`Tournament: ${group.group.tournament.name}`}</h3>
             <h3>{`Season: ${group.group.season.start_date} - ${group.group.season.end_date}`}</h3>
-            <table className={styles.table}>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Home team</th>
-                  <th>Away team</th>
-                  <th>Date</th>
-                  <th>Status</th>
-                  <th>Score</th>
-                  {members.map((member) => {
-                    return <th key={member.user_id}>{member.nickname}</th>;
+            <div className={'tableWrapper'}>
+              <table className={styles.table}>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Home team</th>
+                    <th>Away team</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Score</th>
+                    {members.map((member) => {
+                      return <th key={member.user_id}>{member.nickname}</th>;
+                    })}
+                  </tr>
+                </thead>
+                <tbody>
+                  {group.matches.map((match, idx) => {
+                    return (
+                      <tr
+                        key={match.id}
+                        onClick={() => {
+                          if (
+                            match.status === MatchStatus.FINISHED ||
+                            match.status === MatchStatus.IN_PLAY
+                          )
+                            return;
+                          setEditPrediction({
+                            groupId: group?.group.id,
+                            match: match,
+                            prediction:
+                              predictionTable[appData.userId]?.[match.id] !== null &&
+                              predictionTable[appData.userId]?.[match.id] !== undefined
+                                ? group?.predictions[predictionTable[appData.userId][match.id]!]
+                                : null,
+                          });
+                        }}
+                      >
+                        <td>{idx + 1}</td>
+                        <td
+                          className={
+                            match.away_score === null || match.home_score === null
+                              ? ''
+                              : match.home_score === match.away_score
+                                ? styles.draw
+                                : match.home_score > match.away_score
+                                  ? styles.win
+                                  : styles.lose
+                          }
+                        >
+                          {match.home_team || '???'}
+                        </td>
+                        <td
+                          className={
+                            match.away_score === null || match.home_score === null
+                              ? ''
+                              : match.home_score === match.away_score
+                                ? styles.draw
+                                : match.home_score < match.away_score
+                                  ? styles.win
+                                  : styles.lose
+                          }
+                        >
+                          {match.away_team || '???'}
+                        </td>
+                        <td
+                          className={match.status === MatchStatus.FINISHED ? styles.finished : ''}
+                        >
+                          {match.start_time || 'scheduled'}
+                        </td>
+                        <td
+                          className={match.status === MatchStatus.FINISHED ? styles.finished : ''}
+                        >
+                          {match.status}
+                        </td>
+                        <td>{`${String(match.home_score)} - ${String(match.away_score)}`}</td>
+                        {members.map((member) => {
+                          let predictionHome = 'null';
+                          let predictionAway = 'null';
+                          // TODO change on real calculated value
+                          const gainedPoints = 0;
+                          const predictionIdx = predictionTable[member.user_id]?.[match.id];
+                          if (predictionIdx !== null && predictionIdx !== undefined) {
+                            const prediction = group.predictions[predictionIdx];
+                            predictionHome = String(prediction.home_score);
+                            predictionAway = String(prediction.away_score);
+                          }
+                          let text = `${predictionHome} - ${predictionAway}`;
+                          if (
+                            match.status === MatchStatus.FINISHED ||
+                            match.status === MatchStatus.IN_PLAY
+                          )
+                            text += ` (${gainedPoints})`;
+                          return <td key={member.id}>{text}</td>;
+                        })}
+                      </tr>
+                    );
                   })}
-                </tr>
-              </thead>
-              <tbody>
-                {group.matches.map((match, idx) => {
-                  return (
-                    <tr
-                      key={match.id}
-                      onClick={() => {
-                        if (
-                          match.status === MatchStatus.FINISHED ||
-                          match.status === MatchStatus.IN_PLAY
-                        )
-                          return;
-                        setEditPrediction({
-                          groupId: group?.group.id,
-                          match: match,
-                          prediction:
-                            predictionTable[appData.userId]?.[match.id] !== null &&
-                            predictionTable[appData.userId]?.[match.id] !== undefined
-                              ? group?.predictions[predictionTable[appData.userId][match.id]!]
-                              : null,
-                        });
-                      }}
-                    >
-                      <td>{idx + 1}</td>
-                      <td
-                        className={
-                          match.away_score === null || match.home_score === null
-                            ? ''
-                            : match.home_score === match.away_score
-                              ? styles.draw
-                              : match.home_score > match.away_score
-                                ? styles.win
-                                : styles.lose
-                        }
-                      >
-                        {match.home_team || '???'}
-                      </td>
-                      <td
-                        className={
-                          match.away_score === null || match.home_score === null
-                            ? ''
-                            : match.home_score === match.away_score
-                              ? styles.draw
-                              : match.home_score < match.away_score
-                                ? styles.win
-                                : styles.lose
-                        }
-                      >
-                        {match.away_team || '???'}
-                      </td>
-                      <td className={match.status === MatchStatus.FINISHED ? styles.finished : ''}>
-                        {match.start_time || 'scheduled'}
-                      </td>
-                      <td className={match.status === MatchStatus.FINISHED ? styles.finished : ''}>
-                        {match.status}
-                      </td>
-                      <td>{`${String(match.home_score)} - ${String(match.away_score)}`}</td>
-                      {members.map((member) => {
-                        let predictionHome = 'null';
-                        let predictionAway = 'null';
-                        // TODO change on real calculated value
-                        const gainedPoints = 0;
-                        const predictionIdx = predictionTable[member.user_id]?.[match.id];
-                        if (predictionIdx !== null && predictionIdx !== undefined) {
-                          const prediction = group.predictions[predictionIdx];
-                          predictionHome = String(prediction.home_score);
-                          predictionAway = String(prediction.away_score);
-                        }
-                        let text = `${predictionHome} - ${predictionAway}`;
-                        if (
-                          match.status === MatchStatus.FINISHED ||
-                          match.status === MatchStatus.IN_PLAY
-                        )
-                          text += ` (${gainedPoints})`;
-                        return <td key={member.id}>{text}</td>;
-                      })}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                </tbody>
+              </table>
+            </div>
           </div>
         </>
       )}

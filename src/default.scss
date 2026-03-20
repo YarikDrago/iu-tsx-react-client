@@ -104,9 +104,8 @@ input {
 
   &:focus-visible {
     border-color: rgba(0, 198, 255, 0.7);
-    box-shadow:
-            0 0 0 4px rgba(0, 198, 255, 0.14),
-            0 0 22px rgba(0, 198, 255, 0.18);
+    box-shadow: 0 0 0 4px rgba(0, 198, 255, 0.14),
+    0 0 22px rgba(0, 198, 255, 0.18);
   }
 }
 
@@ -162,12 +161,21 @@ article {
   -ms-user-select: none; /* for Internet Explorer/Edge */
 }
 
-table{
+.tableWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; // Smooth scroll for iOS
+}
+
+table {
   border-collapse: separate;
   border-spacing: 0;
   backdrop-filter: blur(5px);
 
-  th, td{
+  th, td {
     padding: 10px 12px;
     vertical-align: middle;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -196,13 +204,15 @@ table{
     }
   }
 
-  tbody{
+  tbody {
     tr:nth-child(even) {
       background: rgba(255, 255, 255, 0.03);
     }
+
     tr:hover {
       background: rgba(255, 255, 255, 0.06);
     }
+
     td {
       color: rgba(255, 255, 255, 0.86);
     }

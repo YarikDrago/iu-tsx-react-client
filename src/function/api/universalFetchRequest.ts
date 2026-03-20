@@ -17,6 +17,7 @@ function isJsonResponse(contentType: string | null) {
   return !!contentType && contentType.includes('application/json');
 }
 
+// TODO make separate function
 async function readResponseBody(response: Response) {
   const contentType = response.headers.get('content-type');
   const raw = await response.text();
@@ -57,7 +58,7 @@ function shouldTryRefresh(response: Response, payload: unknown) {
 async function refreshTokensOnce() {
   if (!refreshInFlight) {
     refreshInFlight = (async () => {
-      const url = `${process.env.API_URL}/auth/refresh-tokens`;
+      const url = `/auth/refresh-tokens`;
 
       const response = await fetch(url, {
         method: 'GET',
