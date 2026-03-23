@@ -66,7 +66,7 @@ const ModalNavigation = ({ isOpened, handleClose }: ModalNavigationProps) => {
           </>
         )}
       </ul>
-      <button className={styles.closeBtn} onClick={() => handleClose()}>
+      <button className={`${styles.closeBtn} text`} onClick={() => handleClose()}>
         <Cross45Icon />
       </button>
     </div>

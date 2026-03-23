@@ -91,8 +91,10 @@ input {
   color: var(--text, white);
 
   outline: none;
-  transition: border-color 140ms ease, box-shadow 140ms ease, filter 140ms ease;
-
+  transition:
+    border-color 140ms ease,
+    box-shadow 140ms ease,
+    filter 140ms ease;
 
   &::placeholder {
     color: var(--muted, gray);
@@ -104,12 +106,14 @@ input {
 
   &:focus-visible {
     border-color: rgba(0, 198, 255, 0.7);
-    box-shadow: 0 0 0 4px rgba(0, 198, 255, 0.14),
-    0 0 22px rgba(0, 198, 255, 0.18);
+    box-shadow:
+      0 0 0 4px rgba(0, 198, 255, 0.14),
+      0 0 22px rgba(0, 198, 255, 0.18);
   }
 }
 
-button, .button {
+button,
+.button {
   font-size: 16px;
   line-height: 20px;
   height: 30px;
@@ -124,6 +128,12 @@ button, .button {
   &:hover {
     cursor: pointer;
     background-color: #1e3d35;
+  }
+
+  &.text {
+    &:hover {
+      background-color: transparent;
+    }
   }
 
   &:focus {
@@ -175,7 +185,8 @@ table {
   border-spacing: 0;
   backdrop-filter: blur(5px);
 
-  th, td {
+  th,
+  td {
     padding: 10px 12px;
     vertical-align: middle;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);

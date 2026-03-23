@@ -12,7 +12,7 @@ interface Props {
 
 const PersonButton = ({ onClick }: Props) => {
   return (
-    <button className={styles.button} onClick={onClick}>
+    <button className={`${styles.button} text`} onClick={onClick}>
       {appData.nickname ? (
         <p>{appData.nickname.substring(0, 2).toUpperCase()}</p>
       ) : (
