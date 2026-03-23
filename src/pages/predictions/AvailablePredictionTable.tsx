@@ -27,37 +27,39 @@ const AvailablePredictionTable = ({ data }: AvailablePredictionTableProps) => {
   }
 
   return (
-    <table className={styles.table}>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Start</th>
-          <th>End</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((tournament, idx) => (
-          <tr key={idx}>
-            <td>{tournament.external_id}</td>
-            {/* Tournament external name */}
-            <td>{tournament.name}</td>
-            <td>{tournament.currentSeason?.start_date}</td>
-            <td>{tournament.currentSeason?.end_date}</td>
-            <td>
-              <button
-                onClick={() => {
-                  createGroup(tournament);
-                }}
-              >
-                Create group
-              </button>
-            </td>
+    <div className={'tableWrapper'}>
+      <table className={styles.table}>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Actions</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {data.map((tournament, idx) => (
+            <tr key={idx}>
+              <td>{tournament.external_id}</td>
+              {/* Tournament external name */}
+              <td>{tournament.name}</td>
+              <td>{tournament.currentSeason?.start_date}</td>
+              <td>{tournament.currentSeason?.end_date}</td>
+              <td>
+                <button
+                  onClick={() => {
+                    createGroup(tournament);
+                  }}
+                >
+                  Create group
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 

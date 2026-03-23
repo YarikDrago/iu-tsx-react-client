@@ -1,6 +1,22 @@
 .table {
   box-sizing: border-box;
   align-self: center;
+
+  tbody {
+    tr {
+      cursor: pointer;
+      text-wrap: nowrap;
+
+      button {
+        box-sizing: border-box;
+        display: inline-flex;
+        padding: 10px;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+    }
+  }
 }
 
 .status {
@@ -14,5 +30,4 @@
   &.active {
     color: green;
   }
-
 }
