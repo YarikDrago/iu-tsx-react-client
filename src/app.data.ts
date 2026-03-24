@@ -2,14 +2,25 @@ import { makeAutoObservable } from 'mobx';
 import Cookies from 'js-cookie';
 
 import { GroupManagerData } from '@/pages/predictions/GroupManager/groupManager.data';
+import { ToastItem, ToastVariant } from '@/shared/components/ToastsContainer/ToastsContainer';
 
 class AppData {
-  private _nickname: string = '';
-  private _user_id: number = -1;
   /* User roles */
   role: string[] = [];
   loadingCount = 0;
   group = new GroupManagerData();
+  /* The AbortController is used for aborting requests.
+   * Create a new AbortController each time before requests */
+  abortRequestSignal: AbortController | null = null;
+  private _user_id: number = -1;
+
+  constructor() {
+    makeAutoObservable(this);
+    this.checkNickname();
+    this.checkUserId();
+  }
+
+  private _nickname: string = '';
 
   public get nickname(): string {
     return this._nickname;
@@ -18,14 +29,16 @@ class AppData {
   public get userId(): number {
     return this._user_id;
   }
-  /* The AbortController is used for aborting requests.
-   * Create a new AbortController each time before requests */
-  abortRequestSignal: AbortController | null = null;
 
-  constructor() {
-    makeAutoObservable(this);
-    this.checkNickname();
-    this.checkUserId();
+  /* Toast notifications */
+  _toasts: ToastItem[] = [];
+
+  get toasts() {
+    return this._toasts;
+  }
+
+  get isLoading() {
+    return this.loadingCount > 0;
   }
 
   changeNickname(nickname: string) {
@@ -54,9 +67,14 @@ class AppData {
     this.loadingCount = Math.max(0, this.loadingCount - 1);
   }
 
-  get isLoading() {
-    return this.loadingCount > 0;
+  addToast(message: string, variant: ToastVariant = 'neutral', duration: number = 4000) {
+    const id = `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    this._toasts = [...this._toasts, { id, message, variant, duration }];
   }
+
+  onCloseToast = (id: string) => {
+    this._toasts = this._toasts.filter((t) => t.id !== id);
+  };
 }
 
 export default new AppData();

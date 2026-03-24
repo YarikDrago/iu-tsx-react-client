@@ -35,7 +35,8 @@ const PredictionEditor = ({ editData, onClose }: Props) => {
           awayScore: awayScore,
         }
       );
-      console.log('saved');
+      appData.addToast('Prediction saved', 'success');
+      if (onClose) onClose();
     } catch (e) {
       setErrorMsg((e as Error).message);
     } finally {

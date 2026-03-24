@@ -20,6 +20,9 @@ import * as styles from './App.module.scss';
 import './shared/styles/form.scss';
 import './shared/styles/msg.scss';
 import './shared/styles/button.scss';
+import './shared/styles/toast.scss';
+
+import { ToastsContainer } from '@/shared/components/ToastsContainer/ToastsContainer';
 
 const style = {
   ['--app-bg' as never]: `url(${bg})`,
@@ -70,6 +73,7 @@ const App = () => {
       <Footer />
       <div id={'modal-root'}></div>
       {appData.group.isVisible && <GroupManager />}
+      <ToastsContainer toasts={appData.toasts} onClose={appData.onCloseToast} />
       <GlobalLoader />
     </article>
   );
