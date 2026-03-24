@@ -92,7 +92,7 @@ const AuthForm = ({ isRegistration = false }: Props) => {
   }
 
   return (
-    <form className={styles.form}>
+    <form className={`form ${styles.form}`}>
       {!successRegistration ? (
         <>
           <h3>{mainTitleText}</h3>
@@ -157,7 +157,7 @@ const AuthForm = ({ isRegistration = false }: Props) => {
             <>
               <button
                 type="submit"
-                className={styles.submitButton}
+                className={'primary'}
                 onClick={handleSubmit}
                 disabled={isLaoding}
               >
@@ -175,7 +175,7 @@ const AuthForm = ({ isRegistration = false }: Props) => {
                     setErrorMsg('');
                     setFormType('login');
                   }}
-                  className={styles.link}
+                  className={'link'}
                 >
                   Log In
                 </Link>
@@ -183,7 +183,7 @@ const AuthForm = ({ isRegistration = false }: Props) => {
             )}
             {formType === 'login' && (
               <>
-                <div className={styles.line}>
+                <div className={'line'}>
                   <p>Don't have an account?</p>
                   <Link
                     to={'/signup'}
@@ -191,14 +191,14 @@ const AuthForm = ({ isRegistration = false }: Props) => {
                       setErrorMsg('');
                       setFormType('signup');
                     }}
-                    className={styles.link}
+                    className={'link'}
                   >
                     Sign Up
                   </Link>
                 </div>
                 <button
                   type="button"
-                  className={styles.link}
+                  className={'link'}
                   onClick={(e) => {
                     e.preventDefault();
                     setErrorMsg('');
@@ -233,7 +233,7 @@ const AuthForm = ({ isRegistration = false }: Props) => {
                       password.
                     </p>
                     <button
-                      className={styles.sendButton}
+                      className={'secondary'}
                       onClick={(e) => {
                         e.preventDefault();
                         sendResetPasswordRequest();
@@ -245,7 +245,7 @@ const AuthForm = ({ isRegistration = false }: Props) => {
                 )}
                 <button
                   type="button"
-                  className={`${styles.link} ${styles.forgotLogin}`}
+                  className={`link ${styles.forgotLogin}`}
                   onClick={(e) => {
                     e.preventDefault();
                     setErrorMsg('');
@@ -265,7 +265,7 @@ const AuthForm = ({ isRegistration = false }: Props) => {
         </>
       )}
 
-      {errorMsg && <p className={styles.errorMsg}>{errorMsg}</p>}
+      {errorMsg && <p className={'errorMsg'}>{errorMsg}</p>}
     </form>
   );
 };

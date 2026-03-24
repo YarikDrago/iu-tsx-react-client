@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import appData from '@/app.data';
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
+import CloseBtn from '@/shared/components/buttons/CloseBtn/CloseBtn';
 
 import { TEditPrediction } from './Group';
 import * as styles from './PredictionEditor.module.scss';
@@ -44,28 +45,19 @@ const PredictionEditor = ({ editData, onClose }: Props) => {
 
   return (
     <div className={styles.modal}>
-      <form
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '10px',
-          backgroundColor: 'darkgray',
-        }}
-      >
+      <form className={'form'}>
         <div>
-          <button
+          <CloseBtn
             onClick={() => {
               if (onClose) onClose();
             }}
-          >
-            Close
-          </button>
+          />
           <h1>Edit prediction</h1>
           <h2>
             {editData.match.away_team} - {editData.match.home_team}
           </h2>
           <h3>{editData.match.start_time}</h3>
-          <div>
+          <div className={styles.inputBlock}>
             <input
               type="number"
               placeholder={'home'}
@@ -85,6 +77,7 @@ const PredictionEditor = ({ editData, onClose }: Props) => {
             />
           </div>
           <button
+            className={'primary'}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();

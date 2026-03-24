@@ -89,52 +89,54 @@ const MyGroups = () => {
       <p>My Groups</p>
       {errorMsg !== '' && <p>{errorMsg}</p>}
       {groups.length ? (
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Tournament</th>
-              <th>Season</th>
-              <th>Is owner</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {groups.map((group) => (
-              <tr
-                onClick={() => {
-                  navigate(`/predictions/groups/${group.id}`);
-                }}
-                key={group.id}
-              >
-                <td>{String(group.id)}</td>
-                <td>{group.name}</td>
-                <td>{group.tournament.name}</td>
-                <td>
-                  {group.season.start_date} - {group.season.end_date}
-                </td>
-                <td>{group.isOwner ? 'Yes' : 'No'}</td>
-                <td>
-                  {group.isOwner ? (
-                    <div className={styles.actionBlock}>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          manageGroup(group);
-                        }}
-                      >
-                        Manage
-                      </button>
-                    </div>
-                  ) : (
-                    <button>Leave</button>
-                  )}
-                </td>
+        <div className={'tableWrapper'}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Tournament</th>
+                <th>Season</th>
+                <th>Is owner</th>
+                <th>Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {groups.map((group) => (
+                <tr
+                  onClick={() => {
+                    navigate(`/predictions/groups/${group.id}`);
+                  }}
+                  key={group.id}
+                >
+                  <td>{String(group.id)}</td>
+                  <td>{group.name}</td>
+                  <td>{group.tournament.name}</td>
+                  <td>
+                    {group.season.start_date} - {group.season.end_date}
+                  </td>
+                  <td>{group.isOwner ? 'Yes' : 'No'}</td>
+                  <td>
+                    {group.isOwner ? (
+                      <div className={styles.actionBlock}>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            manageGroup(group);
+                          }}
+                        >
+                          Manage
+                        </button>
+                      </div>
+                    ) : (
+                      <button>Leave</button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : (
         <p>No groups</p>
       )}

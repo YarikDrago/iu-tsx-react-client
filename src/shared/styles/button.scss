@@ -1,0 +1,17 @@
+button,
+.button {
+  --clr: #fff;
+  --clr-hover: #32ffce;
+
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  border: none;
+
+  &.text-pure {
+    background: none;
+
+    &:hover {
+      color: var(--clr-hover);
+    }
+  }
+}

@@ -1,7 +1,4 @@
 .button {
-  --clr: #fff;
-  --clr-hover: #32ffce;
-
   color: var(--clr);
   border: 2px solid var(--clr);
   width: 40px;
@@ -9,12 +6,11 @@
   border-radius: 50%;
   overflow: hidden;
   background: transparent;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
 
   &:hover {
     color: var(--clr-hover);
     border-color: var(--clr-hover);
+
     .icon {
       fill: var(--clr-hover);
     }

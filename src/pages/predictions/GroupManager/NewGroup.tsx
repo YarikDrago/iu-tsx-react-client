@@ -4,7 +4,6 @@ import { observer } from 'mobx-react';
 import appData from '@/app.data';
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
-import * as styles from '@/pages/predictions/GroupManager/GroupManager.module.scss';
 
 const NewGroup = () => {
   const store = appData.group;
@@ -26,6 +25,7 @@ const NewGroup = () => {
       console.log('tournament ID:', store.competition?.id);
       console.log('season ID:', store.season?.external_id);
       setErrorMsg('');
+      if (!checkName(store.name)) return;
       const response = await universalFetchRequest(
         `tournaments/${store.competition?.id}/groups`,
         HTMLRequestMethods.POST,
@@ -41,6 +41,20 @@ const NewGroup = () => {
       // TODO change
       console.error(e);
       setErrorMsg((e as Error).message);
+    }
+  }
+
+  function checkName(name: string) {
+    if (name.length < 3) {
+      setErrorMsg('Group name must be at least 3 characters long');
+      return false;
+    }
+    if (name.length > 20) {
+      setErrorMsg('Group name must be at most 20 characters long');
+      return false;
+    }
+    if (!/^[a-zA-Z0-9]+$/.test(name)) {
+      setErrorMsg('Group name must contain only letters and numbers');
     }
   }
 
@@ -61,19 +75,21 @@ const NewGroup = () => {
         placeholder={'group name'}
         value={store.name}
         onChange={(e) => {
+          setErrorMsg('');
           store.name = e.target.value;
         }}
       />
       <button
+        className={'primary'}
         onClick={(e) => {
           e.preventDefault();
           createGroup();
         }}
         disabled={!availableToCreate}
       >
-        Create
+        <p>Create</p>
       </button>
-      {errorMsg !== '' && <p className={styles.error}>{errorMsg}</p>}
+      {errorMsg !== '' && <p className={'errorMsg'}>{errorMsg}</p>}
     </>
   );
 };

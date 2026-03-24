@@ -17,6 +17,10 @@ import { socket } from '@/shared/ws/socket';
 
 import * as styles from './App.module.scss';
 
+import './shared/styles/form.scss';
+import './shared/styles/msg.scss';
+import './shared/styles/button.scss';
+
 const style = {
   ['--app-bg' as never]: `url(${bg})`,
 } as React.CSSProperties;
