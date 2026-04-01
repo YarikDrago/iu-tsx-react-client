@@ -13,13 +13,14 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "strictPropertyInitialization": false
+    "strictPropertyInitialization": false,
+    "types": ["vite/client", "node", "jest"]
   },
   "include": ["config/**/*.ts", "src", "src/components", "./*.ts"]
 }

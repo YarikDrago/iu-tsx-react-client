@@ -10,6 +10,7 @@ const environment = process.env.NODE_ENV !== 'production' ? 'development' : 'pro
 
 export function buildWebpackConfig(options: BuildOptions): webpack.Configuration {
   const { paths } = options;
+
   return {
     mode: environment,
     entry: paths.entry,

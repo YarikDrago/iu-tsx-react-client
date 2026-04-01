@@ -21,5 +21,4 @@ export interface BuildOptions {
   port: number;
   envFileAddition: string;
   withAnalyzer?: boolean;
-  gitHash: string;
 }

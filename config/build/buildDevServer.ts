@@ -8,7 +8,7 @@ export function buildDevServer(options: BuildOptions): DevServerConfiguration {
     static: paths.build,
     historyApiFallback: true,
     port: options.port,
-    open: true,
+    open: true, // Open the app in the browser on start
     hot: true,
     proxy: [
       {

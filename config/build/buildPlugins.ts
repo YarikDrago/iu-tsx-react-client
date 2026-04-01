@@ -52,7 +52,6 @@ export function buildPlugins(options: BuildOptions): webpack.WebpackPluginInstan
     new webpack.DefinePlugin({
       'process.env.BUILD_TIME': JSON.stringify(buildTime),
       'process.env.APP_VERSION': JSON.stringify('1.6'),
-      'process.env.GIT_HASH': JSON.stringify(options.gitHash),
     }),
   ];
 
