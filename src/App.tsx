@@ -51,15 +51,22 @@ const App = () => {
       console.log('ws connected', socket.id);
     };
 
+    const onConnectError = (err: Error) => {
+      console.error('WS connect error:', err.message);
+      appData.addToast(`WS connection error: ${err.message}`, 'error');
+    };
+
     const onLastUpdate = (payload: { lastUpdateAt: string | null }) => {
       console.log('lastUpdateAt:', payload.lastUpdateAt);
     };
 
     socket.on('connect', onConnect);
+    socket.on('connect_error', onConnectError);
     socket.on('lastUpdate', onLastUpdate);
 
     return () => {
       socket.off('connect', onConnect);
+      socket.off('connect_error', onConnectError);
       socket.off('lastUpdate', onLastUpdate);
     };
   }, []);
