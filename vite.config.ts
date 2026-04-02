@@ -43,6 +43,12 @@ export default defineConfig(({ mode }) => {
            * This prefix is added from the .env.proxy file */
           // rewrite: (path) => path.replace(/^\/api/, ''),
         },
+        /* For socket.io it is necessary to manage proxying */
+        '/socket.io': {
+          target: 'http://localhost:6600',
+          changeOrigin: true,
+          secure: false,
+        },
       },
     },
     base: '/',

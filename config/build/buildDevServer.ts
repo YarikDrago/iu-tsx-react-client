@@ -13,7 +13,7 @@ export function buildDevServer(options: BuildOptions): DevServerConfiguration {
     proxy: [
       {
         /* Prefixes that will be replaced with the target url */
-        context: ['/api'],
+        context: ['/api', '/socket.io'],
         // TODO change and use variable (env)
         target: 'http://localhost:6600',
         changeOrigin: true,
