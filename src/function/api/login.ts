@@ -4,6 +4,7 @@ import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 interface LoginResponse {
   nickname: string;
   roles: string[];
+  userId: number;
 }
 
 export async function login(password: string, email: string) {
