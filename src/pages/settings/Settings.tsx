@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 import { checkAccessToken } from '@/function/api/checkAccessToken';
 import { checkRefreshToken } from '@/function/api/checkRefreshToken';
@@ -7,6 +8,7 @@ import { me } from '@/function/api/me';
 import { refreshTokens } from '@/function/api/refreshTokens';
 
 const Settings = () => {
+  const navigate = useNavigate();
   const [error, setError] = useState<string>('');
   const [msg, setMsg] = useState<string>('');
 
@@ -62,6 +64,7 @@ const Settings = () => {
       setMsg('');
       await logout();
       setMsg('Logged out');
+      navigate('/');
     } catch (e) {
       setError((e as Error).message);
     }

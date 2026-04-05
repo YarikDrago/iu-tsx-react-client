@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { observer } from 'mobx-react';
 
 import appData from '@/app.data';
@@ -15,6 +15,7 @@ interface ModalNavigationProps {
 }
 
 const ModalNavigation = ({ isOpened, handleClose }: ModalNavigationProps) => {
+  const navigate = useNavigate();
   const changeWindowSizeVariables = () => {
     if (window.innerWidth > 900) {
       handleClose();
@@ -34,6 +35,7 @@ const ModalNavigation = ({ isOpened, handleClose }: ModalNavigationProps) => {
   async function logoutWrapper() {
     handleClose();
     await logout();
+    navigate('/');
   }
 
   const content = (
