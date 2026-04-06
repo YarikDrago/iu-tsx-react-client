@@ -31,3 +31,11 @@ export interface TEditPrediction {
   match: MatchDto;
   prediction: PredictionDto | null;
 }
+
+export interface MatchPredictionUpdatePayload {
+  user_id: number;
+  group_id: number;
+  match_id: number;
+  home_score: number;
+  away_score: number;
+}
