@@ -21,11 +21,20 @@ import * as styles from './Group.module.scss';
 const Group = () => {
   const { ready } = useRequireAccessToken();
   const { id } = useParams<{ id: string }>();
+  const groupId = Number(id);
   const [errorMsg, setErrorMsg] = React.useState('');
   const [group, setGroup] = React.useState<GroupData | null>(null);
   const [members, setMembers] = React.useState<GroupMember[]>([]);
   const [predictionTable, setPredictionTable] = React.useState<PredictionTable>({});
   const [editPrediction, setEditPrediction] = React.useState<TEditPrediction | null>(null);
+
+  if (groupId === undefined || Number.isNaN(groupId)) {
+    return (
+      <div>
+        <p className={'errorMsg'}>Invalid group id</p>
+      </div>
+    );
+  }
 
   useEffect(() => {
     if (!ready) return;
