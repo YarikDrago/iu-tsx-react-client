@@ -4,45 +4,19 @@ import { useParams } from 'react-router';
 import appData from '@/app.data';
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
+import {
+  GroupData,
+  PredictionTable,
+  TEditPrediction,
+} from '@/pages/predictions/Group/models/models';
 import PredictionEditor from '@/pages/predictions/Group/PredictionEditor';
-import { Competition } from '@/pages/predictions/models/competition.dto';
 import { GroupMember } from '@/pages/predictions/models/groupMember.dto';
-import { MatchDto, MatchStatus } from '@/pages/predictions/models/match.dto';
-import { PredictionDto } from '@/pages/predictions/models/prediction.dto';
-import { Season } from '@/pages/predictions/models/season.dto';
+import { MatchStatus } from '@/pages/predictions/models/match.dto';
 import { routes } from '@/routes/routes';
 import { Breadcrumbs } from '@/shared/components/Breadcrumbs/Breadcrumbs';
 import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
 
 import * as styles from './Group.module.scss';
-
-interface GroupDto {
-  id: number;
-  name: string;
-  tournament: Competition;
-  season: Season;
-  members: GroupMember[];
-}
-
-interface GroupData {
-  group: GroupDto;
-  matches: MatchDto[];
-  predictions: PredictionDto[];
-}
-
-interface PredictionTable {
-  // key- user_id
-  [key: number]: {
-    // key- match_id, value - prediction index in array
-    [key: number]: number | null;
-  };
-}
-
-export interface TEditPrediction {
-  groupId: number;
-  match: MatchDto;
-  prediction: PredictionDto | null;
-}
 
 const Group = () => {
   const { ready } = useRequireAccessToken();
