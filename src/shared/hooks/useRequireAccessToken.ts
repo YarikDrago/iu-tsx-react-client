@@ -23,11 +23,16 @@ export function useRequireAccessToken() {
         setError(null);
         setStatus('checking');
 
-        const accessOk = await checkAccessToken();
-        if (accessOk) {
-          if (!cancelled) setStatus('ready');
-          return;
-        }
+        await checkAccessToken()
+          .then(() => {
+            if (!cancelled) setStatus('ready');
+            return;
+          })
+          .catch(() => {
+            console.error('Access token check was failed.');
+          });
+
+        if (status === 'ready') return;
 
         const refreshOk = await checkRefreshToken();
         if (!refreshOk) {
