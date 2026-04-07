@@ -18,7 +18,7 @@ export interface GroupData {
   predictions: PredictionDto[];
 }
 
-export interface PredictionTable {
+export interface TPredictionGlossary {
   // key- user_id
   [key: number]: {
     // key- match_id, value - prediction index in array
@@ -33,6 +33,7 @@ export interface TEditPrediction {
 }
 
 export interface MatchPredictionUpdatePayload {
+  id: number;
   user_id: number;
   group_id: number;
   match_id: number;
