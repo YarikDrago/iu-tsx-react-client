@@ -27,3 +27,15 @@ export interface MatchDto {
   away_score: number | null;
   updated_at: string;
 }
+
+export type UpsertMatchInput = {
+  externalId: number;
+  seasonExternalId: number;
+  tournamentExternalId: number;
+  homeTeam: string; // name of the team
+  awayTeam: string; // name of the team
+  startTime: Date | null;
+  status: MatchStatus;
+  homeScore: number | null;
+  awayScore: number | null;
+};

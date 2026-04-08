@@ -12,7 +12,7 @@ import {
 } from '@/pages/predictions/Group/models/models';
 import PredictionEditor from '@/pages/predictions/Group/PredictionEditor';
 import { GroupMember } from '@/pages/predictions/models/groupMember.dto';
-import { MatchDto, MatchStatus } from '@/pages/predictions/models/match.dto';
+import { MatchDto, MatchStatus, UpsertMatchInput } from '@/pages/predictions/models/match.dto';
 import { PredictionDto } from '@/pages/predictions/models/prediction.dto';
 import { routes } from '@/routes/routes';
 import { Breadcrumbs } from '@/shared/components/Breadcrumbs/Breadcrumbs';
@@ -150,10 +150,25 @@ const Group = () => {
       }
     };
 
+    const handleMatchesUpdate = (payload: UpsertMatchInput[]) => {
+      const newMatches = [...matchesRef.current];
+      for (const match of payload) {
+        const idx = newMatches.findIndex((m) => m.external_id == String(match.externalId));
+        if (idx >= 0) {
+          newMatches[idx].home_score = match.homeScore;
+          newMatches[idx].away_score = match.awayScore;
+          newMatches[idx].status = match.status;
+        }
+      }
+      setMatches(newMatches);
+    };
+
     socket.on('group:test', handleGroupPredictionUpdate);
+    socket.on('matches', handleMatchesUpdate);
 
     return () => {
       socket.off('group:test', handleGroupPredictionUpdate);
+      socket.off('matches', handleMatchesUpdate);
     };
   }, [ready, id]);
 
