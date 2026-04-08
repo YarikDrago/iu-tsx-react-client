@@ -5,14 +5,22 @@
     tr {
       cursor: pointer;
     }
+
+    td {
+      &.action {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
   }
-}
 
-.actionBlock {
-  display: flex;
-  gap: 10px;
+  .actionBlock {
+    display: flex;
+    gap: 10px;
 
-  button {
-    padding: 5px;
+    button {
+      padding: 5px;
+    }
   }
 }

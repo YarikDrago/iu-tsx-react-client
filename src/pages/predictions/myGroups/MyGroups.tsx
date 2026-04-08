@@ -86,7 +86,6 @@ const MyGroups = () => {
   return (
     <article>
       <Breadcrumbs items={[routes.home, routes.predictions, routes.myGroups]} />
-      <p>My Groups</p>
       {errorMsg !== '' && <p>{errorMsg}</p>}
       {groups.length ? (
         <div className={'tableWrapper'}>
@@ -116,10 +115,12 @@ const MyGroups = () => {
                     {group.season.start_date} - {group.season.end_date}
                   </td>
                   <td>{group.isOwner ? 'Yes' : 'No'}</td>
-                  <td>
+                  {/* Action */}
+                  <td className={styles.action}>
                     {group.isOwner ? (
                       <div className={styles.actionBlock}>
                         <button
+                          className={'tableButtonPrimary'}
                           onClick={(e) => {
                             e.stopPropagation();
                             manageGroup(group);
@@ -129,7 +130,7 @@ const MyGroups = () => {
                         </button>
                       </div>
                     ) : (
-                      <button>Leave</button>
+                      <button className={'tableButtonDanger'}>Leave</button>
                     )}
                   </td>
                 </tr>
