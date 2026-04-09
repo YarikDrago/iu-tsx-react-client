@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import { checkAccessToken } from '@/function/api/checkAccessToken';
 import { checkRefreshToken } from '@/function/api/checkRefreshToken';
 import { refreshTokens } from '@/function/api/refreshTokens';
+import { routes } from '@/routes/routes';
 
 type RequireAccessTokenStatus = 'checking' | 'ready' | 'redirecting' | 'error';
 
@@ -34,14 +35,12 @@ export function useRequireAccessToken() {
 
         if (status === 'ready') return;
 
-        const refreshOk = await checkRefreshToken();
-        if (!refreshOk) {
-          if (!cancelled) {
-            setStatus('redirecting');
-            navigate('/auth', { replace: true });
-          }
+        await checkRefreshToken().catch(() => {
+          console.error('Refresh token check was failed.');
+          setStatus('redirecting');
+          navigate(`${routes.login.href}`, { replace: true });
           return;
-        }
+        });
 
         await refreshTokens();
         if (!cancelled) setStatus('ready');
