@@ -18,7 +18,7 @@ export const Breadcrumbs = ({ items }: Props) => {
       <ol style={{ display: 'flex', gap: 8, listStyle: 'none', padding: 0 }}>
         {items.map((item, index) => {
           if (index === items.length - 1) {
-            return <p>{item.label}</p>;
+            return <p key={index}>{item.label}</p>;
           } else {
             return (
               <li key={index} className={styles.element}>
