@@ -22,12 +22,11 @@ import * as styles from './Predictions.module.scss';
 type ShowMode = 'start' | 'available';
 
 const Predictions = () => {
+  const { ready } = useRequireAccessToken();
   const [showMode, setShowMode] = useState<ShowMode>('start');
   const [tournaments, setTournaments] = useState<Competition[]>([]);
   const [error, setError] = useState<string>('');
   const [competitionsApi, setCompetitionsApi] = useState<FootballCompetitionApi[] | null>(null);
-
-  useRequireAccessToken();
 
   async function getCompetitionsApi() {
     try {
@@ -94,46 +93,50 @@ const Predictions = () => {
   return (
     <article className={styles.predictions}>
       <Breadcrumbs items={[routes.home, routes.predictions]} />
-      <div className={styles.menu}>
-        <Link className={'button'} to={'/predictions/groups'}>
-          My Groups
-        </Link>
-        {appData.role.includes('admin') && (
-          <>
-            <button
-              className={'admin'}
-              onClick={() => {
-                getCompetitionsApi();
-              }}
-            >
-              Show all API tournaments
-            </button>
-            <button
-              className={'admin'}
-              onClick={() => {
-                updateCompetitionsSeasons();
-              }}
-            >
-              Update seasons
-            </button>
-            <button
-              className={'admin'}
-              onClick={() => {
-                updateCompetitionsMatches();
-              }}
-            >
-              Update matches
-            </button>
-          </>
-        )}
-        <button
-          onClick={() => {
-            showAvailable();
-          }}
-        >
-          Show available
-        </button>
-      </div>
+      {ready ? (
+        <div className={styles.menu}>
+          <Link className={'button'} to={'/predictions/groups'}>
+            My Groups
+          </Link>
+          {appData.role.includes('admin') && (
+            <>
+              <button
+                className={'admin'}
+                onClick={() => {
+                  getCompetitionsApi();
+                }}
+              >
+                Show all API tournaments
+              </button>
+              <button
+                className={'admin'}
+                onClick={() => {
+                  updateCompetitionsSeasons();
+                }}
+              >
+                Update seasons
+              </button>
+              <button
+                className={'admin'}
+                onClick={() => {
+                  updateCompetitionsMatches();
+                }}
+              >
+                Update matches
+              </button>
+            </>
+          )}
+          <button
+            onClick={() => {
+              showAvailable();
+            }}
+          >
+            Show available
+          </button>
+        </div>
+      ) : (
+        <p>Loading...</p>
+      )}
       {error && <p className={styles.error}>{error}</p>}
       {showMode === 'available' && <AvailablePredictionTable data={tournaments} />}
       {competitionsApi && <AllApiTournaments competitions={competitionsApi} />}
