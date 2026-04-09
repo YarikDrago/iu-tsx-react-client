@@ -6,10 +6,12 @@ import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 import { FootballCompetitionMatchesApi } from '@/pages/predictions/models/football_api.dto';
 import { routes } from '@/routes/routes';
 import { Breadcrumbs } from '@/shared/components/Breadcrumbs/Breadcrumbs';
+import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
 
 import * as styles from './ApiCompetitionMatches.module.scss';
 
 const ApiCompetitionMatches = () => {
+  const { ready } = useRequireAccessToken();
   const { id } = useParams<{ id: string }>();
   const [competition, setCompetition] = React.useState<FootballCompetitionMatchesApi | null>(null);
 
@@ -29,8 +31,9 @@ const ApiCompetitionMatches = () => {
   }
 
   useEffect(() => {
+    if (!ready) return;
     getCompetitionData(competitionId);
-  }, []);
+  }, [ready]);
 
   if (!id || Number.isNaN(competitionId)) {
     return (
