@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes } from 'react-router';
+import { Navigate, Route, Routes } from 'react-router';
 
 import { ActivateAsync } from '@/pages/activate/Activate.async';
 import { AuthAsync } from '@/pages/auth/Auth.async';
@@ -28,6 +28,7 @@ const AppRoutes = () => {
         <Route path={routes.group.href} element={<GroupAsync />} />
         <Route path={routes.joinGroup.href} element={<JoinToGroupAsync />} />
         <Route path={routes.home.href} element={<MainAsync />} />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </React.Suspense>
   );
