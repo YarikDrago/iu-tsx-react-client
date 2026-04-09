@@ -9,10 +9,10 @@ export async function refreshTokens() {
       {},
       { skipAutoRefresh: true }
     );
-    console.log('response:', data);
+    console.log('Tokens successfully refreshed');
     return data;
   } catch (e) {
-    console.log(e);
+    console.error('refresh tokens:', e);
     throw e;
   }
 }
