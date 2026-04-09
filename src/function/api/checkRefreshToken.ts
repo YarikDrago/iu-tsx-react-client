@@ -8,10 +8,10 @@ export async function checkRefreshToken() {
       HTMLRequestMethods.GET,
       {}
     );
-    console.log('response:', data);
+    console.log('refresh token is active');
     return data;
   } catch (e) {
-    console.log(e);
+    console.error('refresh token check:', e);
     throw e;
   }
 }
