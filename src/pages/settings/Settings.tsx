@@ -3,11 +3,14 @@ import { useNavigate } from 'react-router';
 
 import { checkAccessToken } from '@/function/api/checkAccessToken';
 import { checkRefreshToken } from '@/function/api/checkRefreshToken';
+import { deleteAccessToken } from '@/function/api/deleteAccessToken';
 import { logout } from '@/function/api/logout';
 import { me } from '@/function/api/me';
 import { refreshTokens } from '@/function/api/refreshTokens';
+import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
 
 const Settings = () => {
+  const { ready } = useRequireAccessToken();
   const navigate = useNavigate();
   const [error, setError] = useState<string>('');
   const [msg, setMsg] = useState<string>('');
@@ -31,6 +34,17 @@ const Settings = () => {
       // const data = await checkAccessToken();
       await checkRefreshToken();
       setMsg('Refresh token is valid');
+    } catch (e) {
+      setError((e as Error).message);
+    }
+  }
+
+  async function deleteAccessTokenWrapper() {
+    try {
+      setError('');
+      setMsg('');
+      await deleteAccessToken();
+      setMsg('Access token deleted');
     } catch (e) {
       setError((e as Error).message);
     }
@@ -78,12 +92,20 @@ const Settings = () => {
         gap: '10px',
       }}
     >
-      <h1>Settings</h1>
-      <button onClick={() => checkAccessTokenWrapper()}>Check access token</button>
-      <button onClick={() => checkRefreshTokenWrapper()}>Check refresh token</button>
-      <button onClick={() => refreshTokensWrapper()}>Refresh tokens</button>
-      <button onClick={() => getGeneralUserInfo()}>User general data</button>
-      <button onClick={() => logoutWrapper()}>Log out</button>
+      {ready ? (
+        <>
+          <h1>Settings</h1>
+          <button onClick={() => checkAccessTokenWrapper()}>Check access token</button>
+          <button onClick={() => checkRefreshTokenWrapper()}>Check refresh token</button>
+          <button onClick={() => deleteAccessTokenWrapper()}>Delete access token</button>
+          <button onClick={() => refreshTokensWrapper()}>Refresh tokens</button>
+          <button onClick={() => getGeneralUserInfo()}>User general data</button>
+          <button onClick={() => logoutWrapper()}>Log out</button>
+        </>
+      ) : (
+        <p>Loading...</p>
+      )}
+
       {msg && <p style={{ color: 'greenyellow', fontWeight: 'bold' }}>{msg}</p>}
       {error && <p style={{ color: 'red', fontWeight: 'bold' }}>{error}</p>}
     </article>
