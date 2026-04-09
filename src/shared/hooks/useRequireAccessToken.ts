@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
+import appData from '@/app.data';
 import { checkAccessToken } from '@/function/api/checkAccessToken';
 import { checkRefreshToken } from '@/function/api/checkRefreshToken';
+import { me } from '@/function/api/me';
 import { refreshTokens } from '@/function/api/refreshTokens';
 import { routes } from '@/routes/routes';
 
@@ -43,11 +45,23 @@ export function useRequireAccessToken() {
         });
 
         await refreshTokens();
+        /* Make a simple request to check tokens and get data about the user */
+        await me()
+          .then((data) => {
+            appData.changeNickname(data.nickname);
+            appData.changeUserId(data.userId);
+            appData.role = data.roles;
+          })
+          .catch(() => {
+            appData.changeNickname('');
+            appData.role = [];
+          });
         if (!cancelled) setStatus('ready');
       } catch (e) {
         if (!cancelled) {
           setError((e as Error).message);
           setStatus('error');
+          navigate(`${routes.login.href}`, { replace: true });
         }
       }
     })();
