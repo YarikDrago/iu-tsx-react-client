@@ -12,6 +12,116 @@
   }
 }
 
+.welcome {
+  display: flex;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 60px;
+  background:
+    radial-gradient(1200px 1000px at -20% -30%, rgba(212, 43, 255, 0.35), transparent 60%),
+    radial-gradient(900px 380px at 120% 0%, rgba(0, 198, 255, 0.25), transparent 60%),
+    linear-gradient(180deg, rgba(50, 164, 205, 0.87), rgba(2, 255, 141, 0.34));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  button {
+    color: #051f42;
+    font-weight: 900;
+    background: linear-gradient(170deg, #3afda5, #00cfb2);
+    width: 200px;
+  }
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  gap: 20px;
+  max-width: 1100px;
+
+  color: #e5e7eb;
+}
+
+.contentText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  h1 {
+    font-family:
+      'Bitcount Single',
+      'Montserrat',
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      sans-serif;
+    font-size: 2.5rem;
+    font-weight: 500;
+    text-transform: uppercase; /* GET STARTED TODAY */
+    color: #f9fafb;
+  }
+
+  p {
+    margin: 0 0 20px;
+    font-size: 1rem;
+    color: #d1d5db;
+  }
+
+  button {
+    margin-top: 4px;
+    font-weight: 600;
+    font-family: Montserrat, sans-serif;
+  }
+}
+
+.contentImage {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-left: 50px;
+}
+
+.contentImage img {
+  width: 100%;
+  border-radius: 24px;
+  object-fit: cover;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 1100px) {
+  .welcome {
+    padding: 30px;
+  }
+}
+
+@media (max-width: 900px) {
+  .welcome {
+    padding: 0;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    padding: 40px 40px;
+    gap: 20px;
+  }
+
+  .contentText {
+    flex: 1;
+  }
+
+  .contentImage {
+    flex: 1;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .contentImage img {
+    //max-width: 420px;
+  }
+}
+
 .cardsBox {
   display: flex;
   flex-wrap: wrap;
@@ -31,8 +141,9 @@
   border-radius: 20px;
   cursor: pointer;
 
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35),
-  0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
   border: 1px solid rgba(255, 255, 255, 0.22);
   background: none;
   transition: all 200ms ease;
