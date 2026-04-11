@@ -21,6 +21,7 @@ import './shared/styles/form.scss';
 import './shared/styles/msg.scss';
 import './shared/styles/button.scss';
 import './shared/styles/toast.scss';
+import './shared/styles/input.scss';
 
 import { ToastsContainer } from '@/shared/components/ToastsContainer/ToastsContainer';
 
