@@ -75,44 +75,6 @@ textarea {
   outline: none; /* Disable outline */
 }
 
-button,
-.button {
-  font-size: 16px;
-  line-height: 20px;
-  height: 30px;
-  font-weight: 500;
-  border: none;
-  border-radius: 4px;
-  background-color: #2a574e;
-  color: #fff;
-  text-decoration: none;
-  font-family: Montserrat, sans-serif;
-
-  &:hover {
-    cursor: pointer;
-    background-color: #1e3d35;
-  }
-
-  &.text {
-    &:hover {
-      background-color: transparent;
-    }
-  }
-
-  &:focus {
-    outline: none;
-  }
-
-  &.admin {
-    background-color: #cb7cee;
-
-    &:hover {
-      color: #fff;
-      background-color: #a755c7;
-    }
-  }
-}
-
 .resize-animation-stopper * {
   animation: none !important;
   transition: none !important;

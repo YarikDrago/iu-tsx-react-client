@@ -48,6 +48,7 @@ const AvailablePredictionTable = ({ data }: AvailablePredictionTableProps) => {
               <td>{tournament.currentSeason?.end_date}</td>
               <td>
                 <button
+                  className={'tableButtonPrimary'}
                   onClick={() => {
                     createGroup(tournament);
                   }}

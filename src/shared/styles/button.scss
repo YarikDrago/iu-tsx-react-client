@@ -2,10 +2,45 @@ button,
 .button {
   --clr: #fff;
   --clr-hover: #32ffce;
+  --clr-bg-blue: #2563eb;
+  --clr-bg-blue-hover: #1d4ed8;
 
+  font-size: 16px;
+  line-height: 20px;
+  height: 30px;
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  background-color: var(--clr-bg-blue);
+  color: #fff;
+  text-decoration: none;
+  font-family: Montserrat, sans-serif;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
-  border: none;
+
+  &:hover {
+    cursor: pointer;
+    background-color: var(--clr-bg-blue-hover);
+  }
+
+  &.text {
+    &:hover {
+      background-color: transparent;
+    }
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &.admin {
+    background-color: #cb7cee;
+
+    &:hover {
+      color: #fff;
+      background-color: #a755c7;
+    }
+  }
 
   &.text-pure {
     background: none;
@@ -123,7 +158,7 @@ button,
     padding: 4px 10px;
     border-radius: 4px;
     border: none;
-    background-color: #2563eb;
+    background-color: var(--clr-bg-blue);
     color: #ffffff;
     line-height: 1;
     cursor: pointer;
