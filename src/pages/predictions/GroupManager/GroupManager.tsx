@@ -4,13 +4,12 @@ import { observer } from 'mobx-react';
 import appData from '@/app.data';
 import CloseBtn from '@/shared/components/buttons/CloseBtn/CloseBtn';
 
-import * as styles from './GroupManager.module.scss';
 import NewGroup from './NewGroup';
 import OldGroup from './OldGroup';
 
 const GroupManager = () => {
   return (
-    <div className={styles.modal}>
+    <div className={'form-wrapper'}>
       <form className={`form`}>
         <CloseBtn
           onClick={() => {
