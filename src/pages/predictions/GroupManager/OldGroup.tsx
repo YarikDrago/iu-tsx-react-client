@@ -2,6 +2,10 @@ import React from 'react';
 import { observer } from 'mobx-react';
 
 import appData from '@/app.data';
+import ResetIcon from '@/assets/icons/arrow-clockwise.svg';
+import CopyIcon from '@/assets/icons/copy.svg';
+import PersonMinusIcon from '@/assets/icons/person-dash-fill.svg';
+import PersonPlusIcon from '@/assets/icons/person-plus-fill.svg';
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 import * as styles from '@/pages/predictions/GroupManager/GroupManager.module.scss';
@@ -86,8 +90,10 @@ const OldGroup = () => {
   return (
     <>
       <h1>Group manager</h1>
-      <div style={{ display: 'flex', gap: '10px' }}>
+      <h3>{store.name}</h3>
+      <div className={styles.buttonBar}>
         <button
+          className={showUsers ? '' : styles.active}
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -97,6 +103,7 @@ const OldGroup = () => {
           Main info
         </button>
         <button
+          className={showUsers ? styles.active : ''}
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -132,33 +139,40 @@ const OldGroup = () => {
                     <p>Owner</p>
                   ) : (
                     <>
+                      {member.status !== 'verified' && (
+                        <button
+                          className={styles.iconButton}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            updateGroupMember(member, 'verified');
+                          }}
+                          disabled={member.status === 'verified'}
+                        >
+                          <PersonPlusIcon />
+                        </button>
+                      )}
+                      {member.status !== 'suspended' && (
+                        <button
+                          className={styles.iconButton}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            updateGroupMember(member, 'suspended');
+                          }}
+                        >
+                          Suspend
+                        </button>
+                      )}
                       <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          updateGroupMember(member, 'verified');
-                        }}
-                        disabled={member.status === 'verified'}
-                      >
-                        +
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          updateGroupMember(member, 'suspended');
-                        }}
-                      >
-                        Suspend
-                      </button>
-                      <button
+                        className={`${styles.iconButton} ${styles.iconButton__error}`}
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
                           updateGroupMember(member, 'delete');
                         }}
                       >
-                        Del
+                        <PersonMinusIcon />
                       </button>
                     </>
                   )}
@@ -169,21 +183,33 @@ const OldGroup = () => {
         </table>
       ) : (
         <>
-          <h3>Tournament: {store.competition?.name}</h3>
-          <h3>
-            Season: {store.season?.start_date} - {store.season?.end_date}
-          </h3>
-          <p>Group name</p>
-          <input
-            type="text"
-            placeholder={'group name'}
-            value={store.name}
-            onChange={(e) => {
-              store.name = e.target.value;
-            }}
-          />
-          <div style={{ display: 'flex', gap: '10px' }}>
+          <div className={styles.paramLine}>
+            <h4>Tournament:</h4>
+            <p>{store.competition?.name}</p>
+          </div>
+          <div className={styles.paramLine}>
+            <h4>Season:</h4>
+            <p>
+              {store.season?.start_date} - {store.season?.end_date}
+            </p>
+          </div>
+          <div className={styles.paramLine}>
+            <h4 style={{ whiteSpace: 'nowrap' }}>Group name:</h4>
+            <input
+              type="text"
+              className={'underline'}
+              style={{ lineHeight: '16px', height: '30px' }}
+              placeholder={'group name'}
+              value={store.name}
+              onChange={(e) => {
+                store.name = e.target.value;
+              }}
+            />
+          </div>
+          <div className={styles.paramLine}>
+            <h4>Invite link: </h4>
             <button
+              className={styles.iconButton}
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -194,19 +220,21 @@ const OldGroup = () => {
                 alert('Invite link was copied to clipboard');
               }}
             >
-              Invite link
+              <CopyIcon />
             </button>
             <button
+              className={styles.iconButton}
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 changeInviteCode();
               }}
             >
-              Change invite code
+              <ResetIcon />
             </button>
           </div>
           <button
+            className={'button primary'}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -214,9 +242,10 @@ const OldGroup = () => {
             }}
             disabled={store.name === store.oldName}
           >
-            Change name
+            Save
           </button>
           <button
+            className={styles.deleteButton}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -227,7 +256,7 @@ const OldGroup = () => {
           </button>
         </>
       )}
-      {errorMsg !== '' && <p className={styles.error}>{errorMsg}</p>}
+      {errorMsg !== '' && <p className={'errorMsg'}>{errorMsg}</p>}
     </>
   );
 };
