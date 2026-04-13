@@ -25,7 +25,8 @@ const NewGroup = () => {
       console.log('tournament ID:', store.competition?.id);
       console.log('season ID:', store.season?.external_id);
       setErrorMsg('');
-      if (!checkName(store.name)) return;
+      appData.showLoader();
+      checkName(store.name);
       const response = await universalFetchRequest(
         `tournaments/${store.competition?.id}/groups`,
         HTMLRequestMethods.POST,
@@ -38,24 +39,24 @@ const NewGroup = () => {
       setSuccessCreation(true);
       window.location.reload();
     } catch (e) {
-      // TODO change
       console.error(e);
       setErrorMsg((e as Error).message);
+    } finally {
+      appData.hideLoader();
     }
   }
 
   function checkName(name: string) {
     if (name.length < 3) {
-      setErrorMsg('Group name must be at least 3 characters long');
-      return false;
+      throw new Error('Group name must be at least 3 characters long');
     }
     if (name.length > 20) {
-      setErrorMsg('Group name must be at most 20 characters long');
-      return false;
+      throw new Error('Group name must be at most 20 characters long');
     }
     if (!/^[a-zA-Z0-9]+$/.test(name)) {
-      setErrorMsg('Group name must contain only letters and numbers');
+      throw new Error('Group name must contain only letters and numbers');
     }
+    return true;
   }
 
   if (successCreation) {
