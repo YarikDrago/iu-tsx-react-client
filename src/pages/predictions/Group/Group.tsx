@@ -11,6 +11,7 @@ import {
   TPredictionGlossary,
 } from '@/pages/predictions/Group/models/models';
 import PredictionEditor from '@/pages/predictions/Group/PredictionEditor';
+import { calcPredictionPoints } from '@/pages/predictions/Group/utils/calcPredictionPoints';
 import { GroupMember } from '@/pages/predictions/models/groupMember.dto';
 import { MatchDto, MatchStatus, UpsertMatchInput } from '@/pages/predictions/models/match.dto';
 import { PredictionDto } from '@/pages/predictions/models/prediction.dto';
@@ -257,6 +258,9 @@ const Group = () => {
                                 : null,
                           });
                         }}
+                        onMouseEnter={() => {
+                          console.log(match);
+                        }}
                       >
                         {/* Row number */}
                         <td>{idx + 1}</td>
@@ -307,8 +311,7 @@ const Group = () => {
                           // console.log('member:', member);
                           let predictionHome = 'null';
                           let predictionAway = 'null';
-                          // TODO change on real calculated value
-                          const gainedPoints = 0;
+                          let gainedPoints = 0;
                           const predictionIdx = predictionGlossary[member.user_id]?.[match.id];
                           // console.log('predictionIdx:', predictionIdx);
                           if (predictionIdx !== null && predictionIdx !== undefined) {
@@ -316,6 +319,7 @@ const Group = () => {
                             if (prediction) {
                               predictionHome = String(prediction.home_score);
                               predictionAway = String(prediction.away_score);
+                              gainedPoints = calcPredictionPoints(match, prediction);
                             } else {
                               console.error('prediction is null', idx, member.nickname);
                             }
