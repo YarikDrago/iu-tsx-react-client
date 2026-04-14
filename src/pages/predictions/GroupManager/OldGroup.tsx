@@ -92,6 +92,7 @@ const OldGroup = () => {
       <h1>Group manager</h1>
       <h3>{store.name}</h3>
       <div className={styles.buttonBar}>
+        {/* Main info */}
         <button
           className={showUsers ? '' : styles.active}
           onClick={(e) => {
@@ -102,6 +103,7 @@ const OldGroup = () => {
         >
           Main info
         </button>
+        {/* Users */}
         <button
           className={showUsers ? styles.active : ''}
           onClick={(e) => {
@@ -208,6 +210,7 @@ const OldGroup = () => {
           </div>
           <div className={styles.paramLine}>
             <h4>Invite link: </h4>
+            {/* Copy link to clipboard */}
             <button
               className={styles.iconButton}
               onClick={(e) => {
@@ -215,7 +218,7 @@ const OldGroup = () => {
                 e.stopPropagation();
                 console.log('invite code:', store.inviteCode);
                 navigator.clipboard.writeText(
-                  `${process.env.BASE_URL}/predictions/groups/join/?code=${store.inviteCode}`
+                  `${process.env.API_URL}/predictions/groups/join/?code=${store.inviteCode}`
                 );
                 alert('Invite link was copied to clipboard');
               }}
