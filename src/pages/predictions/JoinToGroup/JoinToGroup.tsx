@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
-import { useSearchParams } from 'react-router';
+import { Link, useSearchParams } from 'react-router';
 import { observer } from 'mobx-react';
 
 import appData from '@/app.data';
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
+
+import * as styles from './JoinToGroup.module.scss';
 
 const JoinToGroup = () => {
   const [searchParams] = useSearchParams();
@@ -43,16 +45,20 @@ const JoinToGroup = () => {
   }
 
   return (
-    <div>
-      <p>Join to group</p>
-      {successStatus && (
-        <p>
-          Your request has been sent. After it is verified by the group owner, you will receive an
-          email.
-        </p>
-      )}
-      {errorMsg && <p>{errorMsg}</p>}
-    </div>
+    <article className={styles.joinToGroup}>
+      <div className={`${styles.content} form`}>
+        {successStatus && (
+          <p>
+            Your request has been sent. After it is verified by the group owner, you will receive an
+            email.
+          </p>
+        )}
+        {errorMsg && <p className={'errorMsg'}>{errorMsg}</p>}
+        <Link className={'link'} to={'/'}>
+          Go to Main
+        </Link>
+      </div>
+    </article>
   );
 };
 
