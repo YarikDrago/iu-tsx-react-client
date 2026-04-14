@@ -8,6 +8,8 @@ import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 
 import * as styles from './JoinToGroup.module.scss';
 
+const loginErrorMsg = 'You should be logged in to join the group.';
+
 const JoinToGroup = () => {
   const [searchParams] = useSearchParams();
   const [errorMsg, setErrorMsg] = React.useState<string | null>(null);
@@ -16,7 +18,7 @@ const JoinToGroup = () => {
   // TODO auth user
   useEffect(() => {
     if (appData.nickname === '') {
-      setErrorMsg('You should be logged in to join to group');
+      setErrorMsg(loginErrorMsg);
       return;
     }
     console.log('appData.nickname:', appData.nickname);
@@ -54,9 +56,15 @@ const JoinToGroup = () => {
           </p>
         )}
         {errorMsg && <p className={'errorMsg'}>{errorMsg}</p>}
-        <Link className={'link'} to={'/'}>
-          Go to Main
-        </Link>
+        {errorMsg === loginErrorMsg ? (
+          <Link className={'link'} to={'/login'}>
+            Log In
+          </Link>
+        ) : (
+          <Link className={'link'} to={'/'}>
+            Go to Main
+          </Link>
+        )}
       </div>
     </article>
   );
