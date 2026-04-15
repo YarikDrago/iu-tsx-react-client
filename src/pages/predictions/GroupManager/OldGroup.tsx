@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
 
 import appData from '@/app.data';
@@ -15,6 +15,12 @@ const OldGroup = () => {
   const store = appData.group;
   const [errorMsg, setErrorMsg] = React.useState('');
   const [showUsers, setShowUsers] = React.useState(false);
+  const [deleteModal, setDeleteModal] = React.useState(false);
+  const [deleteGroupInput, setDeleteGroupInput] = React.useState('');
+
+  useEffect(() => {
+    setDeleteGroupInput('');
+  }, [deleteModal]);
 
   async function changeGroupName() {
     try {
@@ -85,6 +91,50 @@ const OldGroup = () => {
     } finally {
       appData.hideLoader();
     }
+  }
+
+  if (deleteModal) {
+    return (
+      <>
+        <h3>Delete group: {store.name}</h3>
+        <p>Are you sure you want to delete this group?</p>
+        <button
+          className={'button secondary'}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setDeleteModal(false);
+          }}
+        >
+          No, cancel
+        </button>
+        <p style={{ marginTop: '20px' }}>To delete the group, type its name</p>
+        <input
+          type="text"
+          className={'underline'}
+          style={{ lineHeight: '16px', height: '30px' }}
+          placeholder={'Group name'}
+          value={deleteGroupInput}
+          onChange={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setDeleteGroupInput(e.target.value);
+          }}
+        />
+        <button
+          className={styles.deleteButton}
+          style={{ marginTop: '30px', width: '100%', height: '40px', fontSize: '1.2rem' }}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            deleteGroup();
+          }}
+          disabled={deleteGroupInput !== store.name}
+        >
+          Delete
+        </button>
+      </>
+    );
   }
 
   return (
@@ -252,7 +302,8 @@ const OldGroup = () => {
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              deleteGroup();
+              // deleteGroup();
+              setDeleteModal(true);
             }}
           >
             Delete group
