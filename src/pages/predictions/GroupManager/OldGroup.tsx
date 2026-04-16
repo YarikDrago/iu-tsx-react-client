@@ -3,13 +3,16 @@ import { observer } from 'mobx-react';
 
 import appData from '@/app.data';
 import ResetIcon from '@/assets/icons/arrow-clockwise.svg';
-import CopyIcon from '@/assets/icons/copy.svg';
 import PersonMinusIcon from '@/assets/icons/person-dash-fill.svg';
 import PersonPlusIcon from '@/assets/icons/person-plus-fill.svg';
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 import * as styles from '@/pages/predictions/GroupManager/GroupManager.module.scss';
 import { GroupMember } from '@/pages/predictions/models/groupMember.dto';
+
+interface TInviteCodeResponse {
+  inviteCode: string;
+}
 
 const OldGroup = () => {
   const store = appData.group;
@@ -59,12 +62,12 @@ const OldGroup = () => {
     try {
       appData.showLoader();
       setErrorMsg('');
-      await universalFetchRequest(
+      const response = await universalFetchRequest<TInviteCodeResponse>(
         `tournaments/groups/${store.id}/invite-code`,
         HTMLRequestMethods.PATCH,
         {}
       );
-      window.location.reload();
+      appData.group.inviteCode = response.inviteCode;
     } catch (e) {
       setErrorMsg((e as Error).message);
     } finally {
@@ -273,7 +276,7 @@ const OldGroup = () => {
                 alert('Invite link was copied to clipboard');
               }}
             >
-              <CopyIcon />
+              {store.inviteCode}
             </button>
             <button
               className={styles.iconButton}
