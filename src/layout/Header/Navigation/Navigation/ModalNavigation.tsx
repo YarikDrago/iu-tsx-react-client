@@ -52,11 +52,13 @@ const ModalNavigation = ({ isOpened, handleClose }: ModalNavigationProps) => {
           </>
         ) : (
           <>
-            <li>USER: {appData.nickname}</li>
-            <li>Role: {appData.role.join(', ')}</li>
-            <li>
-              <Link to={'/settings'}>Settings</Link>
-            </li>
+            <div className={styles.userInfo}>
+              <p>USER: {appData.nickname}</p>
+              <p>Role: {appData.role.join(', ')}</p>
+            </div>
+            {/*<li>*/}
+            {/*  <Link to={'/settings'}>Settings</Link>*/}
+            {/*</li>*/}
             <li
               className={styles.button}
               onClick={() => {
