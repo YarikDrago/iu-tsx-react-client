@@ -1,5 +1,7 @@
 import { BreadcrumbItem } from '@/shared/components/Breadcrumbs/Breadcrumbs';
 
+const PREDICTIONS_BASE = '/predictions';
+
 export const routes: { [key: string]: BreadcrumbItem } = {
   home: {
     href: '/',
@@ -26,23 +28,23 @@ export const routes: { [key: string]: BreadcrumbItem } = {
     label: 'Settings',
   },
   predictions: {
-    href: '/predictions',
+    href: `${PREDICTIONS_BASE}`,
     label: 'Predictions',
   },
   apiCompetition: {
-    href: '/predictions/competition/:id',
+    href: `${PREDICTIONS_BASE}/competition/:id`,
     label: 'API Competition',
   },
   myGroups: {
-    href: '/predictions/groups',
+    href: `${PREDICTIONS_BASE}/groups`,
     label: 'My Groups',
   },
   group: {
-    href: '/predictions/groups/:id',
+    href: `${PREDICTIONS_BASE}/groups/:id`,
     label: 'Group',
   },
   joinGroup: {
-    href: '/predictions/groups/join/',
+    href: `${PREDICTIONS_BASE}/groups/join/`,
     label: 'Join group',
   },
 };
