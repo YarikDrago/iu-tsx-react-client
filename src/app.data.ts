@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import Cookies from 'js-cookie';
 
-import { GroupManagerData } from '@/pages/predictions/GroupManager/groupManager.data';
+import { GroupManagerData } from '@/pages/predictions/components/GroupManager/groupManager.data';
 import { ToastItem, ToastVariant } from '@/shared/components/ToastsContainer/ToastsContainer';
 
 class AppData {

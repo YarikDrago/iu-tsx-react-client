@@ -10,7 +10,7 @@ import { me } from '@/function/api/me';
 import Footer from '@/layout/Footer/Footer';
 import Header from '@/layout/Header/Header';
 import Main from '@/layout/Main/Main';
-import GroupManager from '@/pages/predictions/GroupManager/GroupManager';
+import GroupManager from '@/pages/predictions/components/GroupManager/GroupManager';
 import AppRoutes from '@/routes/AppRoutes';
 import { GlobalLoader } from '@/shared/components/loaders/GlobalLoader/GlobalLoader';
 import { socket } from '@/shared/ws/socket';

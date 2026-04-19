@@ -1,16 +1,6 @@
 .table {
   box-sizing: border-box;
-  border-collapse: collapse;
-
-  tbody {
-    tr {
-      cursor: pointer;
-    }
-  }
-}
-
-.finished {
-  color: #646464;
+  align-self: center;
 }
 
 .win {

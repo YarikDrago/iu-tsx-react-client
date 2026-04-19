@@ -4,17 +4,17 @@ import { useParams } from 'react-router';
 import appData from '@/app.data';
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
+import { GroupMember } from '@/pages/predictions/models/groupMember.dto';
+import { MatchDto, MatchStatus, UpsertMatchInput } from '@/pages/predictions/models/match.dto';
+import { PredictionDto } from '@/pages/predictions/models/prediction.dto';
 import {
   GroupData,
   MatchPredictionUpdatePayload,
   TEditPrediction,
   TPredictionGlossary,
-} from '@/pages/predictions/Group/models/models';
-import PredictionEditor from '@/pages/predictions/Group/PredictionEditor';
-import { calcPredictionPoints } from '@/pages/predictions/Group/utils/calcPredictionPoints';
-import { GroupMember } from '@/pages/predictions/models/groupMember.dto';
-import { MatchDto, MatchStatus, UpsertMatchInput } from '@/pages/predictions/models/match.dto';
-import { PredictionDto } from '@/pages/predictions/models/prediction.dto';
+} from '@/pages/predictions/pages/Group/models/models';
+import PredictionEditor from '@/pages/predictions/pages/Group/PredictionEditor';
+import { calcPredictionPoints } from '@/pages/predictions/pages/Group/utils/calcPredictionPoints';
 import { routes } from '@/routes/routes';
 import { Breadcrumbs } from '@/shared/components/Breadcrumbs/Breadcrumbs';
 import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';

@@ -7,7 +7,7 @@ import PersonMinusIcon from '@/assets/icons/person-dash-fill.svg';
 import PersonPlusIcon from '@/assets/icons/person-plus-fill.svg';
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
-import * as styles from '@/pages/predictions/GroupManager/GroupManager.module.scss';
+import * as styles from '@/pages/predictions/components/GroupManager/GroupManager.module.scss';
 import { GroupMember } from '@/pages/predictions/models/groupMember.dto';
 
 interface TInviteCodeResponse {

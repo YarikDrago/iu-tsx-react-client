@@ -6,8 +6,8 @@ import appData from '@/app.data';
 import { getAvailablePredictions } from '@/function/api/predictions/getAvailablePredictions';
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
-import AllApiTournaments from '@/pages/predictions/allApiTournaments/AllApiTournaments';
-import AvailablePredictionTable from '@/pages/predictions/AvailablePredictionTable';
+import AllApiTournaments from '@/pages/predictions/components/allApiTournaments/AllApiTournaments';
+import AvailablePredictionTable from '@/pages/predictions/components/availablePredictionTable/AvailablePredictionTable';
 import { Competition } from '@/pages/predictions/models/competition.dto';
 import {
   FootballCompetitionApi,

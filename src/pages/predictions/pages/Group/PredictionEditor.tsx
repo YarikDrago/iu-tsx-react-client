@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import appData from '@/app.data';
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
-import { TEditPrediction } from '@/pages/predictions/Group/models/models';
+import { TEditPrediction } from '@/pages/predictions/pages/Group/models/models';
 import CloseBtn from '@/shared/components/buttons/CloseBtn/CloseBtn';
 
 import * as styles from './PredictionEditor.module.scss';
