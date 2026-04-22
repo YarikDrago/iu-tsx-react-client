@@ -18,7 +18,7 @@ import { calcPredictionPoints } from '@/pages/predictions/pages/Group/utils/calc
 import { routes } from '@/routes/routes';
 import { Breadcrumbs } from '@/shared/components/Breadcrumbs/Breadcrumbs';
 import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
-import { formatLocalYYMMDD_HHMM } from '@/shared/utils/formatLocalYYMMDD_HHMM';
+import { formatLocalDDMMYY_HHMM } from '@/shared/utils/formatLocalDDMMYY_HHMM';
 import { socket } from '@/shared/ws/socket';
 
 import * as styles from './Group.module.scss';
@@ -297,7 +297,7 @@ const Group = () => {
                         <td
                           className={match.status === MatchStatus.FINISHED ? styles.finished : ''}
                         >
-                          {formatLocalYYMMDD_HHMM(match.start_time) || 'scheduled'}
+                          {formatLocalDDMMYY_HHMM(match.start_time) || 'scheduled'}
                         </td>
                         {/* Match status */}
                         <td

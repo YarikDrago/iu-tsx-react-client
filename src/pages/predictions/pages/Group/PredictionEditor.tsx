@@ -5,7 +5,7 @@ import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 import { TEditPrediction } from '@/pages/predictions/pages/Group/models/models';
 import CloseBtn from '@/shared/components/buttons/CloseBtn/CloseBtn';
-import { formatLocalYYMMDD_HHMM } from '@/shared/utils/formatLocalYYMMDD_HHMM';
+import { formatLocalDDMMYY_HHMM } from '@/shared/utils/formatLocalDDMMYY_HHMM';
 
 import * as styles from './PredictionEditor.module.scss';
 
@@ -58,7 +58,7 @@ const PredictionEditor = ({ editData, onClose }: Props) => {
           <h2>
             {editData.match.away_team} - {editData.match.home_team}
           </h2>
-          <h3>{`Time: ${formatLocalYYMMDD_HHMM(editData.match.start_time)}`}</h3>
+          <h3>{`Time: ${formatLocalDDMMYY_HHMM(editData.match.start_time)}`}</h3>
           <div className={styles.inputBlock}>
             <input
               type="number"
