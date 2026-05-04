@@ -1,4 +1,7 @@
-export function formatLocalDDMMYY_HHMM(isoUtcString: string | null): string {
+export function formatLocalDDMMYY_HHMM(
+  isoUtcString: string | null,
+  isShort: boolean = true
+): string {
   if (!isoUtcString) return 'null';
 
   const d = new Date(isoUtcString);
@@ -18,5 +21,7 @@ export function formatLocalDDMMYY_HHMM(isoUtcString: string | null): string {
     parts.find((p) => p.type === type)?.value ?? '';
 
   /* Format: YYYY-MM-DD HH:MM */
-  return `${get('day')}-${get('month')}-${get('year')} ${get('hour')}:${get('minute')}`;
+  let res = `${get('day')}-${get('month')}-${get('year')}`;
+  if (!isShort) res += ` ${get('hour')}:${get('minute')}`;
+  return res;
 }

@@ -11,6 +11,7 @@ import { Season } from '@/pages/predictions/models/season.dto';
 import { routes } from '@/routes/routes';
 import { Breadcrumbs } from '@/shared/components/Breadcrumbs/Breadcrumbs';
 import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
+import { formatLocalDDMMYY_HHMM } from '@/shared/utils/formatLocalDDMMYY_HHMM';
 
 import * as styles from './MyGroups.module.scss';
 
@@ -112,7 +113,8 @@ const MyGroups = () => {
                   <td>{group.name}</td>
                   <td>{group.tournament.name}</td>
                   <td>
-                    {group.season.start_date} - {group.season.end_date}
+                    {formatLocalDDMMYY_HHMM(group.season.start_date)} -{' '}
+                    {formatLocalDDMMYY_HHMM(group.season.end_date)}{' '}
                   </td>
                   <td>{group.isOwner ? 'Yes' : 'No'}</td>
                   {/* Action */}

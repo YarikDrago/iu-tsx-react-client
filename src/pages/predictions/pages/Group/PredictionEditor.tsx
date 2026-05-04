@@ -58,7 +58,7 @@ const PredictionEditor = ({ editData, onClose }: Props) => {
           <h2>
             {editData.match.away_team} - {editData.match.home_team}
           </h2>
-          <h3>{`Time: ${formatLocalDDMMYY_HHMM(editData.match.start_time)}`}</h3>
+          <h3>{`Time: ${formatLocalDDMMYY_HHMM(editData.match.start_time, false)}`}</h3>
           <div className={styles.inputBlock}>
             <input
               type="number"

@@ -297,7 +297,7 @@ const Group = () => {
                         <td
                           className={match.status === MatchStatus.FINISHED ? styles.finished : ''}
                         >
-                          {formatLocalDDMMYY_HHMM(match.start_time) || 'scheduled'}
+                          {formatLocalDDMMYY_HHMM(match.start_time, false) || 'scheduled'}
                         </td>
                         {/* Match status */}
                         <td
