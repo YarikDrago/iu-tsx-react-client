@@ -46,6 +46,29 @@ const Group = () => {
   const [predictionGlossary, setPredictionGlossary] = React.useState<TPredictionGlossary>({});
   const [errorMsg, setErrorMsg] = React.useState('');
   const [editPrediction, setEditPrediction] = React.useState<TEditPrediction | null>(null);
+  const memberScores = React.useMemo<Record<number, number>>(() => {
+    return membersRef.current.reduce<Record<number, number>>((scores, member) => {
+      scores[member.user_id] = matches.reduce((totalScore, match) => {
+        if (match.status !== MatchStatus.FINISHED && match.status !== MatchStatus.IN_PLAY) {
+          return totalScore;
+        }
+
+        const predictionIdx = predictionGlossary[member.user_id]?.[match.id];
+        if (predictionIdx === null || predictionIdx === undefined) {
+          return totalScore;
+        }
+
+        const prediction = predictions[predictionIdx];
+        if (!prediction) {
+          return totalScore;
+        }
+
+        return totalScore + calcPredictionPoints(match, prediction);
+      }, 0);
+
+      return scores;
+    }, {});
+  }, [matches, predictions, predictionGlossary]);
 
   if (groupId === undefined || Number.isNaN(groupId)) {
     return (
@@ -235,7 +258,11 @@ const Group = () => {
                     <th>Status</th>
                     <th>Score</th>
                     {membersRef.current.map((member) => {
-                      return <th key={member.user_id}>{member.nickname}</th>;
+                      return (
+                        <th key={member.user_id}>
+                          {member.nickname} ({memberScores[member.user_id] ?? 0})
+                        </th>
+                      );
                     })}
                   </tr>
                 </thead>
