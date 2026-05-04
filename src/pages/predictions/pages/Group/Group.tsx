@@ -184,10 +184,13 @@ const Group = () => {
         {}
       );
       // console.log('group:', group);
-      const sortedMembers: GroupMember[] = group.group.members.sort(
-        (a, b) => a.user_id - b.user_id
-      );
+      const sortedMembers: GroupMember[] = group.group.members.sort((a, b) => {
+        if (a.user_id === appData.userId && b.user_id !== appData.userId) return -1;
+        if (b.user_id === appData.userId && a.user_id !== appData.userId) return 1;
+        return a.nickname.localeCompare(b.nickname);
+      });
       membersRef.current = sortedMembers;
+      /* Create glossary */
       const newPredictionGlossary: TPredictionGlossary = {};
       sortedMembers.forEach((member) => {
         newPredictionGlossary[member.user_id] = {};
