@@ -1,3 +1,5 @@
+import React from 'react';
+
 import appData from '@/app.data';
 import { GroupMember } from '@/pages/predictions/models/groupMember.dto';
 import { MatchDto, MatchStatus } from '@/pages/predictions/models/match.dto';
@@ -65,6 +67,26 @@ export const GroupTable = ({
   predictionGlossary,
   onEditPrediction,
 }: GroupTableProps) => {
+  const initialScrollTargetRef = React.useRef<HTMLTableRowElement | null>(null);
+  const hasScrolledToInitialMatchRef = React.useRef(false);
+  const initialScrollTargetMatchId = React.useMemo(() => {
+    const firstUnfinishedMatch = matches.find((match) => match.status !== MatchStatus.FINISHED);
+
+    return firstUnfinishedMatch?.id ?? matches[matches.length - 1]?.id ?? null;
+  }, [matches]);
+
+  React.useEffect(() => {
+    /* Scroll only once with first render of matches */
+    if (hasScrolledToInitialMatchRef.current) return;
+    if (initialScrollTargetMatchId === null) return;
+
+    initialScrollTargetRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    });
+    hasScrolledToInitialMatchRef.current = true;
+  }, [initialScrollTargetMatchId]);
+
   return (
     <div className={'tableWrapper'}>
       <table className={styles.table}>
@@ -90,6 +112,8 @@ export const GroupTable = ({
             return (
               <tr
                 key={match.id}
+                /* Ref for start render scrolling */
+                ref={match.id === initialScrollTargetMatchId ? initialScrollTargetRef : null}
                 onClick={() => {
                   if (isPredictionLocked(match)) return;
 
