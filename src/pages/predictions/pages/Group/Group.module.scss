@@ -1,6 +1,24 @@
+.tableWrapper {
+  display: block;
+  width: 100%;
+  max-height: calc(100dvh - 88px);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 .table {
   box-sizing: border-box;
-  border-collapse: collapse;
+  width: max-content;
+  min-width: 100%;
+
+  thead {
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      background: rgba(20, 20, 20, 0.95);
+    }
+  }
 
   tbody {
     tr {

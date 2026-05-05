@@ -88,7 +88,7 @@ export const GroupTable = ({
   }, [initialScrollTargetMatchId]);
 
   return (
-    <div className={'tableWrapper'}>
+    <div className={styles.tableWrapper}>
       <table className={styles.table}>
         <thead>
           <tr>
