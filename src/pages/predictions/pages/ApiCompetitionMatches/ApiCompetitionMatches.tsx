@@ -63,6 +63,7 @@ const ApiCompetitionMatches = () => {
             <th>Away</th>
             <th>Date</th>
             <th>Status</th>
+            <th>Score Half</th>
             <th>Score Full</th>
             <th>Score Regular</th>
             <th>Score Extra</th>
@@ -73,6 +74,7 @@ const ApiCompetitionMatches = () => {
           {competition?.matches.map((match) => (
             <tr key={match.id}>
               <td>{match.id}</td>
+              {/* Home */}
               <td
                 className={
                   match.score.winner === null
@@ -86,6 +88,7 @@ const ApiCompetitionMatches = () => {
               >
                 {match.homeTeam.name}
               </td>
+              {/* Away */}
               <td
                 className={
                   match.score.winner === null
@@ -99,8 +102,15 @@ const ApiCompetitionMatches = () => {
               >
                 {match.awayTeam.name}
               </td>
+              {/* Date */}
               <td>{match.utcDate}</td>
+              {/* Status*/}
               <td>{match.status}</td>
+              <td>
+                {match.score.halfTime === null
+                  ? ''
+                  : `${match.score.halfTime.home}-${match.score.halfTime.away}`}
+              </td>
               <td>
                 {match.score.fullTime.home === null
                   ? ''
