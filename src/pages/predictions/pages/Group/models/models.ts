@@ -18,6 +18,13 @@ export interface GroupData {
   predictions: PredictionDto[];
 }
 
+export interface GroupGeneralData {
+  name: string;
+  tournamentName: string;
+  startDate: string;
+  endDate: string;
+}
+
 export interface TPredictionGlossary {
   // key- user_id
   [key: number]: {
