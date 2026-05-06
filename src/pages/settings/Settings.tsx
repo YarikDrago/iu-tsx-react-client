@@ -9,6 +9,8 @@ import { me } from '@/function/api/me';
 import { refreshTokens } from '@/function/api/refreshTokens';
 import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
 
+import TelegramAccountsSettings from './components/TelegramAccountsSettings';
+
 const Settings = () => {
   const { ready } = useRequireAccessToken();
   const navigate = useNavigate();
@@ -101,6 +103,7 @@ const Settings = () => {
           <button onClick={() => refreshTokensWrapper()}>Refresh tokens</button>
           <button onClick={() => getGeneralUserInfo()}>User general data</button>
           <button onClick={() => logoutWrapper()}>Log out</button>
+          <TelegramAccountsSettings setError={setError} setMsg={setMsg} />
         </>
       ) : (
         <p>Loading...</p>
