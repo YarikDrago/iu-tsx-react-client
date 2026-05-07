@@ -44,10 +44,14 @@ const ModalNavigation = ({ isOpened, handleClose }: ModalNavigationProps) => {
         {appData.nickname === '' ? (
           <>
             <li>
-              <Link to={'/login'}>Log in</Link>
+              <Link onClick={handleClose} to={'/login'}>
+                Log in
+              </Link>
             </li>
             <li>
-              <Link to={'/signup'}>Sign up</Link>
+              <Link onClick={handleClose} to={'/signup'}>
+                Sign up
+              </Link>
             </li>
           </>
         ) : (
