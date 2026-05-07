@@ -1,3 +1,7 @@
+.tableWrapper {
+  box-sizing: border-box;
+}
+
 .table {
   box-sizing: border-box;
 
@@ -21,6 +25,91 @@
 
     button {
       padding: 5px;
+    }
+  }
+}
+
+@media (max-width: 699px) {
+  .tableWrapper {
+    align-items: stretch;
+    justify-content: stretch;
+    overflow-x: visible;
+    padding: 0 12px;
+  }
+
+  .table {
+    display: block;
+    width: 100%;
+
+    thead {
+      display: none;
+    }
+
+    tbody {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+
+      tr {
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      tr:nth-child(even),
+      tr:hover {
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      td {
+        box-sizing: border-box;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        width: 100%;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        white-space: normal;
+        overflow-wrap: anywhere;
+      }
+
+      td::before {
+        content: attr(data-label);
+        flex: 0 0 auto;
+        color: rgba(255, 255, 255, 0.58);
+        font-weight: 600;
+      }
+
+      td.action {
+        display: block;
+        padding: 12px 0 0;
+        border-bottom: 0;
+
+        &::before {
+          content: none;
+        }
+      }
+    }
+
+    .actionBlock {
+      width: 100%;
+
+      button {
+        width: 100%;
+        min-height: 40px;
+      }
+    }
+
+    button {
+      width: 100%;
+      min-height: 40px;
     }
   }
 }

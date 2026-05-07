@@ -89,7 +89,7 @@ const MyGroups = () => {
       <Breadcrumbs items={[routes.home, routes.predictions, routes.myGroups]} />
       {errorMsg !== '' && <p>{errorMsg}</p>}
       {groups.length ? (
-        <div className={'tableWrapper'}>
+        <div className={`tableWrapper ${styles.tableWrapper}`}>
           <table className={styles.table}>
             <thead>
               <tr>
@@ -110,15 +110,15 @@ const MyGroups = () => {
                   key={group.id}
                 >
                   {/*<td>{String(group.id)}</td>*/}
-                  <td>{group.name}</td>
-                  <td>{group.tournament.name}</td>
-                  <td>
+                  <td data-label="Name">{group.name}</td>
+                  <td data-label="Tournament">{group.tournament.name}</td>
+                  <td data-label="Season">
                     {formatLocalDDMMYY_HHMM(group.season.start_date)} -{' '}
                     {formatLocalDDMMYY_HHMM(group.season.end_date)}{' '}
                   </td>
                   {/*<td>{group.isOwner ? 'Yes' : 'No'}</td>*/}
                   {/* Action */}
-                  <td className={styles.action}>
+                  <td className={styles.action} data-label="Action">
                     {group.isOwner ? (
                       <div className={styles.actionBlock}>
                         <button
