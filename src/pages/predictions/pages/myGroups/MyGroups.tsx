@@ -93,11 +93,11 @@ const MyGroups = () => {
           <table className={styles.table}>
             <thead>
               <tr>
-                <th>ID</th>
+                {/*<th>ID</th>*/}
                 <th>Name</th>
                 <th>Tournament</th>
                 <th>Season</th>
-                <th>Is owner</th>
+                {/*<th>Is owner</th>*/}
                 <th>Action</th>
               </tr>
             </thead>
@@ -109,14 +109,14 @@ const MyGroups = () => {
                   }}
                   key={group.id}
                 >
-                  <td>{String(group.id)}</td>
+                  {/*<td>{String(group.id)}</td>*/}
                   <td>{group.name}</td>
                   <td>{group.tournament.name}</td>
                   <td>
                     {formatLocalDDMMYY_HHMM(group.season.start_date)} -{' '}
                     {formatLocalDDMMYY_HHMM(group.season.end_date)}{' '}
                   </td>
-                  <td>{group.isOwner ? 'Yes' : 'No'}</td>
+                  {/*<td>{group.isOwner ? 'Yes' : 'No'}</td>*/}
                   {/* Action */}
                   <td className={styles.action}>
                     {group.isOwner ? (
