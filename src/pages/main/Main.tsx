@@ -31,6 +31,7 @@ const Main = () => {
         </div>
       ) : (
         <div>
+          {/* Get started today card*/}
           <div className={`${styles.welcome} ${styles.block}`}>
             <div className={styles.content}>
               <div className={styles.contentText}>

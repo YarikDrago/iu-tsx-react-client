@@ -122,6 +122,17 @@
   }
 }
 
+@media (max-width: 700px) {
+  .welcome {
+    button {
+      width: 100%;
+    }
+  }
+  .content {
+    padding: 30px;
+  }
+}
+
 .cardsBox {
   display: flex;
   flex-wrap: wrap;
