@@ -27,11 +27,11 @@ const AvailablePredictionTable = ({ data }: AvailablePredictionTableProps) => {
   }
 
   return (
-    <div className={'tableWrapper'}>
+    <div className={`tableWrapper ${styles.tableWrapper}`}>
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>ID</th>
+            {/*<th>ID</th>*/}
             <th>Name</th>
             <th>Start</th>
             <th>End</th>
@@ -41,12 +41,12 @@ const AvailablePredictionTable = ({ data }: AvailablePredictionTableProps) => {
         <tbody>
           {data.map((tournament, idx) => (
             <tr key={idx}>
-              <td>{tournament.external_id}</td>
+              {/*<td>{tournament.external_id}</td>*/}
               {/* Tournament external name */}
-              <td>{tournament.name}</td>
-              <td>{tournament.currentSeason?.start_date}</td>
-              <td>{tournament.currentSeason?.end_date}</td>
-              <td>
+              <td data-label="Name">{tournament.name}</td>
+              <td data-label="Start">{tournament.currentSeason?.start_date}</td>
+              <td data-label="End">{tournament.currentSeason?.end_date}</td>
+              <td data-label="Actions">
                 <button
                   className={'tableButtonPrimary'}
                   onClick={() => {
