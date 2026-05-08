@@ -15,7 +15,7 @@ type Props = {
 export const Breadcrumbs = ({ items }: Props) => {
   return (
     <nav aria-label="breadcrumbs" className={styles.container}>
-      <ol style={{ display: 'flex', gap: 8, listStyle: 'none', padding: 0 }}>
+      <ol className={styles.list}>
         {items.map((item, index) => {
           if (index === items.length - 1) {
             return <p key={index}>{item.label}</p>;
