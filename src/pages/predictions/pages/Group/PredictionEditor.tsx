@@ -47,36 +47,48 @@ const PredictionEditor = ({ editData, onClose }: Props) => {
 
   return (
     <div className={styles.modal}>
-      <form className={'form'}>
-        <div>
+      <form className={`form ${styles.form}`}>
+        <div className={styles.cardContent}>
           <CloseBtn
+            type="button"
+            className={styles.closeButton}
             onClick={() => {
               if (onClose) onClose();
             }}
           />
-          <h1>Edit prediction</h1>
-          <h2>
-            {editData.match.away_team} - {editData.match.home_team}
-          </h2>
-          <h3>{`Time: ${formatLocalDDMMYY_HHMM(editData.match.start_time, false)}`}</h3>
+          <div className={styles.header}>
+            <p className={styles.eyebrow}>Edit prediction</p>
+            <h1 className={styles.matchTitle}>
+              {editData.match.home_team} - {editData.match.away_team}
+            </h1>
+            <p className={styles.matchTime}>
+              {`Time: ${formatLocalDDMMYY_HHMM(editData.match.start_time, false)}`}
+            </p>
+          </div>
           <div className={styles.inputBlock}>
-            <input
-              type="number"
-              placeholder={'home'}
-              value={homeScore}
-              onChange={(e) => {
-                setHomeScore(e.target.value);
-              }}
-            />
-            <p>-</p>
-            <input
-              type="number"
-              placeholder={'away'}
-              value={awayScore}
-              onChange={(e) => {
-                setAwayScore(e.target.value);
-              }}
-            />
+            <label className={styles.scoreField}>
+              <span>Home</span>
+              <input
+                type="number"
+                placeholder={'0'}
+                value={homeScore}
+                onChange={(e) => {
+                  setHomeScore(e.target.value);
+                }}
+              />
+            </label>
+            <p className={styles.scoreSeparator}>-</p>
+            <label className={styles.scoreField}>
+              <span>Away</span>
+              <input
+                type="number"
+                placeholder={'0'}
+                value={awayScore}
+                onChange={(e) => {
+                  setAwayScore(e.target.value);
+                }}
+              />
+            </label>
           </div>
           <button
             className={'primary'}
@@ -95,7 +107,7 @@ const PredictionEditor = ({ editData, onClose }: Props) => {
             Save
           </button>
         </div>
-        {errorMsg && <p style={{ color: 'red', fontWeight: 'bold' }}>{errorMsg}</p>}
+        {errorMsg && <p className={styles.errorMsg}>{errorMsg}</p>}
       </form>
     </div>
   );

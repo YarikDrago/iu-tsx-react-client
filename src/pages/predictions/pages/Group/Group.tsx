@@ -6,6 +6,7 @@ import { Breadcrumbs } from '@/shared/components/Breadcrumbs/Breadcrumbs';
 import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
 
 import { GroupTable } from './components/GroupTable';
+import * as styles from './Group.module.scss';
 import { useGroupData } from './hooks/useGroupData';
 import { useGroupRealtime } from './hooks/useGroupRealtime';
 import { TEditPrediction } from './models/models';
@@ -48,21 +49,34 @@ const Group = () => {
 
   if (groupId === undefined || Number.isNaN(groupId)) {
     return (
-      <div>
-        <p className={'errorMsg'}>Invalid group id</p>
-      </div>
+      <article className={styles.page}>
+        <p className={styles.errorMsg}>Invalid group id</p>
+      </article>
     );
   }
 
   return (
-    <div>
+    <article className={styles.page}>
       <Breadcrumbs items={[routes.home, routes.predictions, routes.myGroups, routes.group]} />
       {groupGeneralData !== null && (
-        <>
-          <div>
-            <h1>{groupGeneralData?.name}</h1>
-            <h3>{`Tournament: ${groupGeneralData?.tournamentName}`}</h3>
-            <h3>{`Season: ${groupGeneralData?.startDate} - ${groupGeneralData?.endDate}`}</h3>
+        <section className={styles.content}>
+          <header className={styles.hero}>
+            <div className={styles.titleBlock}>
+              <p className={styles.eyebrow}>Prediction group</p>
+              <h1 className={styles.title}>{groupGeneralData?.name}</h1>
+            </div>
+            <div className={styles.metaList}>
+              <div className={styles.metaItem}>
+                <span>Tournament</span>
+                <strong>{groupGeneralData?.tournamentName}</strong>
+              </div>
+              <div className={styles.metaItem}>
+                <span>Season</span>
+                <strong>{`${groupGeneralData?.startDate} - ${groupGeneralData?.endDate}`}</strong>
+              </div>
+            </div>
+          </header>
+          <div className={styles.tableSection}>
             <GroupTable
               groupId={groupId}
               matches={matches}
@@ -73,9 +87,9 @@ const Group = () => {
               onEditPrediction={setEditPrediction}
             />
           </div>
-        </>
+        </section>
       )}
-      {errorMsg !== '' && <p>{errorMsg}</p>}
+      {errorMsg !== '' && <p className={styles.errorMsg}>{errorMsg}</p>}
       {editPrediction && (
         <PredictionEditor
           editData={editPrediction}
@@ -84,7 +98,7 @@ const Group = () => {
           }}
         />
       )}
-    </div>
+    </article>
   );
 };
 
