@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { observer } from 'mobx-react';
 
@@ -27,6 +27,12 @@ const Predictions = () => {
   const [tournaments, setTournaments] = useState<Competition[]>([]);
   const [error, setError] = useState<string>('');
   const [competitionsApi, setCompetitionsApi] = useState<FootballCompetitionApi[] | null>(null);
+
+  useEffect(() => {
+    if (ready) {
+      showAvailable();
+    }
+  }, [ready]);
 
   async function getCompetitionsApi() {
     try {
@@ -126,19 +132,17 @@ const Predictions = () => {
               </button>
             </>
           )}
-          <button
-            onClick={() => {
-              showAvailable();
-            }}
-          >
-            Show available
-          </button>
         </div>
       ) : (
         <p>Loading...</p>
       )}
       {error && <p className={styles.error}>{error}</p>}
-      {showMode === 'available' && <AvailablePredictionTable data={tournaments} />}
+      {showMode === 'available' && (
+        <>
+          <h2 style={{ paddingLeft: '20px' }}>Available Tournaments</h2>
+          <AvailablePredictionTable data={tournaments} />
+        </>
+      )}
       {competitionsApi && <AllApiTournaments competitions={competitionsApi} />}
     </article>
   );
