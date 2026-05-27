@@ -135,6 +135,14 @@
   }
 }
 
+.readOnlyTable {
+  tbody {
+    tr {
+      cursor: default;
+    }
+  }
+}
+
 .finished {
   color: #646464;
 }

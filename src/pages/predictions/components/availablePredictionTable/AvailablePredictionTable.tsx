@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 import appData from '@/app.data';
 import { Competition } from '@/pages/predictions/models/competition.dto';
@@ -46,7 +47,13 @@ const AvailablePredictionTable = ({ data }: AvailablePredictionTableProps) => {
               <td data-label="Name">{tournament.name}</td>
               <td data-label="Start">{tournament.currentSeason?.start_date}</td>
               <td data-label="End">{tournament.currentSeason?.end_date}</td>
-              <td data-label="Actions">
+              <td className={styles.actions} data-label="Actions">
+                <Link
+                  className={'button tableButtonPrimary'}
+                  to={`/predictions/tournament/${tournament.id}`}
+                >
+                  Matches
+                </Link>
                 <button
                   className={'tableButtonPrimary'}
                   onClick={() => {
