@@ -5,6 +5,10 @@ button,
   --clr-bg-blue: #2563eb;
   --clr-bg-blue-hover: #1d4ed8;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
   font-size: 16px;
   line-height: 20px;
   height: 30px;
