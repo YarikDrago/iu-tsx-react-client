@@ -1,0 +1,107 @@
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  cursor: pointer;
+}
+
+.label {
+  color: var(--muted, rgba(255, 255, 255, 0.72));
+  font-size: clamp(0.84rem, 0.78rem + 0.24vw, 0.95rem);
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+.switcher {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.track {
+  position: relative;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 76px;
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.66);
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+  transition:
+    color 160ms ease,
+    background 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.thumb {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
+  transition:
+    transform 160ms ease,
+    background 160ms ease;
+}
+
+.state {
+  position: relative;
+  z-index: 1;
+}
+
+.input:checked + .track {
+  justify-content: flex-start;
+  border-color: rgba(0, 198, 255, 0.54);
+  color: #071013;
+  background: linear-gradient(135deg, #00c6ff, #74f2ce);
+  box-shadow: 0 0 22px rgba(0, 198, 255, 0.2);
+}
+
+.input:checked + .track .thumb {
+  background: #071013;
+  transform: translateX(42px);
+}
+
+.input:focus-visible + .track {
+  outline: 2px solid rgba(255, 255, 255, 0.9);
+  outline-offset: 3px;
+}
+
+.input:disabled + .track {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.option:has(.input:disabled) {
+  cursor: not-allowed;
+}
+
+@media (max-width: 620px) {
+  .option {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
