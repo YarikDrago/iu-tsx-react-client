@@ -1,0 +1,27 @@
+.notificationSettings {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: min(360px, 100%);
+  padding: 14px;
+  border: 1px solid rgba(0, 198, 255, 0.2);
+  border-radius: 8px;
+  background:
+    linear-gradient(145deg, rgba(0, 198, 255, 0.12), rgba(255, 255, 255, 0.04)), rgba(0, 0, 0, 0.24);
+}
+
+.notificationTitle {
+  margin: 0;
+  color: var(--text, rgba(255, 255, 255, 0.92));
+  font-size: clamp(0.82rem, 0.76rem + 0.24vw, 0.95rem);
+  font-weight: 800;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+@media (max-width: 960px) {
+  .notificationSettings {
+    min-width: 0;
+  }
+}

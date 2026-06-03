@@ -2,28 +2,24 @@ import React from 'react';
 import { useParams } from 'react-router';
 
 import appData from '@/app.data';
-import { universalFetchRequest } from '@/function/api/universalFetchRequest';
-import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
+import { getTournamentData, TournamentDataDto } from '@/function/api/getTournamentData';
+import {
+  getTournamentNotificationSettings,
+  TournamentNotificationSettingsDto,
+} from '@/function/api/getTournamentNotificationSettings';
 import { MatchDto, MatchStatus } from '@/pages/predictions/models/match.dto';
-import { Season } from '@/pages/predictions/models/season.dto';
 import {
   getAwayTeamResultClass,
   getHomeTeamResultClass,
 } from '@/pages/predictions/pages/Group/utils/getTeamResultClass';
 import { routes } from '@/routes/routes';
 import { Breadcrumbs } from '@/shared/components/Breadcrumbs/Breadcrumbs';
+import { Switcher } from '@/shared/components/Switcher';
 import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
 import { formatLocalDDMMYY_HHMM } from '@/shared/utils/formatLocalDDMMYY_HHMM';
 
 import * as styles from '../Group/Group.module.scss';
-
-interface TournamentData {
-  id: number;
-  external_id: number;
-  name: string;
-  season?: Season;
-  matches: MatchDto[];
-}
+import * as tournamentStyles from './Tournament.module.scss';
 
 const TournamentMatchesTable = ({ matches }: { matches: MatchDto[] }) => {
   const initialScrollTargetRef = React.useRef<HTMLTableRowElement | null>(null);
@@ -86,7 +82,9 @@ const Tournament = () => {
   const { ready } = useRequireAccessToken();
   const { tournamentID } = useParams<{ tournamentID: string }>();
   const tournamentId = Number(tournamentID);
-  const [tournamentData, setTournamentData] = React.useState<TournamentData | null>(null);
+  const [tournamentData, setTournamentData] = React.useState<TournamentDataDto | null>(null);
+  const [notificationSettings, setNotificationSettings] =
+    React.useState<TournamentNotificationSettingsDto | null>(null);
   const [errorMsg, setErrorMsg] = React.useState('');
 
   React.useEffect(() => {
@@ -97,12 +95,12 @@ const Tournament = () => {
         appData.showLoader();
         setErrorMsg('');
 
-        const data = await universalFetchRequest<TournamentData>(
-          `tournaments/${tournamentID}/matches`,
-          HTMLRequestMethods.GET,
-          {}
-        );
+        const [data, notificationSettings] = await Promise.all([
+          getTournamentData(tournamentID),
+          getTournamentNotificationSettings(tournamentID),
+        ]);
         setTournamentData(data);
+        setNotificationSettings(notificationSettings.notificationSettings);
       } catch (e) {
         setErrorMsg((e as Error).message);
       } finally {
@@ -145,6 +143,41 @@ const Tournament = () => {
                   {seasonStart && seasonEnd ? `${seasonStart} - ${seasonEnd}` : 'Current'}
                 </strong>
               </div>
+            </div>
+            <div className={tournamentStyles.notificationSettings}>
+              <p className={tournamentStyles.notificationTitle}>Notification settings</p>
+              <Switcher
+                label="Matches score change"
+                checked={Boolean(notificationSettings?.notifyMatchScoreChanged)}
+                disabled={true}
+                onChange={() => {
+                  // TODO change
+                  // setNotificationSettings((prev) =>
+                  //   prev
+                  //     ? {
+                  //         ...prev,
+                  //         notifyMatchScoreChanged: !prev.notifyMatchScoreChanged,
+                  //       }
+                  //     : prev
+                  // );
+                }}
+              />
+              <Switcher
+                label="Matches status change"
+                checked={Boolean(notificationSettings?.notifyMatchStatusChanged)}
+                disabled={true}
+                onChange={() => {
+                  // TODO change
+                  // setNotificationSettings((prev) =>
+                  //   prev
+                  //     ? {
+                  //         ...prev,
+                  //         notifyMatchStatusChanged: !prev.notifyMatchStatusChanged,
+                  //       }
+                  //     : prev
+                  // );
+                }}
+              />
             </div>
           </header>
           <div className={styles.tableSection}>
