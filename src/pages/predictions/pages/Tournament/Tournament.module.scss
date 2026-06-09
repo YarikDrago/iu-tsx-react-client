@@ -1,6 +1,7 @@
 .notificationSettings {
   box-sizing: border-box;
-  display: flex;
+  //display: flex;
+  display: none;
   flex-direction: column;
   gap: 12px;
   min-width: min(360px, 100%);
