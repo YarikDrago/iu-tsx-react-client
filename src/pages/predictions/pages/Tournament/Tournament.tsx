@@ -7,6 +7,7 @@ import {
   getTournamentNotificationSettings,
   TournamentNotificationSettingsDto,
 } from '@/function/api/getTournamentNotificationSettings';
+import { patchTournamentNotificationSettings } from '@/function/api/patchTournamentNotificationSettings';
 import { MatchDto, MatchStatus } from '@/pages/predictions/models/match.dto';
 import {
   getAwayTeamResultClass,
@@ -111,6 +112,34 @@ const Tournament = () => {
     getTournament();
   }, [ready, tournamentID, tournamentId]);
 
+  const handleNotificationSettingsChange = async (key: keyof TournamentNotificationSettingsDto) => {
+    if (!tournamentID || notificationSettings === null) return;
+
+    const previousSettings = notificationSettings;
+    const nextSettings = {
+      ...notificationSettings,
+      [key]: !notificationSettings[key],
+    };
+
+    try {
+      setErrorMsg('');
+      appData.showLoader();
+      setNotificationSettings(nextSettings);
+
+      const updatedSettings = await patchTournamentNotificationSettings(tournamentID, nextSettings);
+
+      setNotificationSettings(updatedSettings.notificationSettings);
+    } catch (e) {
+      const message = (e as Error).message;
+
+      setNotificationSettings(previousSettings);
+      setErrorMsg(message);
+      appData.addToast(message, 'error');
+    } finally {
+      appData.hideLoader();
+    }
+  };
+
   if (!tournamentID || Number.isNaN(tournamentId)) {
     return (
       <article className={styles.page}>
@@ -149,34 +178,14 @@ const Tournament = () => {
               <Switcher
                 label="Matches score change"
                 checked={Boolean(notificationSettings?.notifyMatchScoreChanged)}
-                disabled={true}
-                onChange={() => {
-                  // TODO change
-                  // setNotificationSettings((prev) =>
-                  //   prev
-                  //     ? {
-                  //         ...prev,
-                  //         notifyMatchScoreChanged: !prev.notifyMatchScoreChanged,
-                  //       }
-                  //     : prev
-                  // );
-                }}
+                disabled={false}
+                onChange={() => handleNotificationSettingsChange('notifyMatchScoreChanged')}
               />
               <Switcher
                 label="Matches status change"
                 checked={Boolean(notificationSettings?.notifyMatchStatusChanged)}
-                disabled={true}
-                onChange={() => {
-                  // TODO change
-                  // setNotificationSettings((prev) =>
-                  //   prev
-                  //     ? {
-                  //         ...prev,
-                  //         notifyMatchStatusChanged: !prev.notifyMatchStatusChanged,
-                  //       }
-                  //     : prev
-                  // );
-                }}
+                disabled={false}
+                onChange={() => handleNotificationSettingsChange('notifyMatchStatusChanged')}
               />
             </div>
           </header>

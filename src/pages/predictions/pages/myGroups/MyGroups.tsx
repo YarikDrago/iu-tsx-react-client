@@ -65,7 +65,15 @@ const MyGroups = () => {
         HTMLRequestMethods.GET,
         {}
       );
+
+      const notificationSettings = await universalFetchRequest(
+        `tournaments/groups/${group.id}/notification-settings`,
+        HTMLRequestMethods.GET,
+        {}
+      );
       console.log(groupInfo);
+      console.log('notification settings:', notificationSettings);
+
       appData.group.show({
         isNew: false,
         id: groupInfo.id,
