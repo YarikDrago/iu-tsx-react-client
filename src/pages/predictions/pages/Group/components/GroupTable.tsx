@@ -87,6 +87,19 @@ export const GroupTable = ({
     hasScrolledToInitialMatchRef.current = true;
   }, [initialScrollTargetMatchId]);
 
+  function editPrediction(match: MatchDto) {
+    if (isPredictionLocked(match)) return;
+
+    const predictionIdx = predictionGlossary[appData.userId]?.[match.id];
+
+    onEditPrediction({
+      groupId,
+      match,
+      prediction:
+        predictionIdx !== null && predictionIdx !== undefined ? predictions[predictionIdx] : null,
+    });
+  }
+
   return (
     <div className={styles.tableWrapper}>
       <table className={styles.table}>
@@ -115,22 +128,11 @@ export const GroupTable = ({
                 /* Ref for start render scrolling */
                 ref={match.id === initialScrollTargetMatchId ? initialScrollTargetRef : null}
                 onClick={() => {
-                  if (isPredictionLocked(match)) return;
-
-                  const predictionIdx = predictionGlossary[appData.userId]?.[match.id];
-
-                  onEditPrediction({
-                    groupId,
-                    match,
-                    prediction:
-                      predictionIdx !== null && predictionIdx !== undefined
-                        ? predictions[predictionIdx]
-                        : null,
-                  });
+                  editPrediction(match);
                 }}
-                onMouseEnter={() => {
-                  console.log(match);
-                }}
+                // onMouseEnter={() => {
+                //   console.log(match);
+                // }}
               >
                 <td>{idx + 1}</td>
                 <td className={getHomeTeamResultClass(match)}>{match.home_team || '???'}</td>
@@ -143,9 +145,21 @@ export const GroupTable = ({
                 </td>
                 <td>{`${String(match.home_score)} - ${String(match.away_score)}`}</td>
                 {members.map((member) => {
+                  const withEditButton =
+                    !isPredictionLocked(match) && member.user_id === appData.userId;
                   return (
-                    <td key={member.id}>
-                      {getPredictionText(match, member, predictions, predictionGlossary)}
+                    <td className={styles.predictionCell} key={member.id}>
+                      <p>{getPredictionText(match, member, predictions, predictionGlossary)}</p>
+                      {withEditButton && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            editPrediction(match);
+                          }}
+                        >
+                          Edit
+                        </button>
+                      )}
                     </td>
                   );
                 })}

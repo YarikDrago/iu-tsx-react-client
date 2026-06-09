@@ -159,6 +159,49 @@
   color: #ff9900;
 }
 
+.predictionCell {
+  p {
+    display: inline-flex;
+    align-items: center;
+    min-width: 72px;
+    margin: 0 8px 0 0;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 28px;
+    padding: 5px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 6px;
+    color: var(--text, rgba(255, 255, 255, 0.92));
+    background: rgba(255, 255, 255, 0.08);
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+      border-color 140ms ease,
+      background 140ms ease,
+      transform 140ms ease;
+
+    &:hover {
+      border-color: rgba(0, 198, 255, 0.45);
+      background: rgba(0, 198, 255, 0.16);
+      transform: translateY(-1px);
+    }
+
+    &:focus-visible {
+      outline: 2px solid rgba(0, 198, 255, 0.7);
+      outline-offset: 2px;
+    }
+  }
+}
+
 @media (max-width: 960px) {
   .hero {
     grid-template-columns: 1fr;
