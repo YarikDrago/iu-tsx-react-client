@@ -92,6 +92,10 @@ const MyGroups = () => {
     }
   }
 
+  function openMatches(groupId: number) {
+    navigate(`/predictions/groups/${groupId}`);
+  }
+
   return (
     <article>
       <Breadcrumbs items={[routes.home, routes.predictions, routes.myGroups]} />
@@ -113,7 +117,7 @@ const MyGroups = () => {
               {groups.map((group) => (
                 <tr
                   onClick={() => {
-                    navigate(`/predictions/groups/${group.id}`);
+                    openMatches(group.id);
                   }}
                   key={group.id}
                 >
@@ -127,8 +131,17 @@ const MyGroups = () => {
                   {/*<td>{group.isOwner ? 'Yes' : 'No'}</td>*/}
                   {/* Action */}
                   <td className={styles.action} data-label="Action">
-                    {group.isOwner ? (
-                      <div className={styles.actionBlock}>
+                    <div className={styles.actionBlock}>
+                      <button
+                        className={'tableButtonPrimary'}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openMatches(group.id);
+                        }}
+                      >
+                        Matches
+                      </button>
+                      {group.isOwner ? (
                         <button
                           className={'tableButtonPrimary'}
                           onClick={(e) => {
@@ -138,10 +151,10 @@ const MyGroups = () => {
                         >
                           Manage
                         </button>
-                      </div>
-                    ) : (
-                      <button className={'tableButtonDanger'}>Leave</button>
-                    )}
+                      ) : (
+                        <button className={'tableButtonDanger'}>Leave</button>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))}
