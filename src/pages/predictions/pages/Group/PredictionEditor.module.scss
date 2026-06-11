@@ -112,6 +112,10 @@
     font-weight: 800;
     line-height: 1;
     text-align: center;
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.2);
+    }
   }
 }
 
