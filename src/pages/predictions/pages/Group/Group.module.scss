@@ -112,6 +112,9 @@
   max-height: calc(100dvh - 88px);
   overflow: auto;
   -webkit-overflow-scrolling: touch;
+
+  scrollbar-gutter: stable; /* Firefox */
+  scrollbar-width: thin; /* Chrome */
 }
 
 .table {
