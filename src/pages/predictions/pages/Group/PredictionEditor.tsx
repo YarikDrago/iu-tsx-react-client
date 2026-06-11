@@ -17,10 +17,10 @@ interface Props {
 const PredictionEditor = ({ editData, onClose }: Props) => {
   const [errorMsg, setErrorMsg] = useState('');
   const [homeScore, setHomeScore] = useState<string>(
-    editData.prediction?.home_score?.toString() || ''
+    editData.prediction?.home_score?.toString() || '0'
   );
   const [awayScore, setAwayScore] = useState<string>(
-    editData.prediction?.away_score?.toString() || ''
+    editData.prediction?.away_score?.toString() || '0'
   );
 
   async function savePrediction() {
