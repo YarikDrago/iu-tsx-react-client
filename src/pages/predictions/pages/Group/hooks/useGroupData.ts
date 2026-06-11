@@ -81,12 +81,30 @@ export const useGroupData = (ready: boolean, groupId: number, id?: string) => {
           HTMLRequestMethods.GET,
           {}
         );
+        const sortedMatches = group.matches
+          .map((match, index) => ({ match, index }))
+          .sort(({ match: a, index: aIndex }, { match: b, index: bIndex }) => {
+            if (!a.start_time && !b.start_time) {
+              return aIndex - bIndex;
+            }
+
+            if (!a.start_time) {
+              return 1;
+            }
+
+            if (!b.start_time) {
+              return -1;
+            }
+
+            return a.start_time.localeCompare(b.start_time) || aIndex - bIndex;
+          })
+          .map(({ match }) => match);
         const sortedMembers = sortGroupMembers(group.group.members);
 
         setMembers(sortedMembers);
         setPredictions(group.predictions);
         setPredictionGlossary(buildPredictionGlossary(sortedMembers, group.predictions));
-        setMatches(group.matches);
+        setMatches(sortedMatches);
         setGroupGeneralData({
           name: group.group.name,
           tournamentName: group.group.tournament.name,
