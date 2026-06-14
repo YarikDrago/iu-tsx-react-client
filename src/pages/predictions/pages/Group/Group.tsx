@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router';
 
+import { MatchDto } from '@/pages/predictions/models/match.dto';
 import { routes } from '@/routes/routes';
 import { Breadcrumbs } from '@/shared/components/Breadcrumbs/Breadcrumbs';
 import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
@@ -9,6 +10,7 @@ import { GroupTable } from './components/GroupTable';
 import * as styles from './Group.module.scss';
 import { useGroupData } from './hooks/useGroupData';
 import { useGroupRealtime } from './hooks/useGroupRealtime';
+import MatchScoreEditor from './MatchScoreEditor';
 import { TEditPrediction } from './models/models';
 import PredictionEditor from './PredictionEditor';
 
@@ -17,6 +19,7 @@ const Group = () => {
   const { id } = useParams<{ id: string }>();
   const groupId = Number(id);
   const [editPrediction, setEditPrediction] = React.useState<TEditPrediction | null>(null);
+  const [editMatchScore, setEditMatchScore] = React.useState<MatchDto | null>(null);
   const {
     groupGeneralData,
     matches,
@@ -46,6 +49,15 @@ const Group = () => {
     setPredictions,
     setPredictionGlossary,
   });
+
+  const handleMatchScoreSaved = React.useCallback(
+    (updatedMatch: MatchDto) => {
+      setMatches((prevMatches) =>
+        prevMatches.map((match) => (match.id === updatedMatch.id ? updatedMatch : match))
+      );
+    },
+    [setMatches]
+  );
 
   if (groupId === undefined || Number.isNaN(groupId)) {
     return (
@@ -85,6 +97,7 @@ const Group = () => {
               predictions={predictions}
               predictionGlossary={predictionGlossary}
               onEditPrediction={setEditPrediction}
+              onEditMatchScore={setEditMatchScore}
             />
           </div>
         </section>
@@ -95,6 +108,15 @@ const Group = () => {
           editData={editPrediction}
           onClose={() => {
             setEditPrediction(null);
+          }}
+        />
+      )}
+      {editMatchScore && (
+        <MatchScoreEditor
+          match={editMatchScore}
+          onSaved={handleMatchScoreSaved}
+          onClose={() => {
+            setEditMatchScore(null);
           }}
         />
       )}

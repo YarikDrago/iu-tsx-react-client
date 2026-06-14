@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router';
+import { observer } from 'mobx-react';
 
 import appData from '@/app.data';
 import { getTournamentData, TournamentDataDto } from '@/function/api/getTournamentData';
@@ -9,6 +10,7 @@ import {
 } from '@/function/api/getTournamentNotificationSettings';
 import { patchTournamentNotificationSettings } from '@/function/api/patchTournamentNotificationSettings';
 import { MatchDto, MatchStatus } from '@/pages/predictions/models/match.dto';
+import MatchScoreEditor from '@/pages/predictions/pages/Group/MatchScoreEditor';
 import {
   getAwayTeamResultClass,
   getHomeTeamResultClass,
@@ -22,7 +24,12 @@ import { formatLocalDDMMYY_HHMM } from '@/shared/utils/formatLocalDDMMYY_HHMM';
 import * as styles from '../Group/Group.module.scss';
 import * as tournamentStyles from './Tournament.module.scss';
 
-const TournamentMatchesTable = ({ matches }: { matches: MatchDto[] }) => {
+interface TournamentMatchesTableProps {
+  matches: MatchDto[];
+  onEditMatchScore: (match: MatchDto) => void;
+}
+
+const TournamentMatchesTable = ({ matches, onEditMatchScore }: TournamentMatchesTableProps) => {
   const initialScrollTargetRef = React.useRef<HTMLTableRowElement | null>(null);
   const hasScrolledToInitialMatchRef = React.useRef(false);
   const initialScrollTargetMatchId = React.useMemo(() => {
@@ -70,7 +77,20 @@ const TournamentMatchesTable = ({ matches }: { matches: MatchDto[] }) => {
               <td className={match.status === MatchStatus.FINISHED ? styles.finished : ''}>
                 {match.status}
               </td>
-              <td>{`${String(match.home_score)} - ${String(match.away_score)}`}</td>
+              <td className={styles.scoreCell}>
+                <p>{`${String(match.home_score)} - ${String(match.away_score)}`}</p>
+                {appData.role.includes('admin') && (
+                  <button
+                    className={'admin'}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onEditMatchScore(match);
+                    }}
+                  >
+                    Edit
+                  </button>
+                )}
+              </td>
             </tr>
           ))}
         </tbody>
@@ -86,6 +106,7 @@ const Tournament = () => {
   const [tournamentData, setTournamentData] = React.useState<TournamentDataDto | null>(null);
   const [notificationSettings, setNotificationSettings] =
     React.useState<TournamentNotificationSettingsDto | null>(null);
+  const [editMatchScore, setEditMatchScore] = React.useState<MatchDto | null>(null);
   const [errorMsg, setErrorMsg] = React.useState('');
 
   React.useEffect(() => {
@@ -140,6 +161,19 @@ const Tournament = () => {
     }
   };
 
+  const handleMatchScoreSaved = React.useCallback((updatedMatch: MatchDto) => {
+    setTournamentData((prevData) => {
+      if (prevData === null) return prevData;
+
+      return {
+        ...prevData,
+        matches: prevData.matches.map((match) =>
+          match.id === updatedMatch.id ? updatedMatch : match
+        ),
+      };
+    });
+  }, []);
+
   if (!tournamentID || Number.isNaN(tournamentId)) {
     return (
       <article className={styles.page}>
@@ -190,13 +224,25 @@ const Tournament = () => {
             </div>
           </header>
           <div className={styles.tableSection}>
-            <TournamentMatchesTable matches={tournamentData.matches} />
+            <TournamentMatchesTable
+              matches={tournamentData.matches}
+              onEditMatchScore={setEditMatchScore}
+            />
           </div>
         </section>
       )}
       {errorMsg !== '' && <p className={styles.errorMsg}>{errorMsg}</p>}
+      {editMatchScore && (
+        <MatchScoreEditor
+          match={editMatchScore}
+          onSaved={handleMatchScoreSaved}
+          onClose={() => {
+            setEditMatchScore(null);
+          }}
+        />
+      )}
     </article>
   );
 };
 
-export default Tournament;
+export default observer(Tournament);

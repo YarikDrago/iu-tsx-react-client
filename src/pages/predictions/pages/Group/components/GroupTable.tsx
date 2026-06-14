@@ -25,6 +25,7 @@ interface GroupTableProps {
   predictions: PredictionDto[];
   predictionGlossary: TPredictionGlossary;
   onEditPrediction: (editPrediction: TEditPrediction) => void;
+  onEditMatchScore: (match: MatchDto) => void;
 }
 
 const isPredictionLocked = (match: MatchDto) => {
@@ -66,6 +67,7 @@ export const GroupTable = ({
   predictions,
   predictionGlossary,
   onEditPrediction,
+  onEditMatchScore,
 }: GroupTableProps) => {
   const initialScrollTargetRef = React.useRef<HTMLTableRowElement | null>(null);
   const hasScrolledToInitialMatchRef = React.useRef(false);
@@ -143,7 +145,20 @@ export const GroupTable = ({
                 <td className={match.status === MatchStatus.FINISHED ? styles.finished : ''}>
                   {match.status}
                 </td>
-                <td>{`${String(match.home_score)} - ${String(match.away_score)}`}</td>
+                <td className={styles.scoreCell}>
+                  <p>{`${String(match.home_score)} - ${String(match.away_score)}`}</p>
+                  {appData.role.includes('admin') && (
+                    <button
+                      className={'admin'}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onEditMatchScore(match);
+                      }}
+                    >
+                      Edit
+                    </button>
+                  )}
+                </td>
                 {members.map((member) => {
                   const withEditButton =
                     !isPredictionLocked(match) && member.user_id === appData.userId;

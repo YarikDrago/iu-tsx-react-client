@@ -162,6 +162,7 @@
   color: #ff9900;
 }
 
+.scoreCell,
 .predictionCell {
   p {
     display: inline-flex;
@@ -178,10 +179,8 @@
     justify-content: center;
     min-height: 28px;
     padding: 5px 10px;
-    border: 1px solid rgba(255, 255, 255, 0.16);
+
     border-radius: 6px;
-    color: var(--text, rgba(255, 255, 255, 0.92));
-    background: rgba(255, 255, 255, 0.08);
     font: inherit;
     font-size: 0.82rem;
     font-weight: 700;
@@ -192,15 +191,21 @@
       background 140ms ease,
       transform 140ms ease;
 
-    &:hover {
-      border-color: rgba(0, 198, 255, 0.45);
-      background: rgba(0, 198, 255, 0.16);
-      transform: translateY(-1px);
-    }
+    &:not(:global(.admin)) {
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: var(--text, rgba(255, 255, 255, 0.92));
+      background: rgba(255, 255, 255, 0.08);
 
-    &:focus-visible {
-      outline: 2px solid rgba(0, 198, 255, 0.7);
-      outline-offset: 2px;
+      &:hover {
+        border-color: rgba(0, 198, 255, 0.45);
+        background: rgba(0, 198, 255, 0.16);
+        transform: translateY(-1px);
+      }
+
+      &:focus-visible {
+        outline: 2px solid rgba(0, 198, 255, 0.7);
+        outline-offset: 2px;
+      }
     }
   }
 }
