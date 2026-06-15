@@ -38,8 +38,11 @@ const shouldShowScore = (match: MatchDto) => {
   return match.status === MatchStatus.IN_PLAY || match.status === MatchStatus.FINISHED;
 };
 
-const formatScorePart = (score: number | null) => {
-  return score === null ? '-' : String(score);
+const formatMatchScorePart = (match: MatchDto, score: number | null) => {
+  if (score !== null) return String(score);
+  if (isPredictionLocked(match)) return '0';
+
+  return '-';
 };
 
 const getMatchTimeParts = (match: MatchDto) => {
@@ -184,12 +187,16 @@ export const GroupTable = ({
                   </div>
                   <div className={styles.matchControls}>
                     {showScore ? (
-                      <div className={`${styles.matchPair} ${styles.matchScore}`}>
+                      <div
+                        className={`${styles.matchPair} ${styles.matchScore} ${
+                          match.status === MatchStatus.IN_PLAY ? styles.liveScore : ''
+                        }`}
+                      >
                         <div className={styles.matchPairItem}>
-                          {formatScorePart(match.home_score)}
+                          {formatMatchScorePart(match, match.home_score)}
                         </div>
                         <div className={styles.matchPairItem}>
-                          {formatScorePart(match.away_score)}
+                          {formatMatchScorePart(match, match.away_score)}
                         </div>
                       </div>
                     ) : (

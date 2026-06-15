@@ -228,6 +228,21 @@
   }
 }
 
+.liveScore {
+  animation: liveScorePulse 1.1s ease-in-out infinite;
+}
+
+@keyframes liveScorePulse {
+  0%,
+  100% {
+    color: var(--text, rgba(255, 255, 255, 0.92));
+  }
+
+  50% {
+    color: #18d26b;
+  }
+}
+
 .matchTime {
   color: var(--text, rgba(255, 255, 255, 0.92));
   font-size: 0.9rem;
