@@ -34,6 +34,24 @@ const isPredictionLocked = (match: MatchDto) => {
   return match.status === MatchStatus.FINISHED || match.status === MatchStatus.IN_PLAY;
 };
 
+const shouldShowScore = (match: MatchDto) => {
+  return match.status === MatchStatus.IN_PLAY || match.status === MatchStatus.FINISHED;
+};
+
+const formatScorePart = (score: number | null) => {
+  return score === null ? '-' : String(score);
+};
+
+const getMatchTimeParts = (match: MatchDto) => {
+  if (!match.start_time) {
+    return ['scheduled', ''];
+  }
+
+  const [date, time] = formatLocalDDMMYY_HHMM(match.start_time, false).split(' ');
+
+  return [date, time ?? ''];
+};
+
 const getPredictionText = (
   match: MatchDto,
   member: GroupMember,
@@ -111,13 +129,15 @@ export const GroupTable = ({
   return (
     <div className={styles.tableWrapper}>
       <table className={styles.table}>
+        <colgroup>
+          <col className={styles.matchColumn} />
+          {members.map((member) => (
+            <col key={member.user_id} />
+          ))}
+        </colgroup>
         <thead>
           <tr>
-            <th>Home team</th>
-            <th>Away team</th>
-            <th>Date</th>
-            <th>Status</th>
-            <th>Score</th>
+            <th className={styles.matchColumn}>Match</th>
             {members.map((member) => {
               return (
                 <th key={member.user_id}>
@@ -130,6 +150,9 @@ export const GroupTable = ({
         </thead>
         <tbody>
           {matches.map((match) => {
+            const [matchDate, matchTime] = getMatchTimeParts(match);
+            const showScore = shouldShowScore(match);
+
             return (
               <tr
                 key={match.id}
@@ -142,27 +165,51 @@ export const GroupTable = ({
                 //   console.log(match);
                 // }}
               >
-                <td className={getHomeTeamResultClass(match)}>{match.home_team || '???'}</td>
-                <td className={getAwayTeamResultClass(match)}>{match.away_team || '???'}</td>
-                <td className={match.status === MatchStatus.FINISHED ? styles.finished : ''}>
-                  {formatLocalDDMMYY_HHMM(match.start_time, false) || 'scheduled'}
-                </td>
-                <td className={match.status === MatchStatus.FINISHED ? styles.finished : ''}>
-                  {match.status}
-                </td>
-                <td className={styles.scoreCell}>
-                  <p>{`${String(match.home_score)} - ${String(match.away_score)}`}</p>
-                  {appData.role.includes('admin') && (
-                    <button
-                      className={'admin'}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onEditMatchScore(match);
-                      }}
+                <td className={styles.matchCell}>
+                  <div className={styles.matchPair}>
+                    <div
+                      className={`${styles.matchPairItem} ${styles.teamName} ${getHomeTeamResultClass(
+                        match
+                      )}`}
                     >
-                      Edit
-                    </button>
-                  )}
+                      {match.home_team || '???'}
+                    </div>
+                    <div
+                      className={`${styles.matchPairItem} ${styles.teamName} ${getAwayTeamResultClass(
+                        match
+                      )}`}
+                    >
+                      {match.away_team || '???'}
+                    </div>
+                  </div>
+                  <div className={styles.matchControls}>
+                    {showScore ? (
+                      <div className={`${styles.matchPair} ${styles.matchScore}`}>
+                        <div className={styles.matchPairItem}>
+                          {formatScorePart(match.home_score)}
+                        </div>
+                        <div className={styles.matchPairItem}>
+                          {formatScorePart(match.away_score)}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className={`${styles.matchPair} ${styles.matchTime}`}>
+                        <div className={styles.matchPairItem}>{matchDate}</div>
+                        <div className={styles.matchPairItem}>{matchTime}</div>
+                      </div>
+                    )}
+                    {appData.role.includes('admin') && (
+                      <button
+                        className={'admin'}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onEditMatchScore(match);
+                        }}
+                      >
+                        Edit
+                      </button>
+                    )}
+                  </div>
                 </td>
                 {members.map((member) => {
                   const withEditButton =

@@ -162,6 +162,86 @@
   color: #ff9900;
 }
 
+.matchColumn {
+  width: 1%;
+}
+
+.matchCell {
+  display: grid;
+  grid-template-columns: minmax(130px, 1fr) auto;
+  gap: 8px 14px;
+  align-items: center;
+  min-width: 200px;
+  vertical-align: top;
+}
+
+.matchControls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    min-height: 28px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+  }
+}
+
+.matchPair {
+  min-width: 0;
+}
+
+.matchPairItem {
+  max-width: 240px;
+  min-height: 20px;
+  font-weight: 700;
+  line-height: 1.25;
+  white-space: nowrap;
+
+  & + & {
+    margin-top: 5px;
+    padding-top: 5px;
+    border-top: 1px solid rgba(255, 255, 255, 0.22);
+  }
+}
+
+.teamName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.matchScore {
+  min-width: 24px;
+  text-align: center;
+
+  .matchPairItem {
+    max-width: none;
+  }
+}
+
+.matchTime {
+  color: var(--text, rgba(255, 255, 255, 0.92));
+  font-size: 0.9rem;
+  font-weight: 800;
+  line-height: 1.2;
+  min-width: max-content;
+  text-align: center;
+  white-space: nowrap;
+
+  .matchPairItem {
+    max-width: none;
+  }
+}
+
 .scoreCell,
 .predictionCell {
   p {
