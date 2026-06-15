@@ -13,6 +13,7 @@ import { useGroupRealtime } from './hooks/useGroupRealtime';
 import MatchScoreEditor from './MatchScoreEditor';
 import { TEditPrediction } from './models/models';
 import PredictionEditor from './PredictionEditor';
+import { sortGroupMembers } from './utils/sortGroupMembers';
 
 const Group = () => {
   const { ready } = useRequireAccessToken();
@@ -28,6 +29,7 @@ const Group = () => {
     predictionGlossary,
     errorMsg,
     memberScores,
+    memberTotalPenaltyScores,
     matchesRef,
     membersRef,
     predictionsRef,
@@ -36,6 +38,10 @@ const Group = () => {
     setPredictions,
     setPredictionGlossary,
   } = useGroupData(ready, groupId, id);
+
+  const sortedMembers = React.useMemo(() => {
+    return sortGroupMembers(members, memberScores, memberTotalPenaltyScores);
+  }, [members, memberScores, memberTotalPenaltyScores]);
 
   useGroupRealtime({
     ready,
@@ -92,8 +98,9 @@ const Group = () => {
             <GroupTable
               groupId={groupId}
               matches={matches}
-              members={members}
+              members={sortedMembers}
               memberScores={memberScores}
+              memberTotalPenaltyScores={memberTotalPenaltyScores}
               predictions={predictions}
               predictionGlossary={predictionGlossary}
               onEditPrediction={setEditPrediction}

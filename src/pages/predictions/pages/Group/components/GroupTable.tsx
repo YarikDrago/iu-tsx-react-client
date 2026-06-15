@@ -16,12 +16,14 @@ import {
 import { formatLocalDDMMYY_HHMM } from '@/shared/utils/formatLocalDDMMYY_HHMM';
 
 import * as styles from '../Group.module.scss';
+import { calcPredictionPenaltyScore } from '../utils/calcPredictionPenaltyScore';
 
 interface GroupTableProps {
   groupId: number;
   matches: MatchDto[];
   members: GroupMember[];
   memberScores: Record<number, number>;
+  memberTotalPenaltyScores: Record<number, number>;
   predictions: PredictionDto[];
   predictionGlossary: TPredictionGlossary;
   onEditPrediction: (editPrediction: TEditPrediction) => void;
@@ -53,7 +55,10 @@ const getPredictionText = (
   let predictionText = `${prediction.home_score} - ${prediction.away_score}`;
 
   if (isPredictionLocked(match)) {
-    predictionText += ` (${calcPredictionPoints(match, prediction)})`;
+    predictionText += ` (${calcPredictionPoints(match, prediction)} | ${calcPredictionPenaltyScore(
+      match,
+      prediction
+    )})`;
   }
 
   return predictionText;
@@ -64,6 +69,7 @@ export const GroupTable = ({
   matches,
   members,
   memberScores,
+  memberTotalPenaltyScores,
   predictions,
   predictionGlossary,
   onEditPrediction,
@@ -116,7 +122,8 @@ export const GroupTable = ({
             {members.map((member) => {
               return (
                 <th key={member.user_id}>
-                  {member.nickname} ({memberScores[member.user_id] ?? 0})
+                  {member.nickname} ({memberScores[member.user_id] ?? 0} |{' '}
+                  {memberTotalPenaltyScores[member.user_id] ?? 0})
                 </th>
               );
             })}

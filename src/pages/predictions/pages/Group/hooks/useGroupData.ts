@@ -15,6 +15,8 @@ import { buildPredictionGlossary } from '@/pages/predictions/pages/Group/utils/b
 import { calcPredictionPoints } from '@/pages/predictions/pages/Group/utils/calcPredictionPoints';
 import { sortGroupMembers } from '@/pages/predictions/pages/Group/utils/sortGroupMembers';
 
+import { calcPredictionPenaltyScore } from '../utils/calcPredictionPenaltyScore';
+
 export const useGroupData = (ready: boolean, groupId: number, id?: string) => {
   const [groupGeneralData, setGroupGeneralData] = useState<GroupGeneralData | null>(null);
   const [matches, setMatches] = useState<MatchDto[]>([]);
@@ -46,6 +48,30 @@ export const useGroupData = (ready: boolean, groupId: number, id?: string) => {
         }
 
         return totalScore + calcPredictionPoints(match, prediction);
+      }, 0);
+
+      return scores;
+    }, {});
+  }, [matches, members, predictions, predictionGlossary]);
+
+  const memberTotalPenaltyScores = React.useMemo<Record<number, number>>(() => {
+    return members.reduce<Record<number, number>>((scores, member) => {
+      scores[member.user_id] = matches.reduce((totalScore, match) => {
+        if (match.status !== MatchStatus.FINISHED && match.status !== MatchStatus.IN_PLAY) {
+          return totalScore;
+        }
+
+        const predictionIdx = predictionGlossary[member.user_id]?.[match.id];
+        if (predictionIdx === null || predictionIdx === undefined) {
+          return totalScore;
+        }
+
+        const prediction = predictions[predictionIdx];
+        if (!prediction) {
+          return totalScore;
+        }
+
+        return totalScore + calcPredictionPenaltyScore(match, prediction);
       }, 0);
 
       return scores;
@@ -129,6 +155,7 @@ export const useGroupData = (ready: boolean, groupId: number, id?: string) => {
     predictionGlossary,
     errorMsg,
     memberScores,
+    memberTotalPenaltyScores: memberTotalPenaltyScores,
     matchesRef,
     membersRef,
     predictionsRef,
