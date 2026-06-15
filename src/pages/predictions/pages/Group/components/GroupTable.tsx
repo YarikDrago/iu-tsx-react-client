@@ -113,7 +113,6 @@ export const GroupTable = ({
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>ID</th>
             <th>Home team</th>
             <th>Away team</th>
             <th>Date</th>
@@ -130,7 +129,7 @@ export const GroupTable = ({
           </tr>
         </thead>
         <tbody>
-          {matches.map((match, idx) => {
+          {matches.map((match) => {
             return (
               <tr
                 key={match.id}
@@ -143,7 +142,6 @@ export const GroupTable = ({
                 //   console.log(match);
                 // }}
               >
-                <td>{idx + 1}</td>
                 <td className={getHomeTeamResultClass(match)}>{match.home_team || '???'}</td>
                 <td className={getAwayTeamResultClass(match)}>{match.away_team || '???'}</td>
                 <td className={match.status === MatchStatus.FINISHED ? styles.finished : ''}>
