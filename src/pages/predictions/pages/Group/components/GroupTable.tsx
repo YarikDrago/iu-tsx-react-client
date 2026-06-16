@@ -63,6 +63,19 @@ const getPredictionText = (
 ) => {
   const predictionIdx = predictionGlossary[member.user_id]?.[match.id];
 
+  // TODO also hide predictions on the server
+  /* Hide predictions for the current user if a match has not been started.
+   * But always display predictions for the current user */
+  if (match.hide_predictions) {
+    if (
+      member.user_id !== appData.userId &&
+      match.status !== MatchStatus.IN_PLAY &&
+      match.status !== MatchStatus.FINISHED
+    ) {
+      return '*** - ***';
+    }
+  }
+
   if (predictionIdx === null || predictionIdx === undefined) {
     return 'null - null';
   }
