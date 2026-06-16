@@ -8,6 +8,7 @@ import {
   getTournamentNotificationSettings,
   TournamentNotificationSettingsDto,
 } from '@/function/api/getTournamentNotificationSettings';
+import { patchTournamentMatch } from '@/function/api/patchTournamentMatch';
 import { patchTournamentNotificationSettings } from '@/function/api/patchTournamentNotificationSettings';
 import { MatchDto, MatchStatus } from '@/pages/predictions/models/match.dto';
 import MatchScoreEditor from '@/pages/predictions/pages/Group/MatchScoreEditor';
@@ -27,9 +28,14 @@ import * as tournamentStyles from './Tournament.module.scss';
 interface TournamentMatchesTableProps {
   matches: MatchDto[];
   onEditMatchScore: (match: MatchDto) => void;
+  onHidePredictionsChange: (match: MatchDto, hidePredictions: boolean) => void;
 }
 
-const TournamentMatchesTable = ({ matches, onEditMatchScore }: TournamentMatchesTableProps) => {
+const TournamentMatchesTable = ({
+  matches,
+  onEditMatchScore,
+  onHidePredictionsChange,
+}: TournamentMatchesTableProps) => {
   const initialScrollTargetRef = React.useRef<HTMLTableRowElement | null>(null);
   const hasScrolledToInitialMatchRef = React.useRef(false);
   const initialScrollTargetMatchId = React.useMemo(() => {
@@ -93,7 +99,19 @@ const TournamentMatchesTable = ({ matches, onEditMatchScore }: TournamentMatches
                 )}
               </td>
               {appData.role.includes('admin') && (
-                <td className={'admin'}>{String(match.hide_predictions)}</td>
+                <td className={'admin'}>
+                  <input
+                    type="checkbox"
+                    checked={match.hide_predictions}
+                    onChange={(e) => {
+                      e.stopPropagation();
+                      onHidePredictionsChange(match, e.target.checked);
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                  />
+                </td>
               )}
             </tr>
           ))}
@@ -178,6 +196,43 @@ const Tournament = () => {
     });
   }, []);
 
+  const handleHidePredictionsChange = React.useCallback(
+    async (match: MatchDto, hidePredictions: boolean) => {
+      try {
+        setErrorMsg('');
+        appData.showLoader();
+
+        const updatedMatch = await patchTournamentMatch(match.id, {
+          hide_predictions: hidePredictions,
+        });
+
+        const nextMatch = {
+          ...match,
+          ...updatedMatch,
+          hide_predictions: updatedMatch?.hide_predictions ?? hidePredictions,
+        };
+
+        setTournamentData((prevData) => {
+          if (prevData === null) return prevData;
+
+          return {
+            ...prevData,
+            matches: prevData.matches.map((item) => (item.id === match.id ? nextMatch : item)),
+          };
+        });
+        appData.addToast('Hide predictions status saved', 'success');
+      } catch (e) {
+        const message = (e as Error).message;
+
+        setErrorMsg(message);
+        appData.addToast(message, 'error');
+      } finally {
+        appData.hideLoader();
+      }
+    },
+    []
+  );
+
   if (!tournamentID || Number.isNaN(tournamentId)) {
     return (
       <article className={styles.page}>
@@ -231,6 +286,7 @@ const Tournament = () => {
             <TournamentMatchesTable
               matches={tournamentData.matches}
               onEditMatchScore={setEditMatchScore}
+              onHidePredictionsChange={handleHidePredictionsChange}
             />
           </div>
         </section>
