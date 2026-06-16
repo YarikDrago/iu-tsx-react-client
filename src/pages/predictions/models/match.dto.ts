@@ -25,6 +25,7 @@ export interface MatchDto {
   status: MatchStatus;
   home_score: number | null;
   away_score: number | null;
+  hide_predictions: boolean;
   updated_at: string;
 }
 
@@ -52,4 +53,6 @@ export class ManualUpdateMatchDto {
   home_score?: number | null;
   awayScore?: number | null;
   away_score?: number | null;
+  hidePredictions?: boolean;
+  hide_predictions?: boolean;
 }
