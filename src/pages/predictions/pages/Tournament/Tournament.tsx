@@ -60,6 +60,7 @@ const TournamentMatchesTable = ({ matches, onEditMatchScore }: TournamentMatches
             <th>Date</th>
             <th>Status</th>
             <th>Score</th>
+            {appData.role.includes('admin') && <th className={'admin'}>Hide predictions</th>}
           </tr>
         </thead>
         <tbody>
@@ -91,6 +92,9 @@ const TournamentMatchesTable = ({ matches, onEditMatchScore }: TournamentMatches
                   </button>
                 )}
               </td>
+              {appData.role.includes('admin') && (
+                <td className={'admin'}>{String(match.hide_predictions)}</td>
+              )}
             </tr>
           ))}
         </tbody>
