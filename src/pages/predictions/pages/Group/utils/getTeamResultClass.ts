@@ -1,6 +1,5 @@
 import { MatchDto, MatchStatus } from '@/pages/predictions/models/match.dto';
-
-import * as styles from '../Group.module.scss';
+import * as teamResultStyles from '@/shared/styles/teamResult.module.scss';
 
 const getActualScore = (match: MatchDto, score: number | null) => {
   if (score !== null) return score;
@@ -14,9 +13,9 @@ export const getHomeTeamResultClass = (match: MatchDto) => {
   const awayScore = getActualScore(match, match.away_score);
 
   if (awayScore === null || homeScore === null) return '';
-  if (homeScore === awayScore) return styles.draw;
+  if (homeScore === awayScore) return teamResultStyles.draw;
 
-  return homeScore > awayScore ? styles.win : styles.lose;
+  return homeScore > awayScore ? teamResultStyles.win : teamResultStyles.lose;
 };
 
 export const getAwayTeamResultClass = (match: MatchDto) => {
@@ -24,7 +23,7 @@ export const getAwayTeamResultClass = (match: MatchDto) => {
   const awayScore = getActualScore(match, match.away_score);
 
   if (awayScore === null || homeScore === null) return '';
-  if (homeScore === awayScore) return styles.draw;
+  if (homeScore === awayScore) return teamResultStyles.draw;
 
-  return homeScore < awayScore ? styles.win : styles.lose;
+  return homeScore < awayScore ? teamResultStyles.win : teamResultStyles.lose;
 };

@@ -7,6 +7,7 @@ import { FootballCompetitionMatchesApi } from '@/pages/predictions/models/footba
 import { routes } from '@/routes/routes';
 import { Breadcrumbs } from '@/shared/components/Breadcrumbs/Breadcrumbs';
 import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
+import * as teamResultStyles from '@/shared/styles/teamResult.module.scss';
 
 import * as styles from './ApiCompetitionMatches.module.scss';
 
@@ -80,10 +81,10 @@ const ApiCompetitionMatches = () => {
                   match.score.winner === null
                     ? ''
                     : match.score.winner === 'DRAW'
-                      ? styles.draw
+                      ? teamResultStyles.draw
                       : match.score.winner === 'HOME_TEAM'
-                        ? styles.win
-                        : styles.lose
+                        ? teamResultStyles.win
+                        : teamResultStyles.lose
                 }
               >
                 {match.homeTeam.name}
@@ -94,10 +95,10 @@ const ApiCompetitionMatches = () => {
                   match.score.winner === null
                     ? ''
                     : match.score.winner === 'DRAW'
-                      ? styles.draw
+                      ? teamResultStyles.draw
                       : match.score.winner === 'AWAY_TEAM'
-                        ? styles.win
-                        : styles.lose
+                        ? teamResultStyles.win
+                        : teamResultStyles.lose
                 }
               >
                 {match.awayTeam.name}
