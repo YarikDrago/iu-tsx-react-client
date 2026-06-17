@@ -4,3 +4,10 @@ export interface GroupMember {
   status?: string; // TODO enum
   nickname: string;
 }
+
+export enum GroupMemberStatus {
+  Unverified = 'unverified',
+  Verified = 'verified',
+  Rejected = 'rejected',
+  Left = 'left',
+}

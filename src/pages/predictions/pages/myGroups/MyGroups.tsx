@@ -6,7 +6,7 @@ import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 import { Competition } from '@/pages/predictions/models/competition.dto';
 import { Group } from '@/pages/predictions/models/group.dto';
-import { GroupMember } from '@/pages/predictions/models/groupMember.dto';
+import { GroupMember, GroupMemberStatus } from '@/pages/predictions/models/groupMember.dto';
 import { Season } from '@/pages/predictions/models/season.dto';
 import { routes } from '@/routes/routes';
 import { Breadcrumbs } from '@/shared/components/Breadcrumbs/Breadcrumbs';
@@ -96,6 +96,25 @@ const MyGroups = () => {
     navigate(`/predictions/groups/${groupId}`);
   }
 
+  async function leaveGroup(groupId: number) {
+    try {
+      setErrorMsg('');
+      appData.showLoader();
+      await universalFetchRequest(
+        `tournaments/groups/${groupId}/members/${appData.userId}`,
+        HTMLRequestMethods.PATCH,
+        {
+          status: GroupMemberStatus.Left,
+        }
+      );
+      await fetchGroups();
+    } catch (e) {
+      setErrorMsg((e as Error).message);
+    } finally {
+      appData.hideLoader();
+    }
+  }
+
   return (
     <article>
       <Breadcrumbs items={[routes.home, routes.predictions, routes.myGroups]} />
@@ -152,7 +171,15 @@ const MyGroups = () => {
                           Manage
                         </button>
                       ) : (
-                        <button className={'tableButtonDanger'}>Leave</button>
+                        <button
+                          className={'tableButtonDanger'}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            leaveGroup(group.id);
+                          }}
+                        >
+                          Leave
+                        </button>
                       )}
                     </div>
                   </td>
