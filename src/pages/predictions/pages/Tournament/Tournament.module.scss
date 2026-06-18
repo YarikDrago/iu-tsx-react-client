@@ -1,7 +1,6 @@
 .notificationSettings {
   box-sizing: border-box;
-  //display: flex;
-  display: none;
+  display: flex;
   flex-direction: column;
   gap: 12px;
   min-width: min(360px, 100%);
@@ -10,6 +9,8 @@
   border-radius: 8px;
   background:
     linear-gradient(145deg, rgba(0, 198, 255, 0.12), rgba(255, 255, 255, 0.04)), rgba(0, 0, 0, 0.24);
+
+  background-color: #a755c7;
 }
 
 .notificationTitle {

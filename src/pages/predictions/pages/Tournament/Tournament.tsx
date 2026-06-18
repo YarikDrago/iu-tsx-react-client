@@ -266,21 +266,23 @@ const Tournament = () => {
                 </strong>
               </div>
             </div>
-            <div className={tournamentStyles.notificationSettings}>
-              <p className={tournamentStyles.notificationTitle}>Notification settings</p>
-              <Switcher
-                label="Matches score change"
-                checked={Boolean(notificationSettings?.notifyMatchScoreChanged)}
-                disabled={false}
-                onChange={() => handleNotificationSettingsChange('notifyMatchScoreChanged')}
-              />
-              <Switcher
-                label="Matches status change"
-                checked={Boolean(notificationSettings?.notifyMatchStatusChanged)}
-                disabled={false}
-                onChange={() => handleNotificationSettingsChange('notifyMatchStatusChanged')}
-              />
-            </div>
+            {appData.role.includes('admin') && (
+              <div className={tournamentStyles.notificationSettings}>
+                <p className={tournamentStyles.notificationTitle}>Notification settings</p>
+                <Switcher
+                  label="Matches score change"
+                  checked={Boolean(notificationSettings?.notifyMatchScoreChanged)}
+                  disabled={false}
+                  onChange={() => handleNotificationSettingsChange('notifyMatchScoreChanged')}
+                />
+                <Switcher
+                  label="Matches status change"
+                  checked={Boolean(notificationSettings?.notifyMatchStatusChanged)}
+                  disabled={false}
+                  onChange={() => handleNotificationSettingsChange('notifyMatchStatusChanged')}
+                />
+              </div>
+            )}
           </header>
           <div className={styles.tableSection}>
             <TournamentMatchesTable
