@@ -2,10 +2,10 @@ import React from 'react';
 import { useNavigate } from 'react-router';
 import { observer } from 'mobx-react';
 
+import appData from '@/app.data';
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 import { FootballCompetitionApi } from '@/pages/predictions/models/football_api.dto';
-import OnOffButton from '@/shared/components/OnOffButton/OnOffButton';
 
 import * as styles from './AllApiTournaments.module.scss';
 
@@ -44,6 +44,7 @@ const AllApiTournaments = ({ competitions }: Props) => {
 
   async function updateCompetitionObservableStatus(competition: FootballCompetitionApi) {
     try {
+      appData.showLoader();
       const isObservable = !competition.isObservable;
       const id = competition.id;
       const response = await universalFetchRequest(`tournaments/${id}`, HTMLRequestMethods.PATCH, {
@@ -53,6 +54,8 @@ const AllApiTournaments = ({ competitions }: Props) => {
       // TODO change status
     } catch (e) {
       console.error(e);
+    } finally {
+      appData.hideLoader();
     }
   }
 
@@ -88,8 +91,7 @@ const AllApiTournaments = ({ competitions }: Props) => {
               <td className={styles.monoCell}>{competition.currentSeason.endDate}</td>
               <td className={styles.monoCell}>{String(competition.inDb)}</td>
               <td className={[styles.monoCell].join(' ')}>
-                <OnOffButton
-                  isOn={competition.isObservable}
+                <button
                   disabled={!competition.inDb}
                   className={[
                     styles.button,
@@ -99,7 +101,9 @@ const AllApiTournaments = ({ competitions }: Props) => {
                     e.stopPropagation();
                     updateCompetitionObservableStatus(competition);
                   }}
-                />
+                >
+                  {competition.isObservable ? 'ON' : 'OFF'}
+                </button>
               </td>
               <td className={[styles.monoCell, styles.action].join(' ')}>
                 {competition.inDb ? (
