@@ -48,6 +48,7 @@ export default defineConfig(({ mode }) => {
           target: 'http://localhost:6600',
           changeOrigin: true,
           secure: false,
+          ws: true,
         },
       },
     },

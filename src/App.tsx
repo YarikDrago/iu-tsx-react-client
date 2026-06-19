@@ -65,10 +65,15 @@ const App = () => {
     socket.on('connect_error', onConnectError);
     socket.on('lastUpdate', onLastUpdate);
 
+    if (!socket.connected) {
+      socket.connect();
+    }
+
     return () => {
       socket.off('connect', onConnect);
       socket.off('connect_error', onConnectError);
       socket.off('lastUpdate', onLastUpdate);
+      socket.disconnect();
     };
   }, []);
 

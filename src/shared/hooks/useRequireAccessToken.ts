@@ -26,23 +26,24 @@ export function useRequireAccessToken() {
         setError(null);
         setStatus('checking');
 
-        await checkAccessToken()
-          .then(() => {
-            if (!cancelled) setStatus('ready');
-            return;
-          })
-          .catch(() => {
-            console.error('Access token check was failed.');
-          });
-
-        if (status === 'ready') return;
-
-        await checkRefreshToken().catch(() => {
-          console.error('Refresh token check was failed.');
-          setStatus('redirecting');
-          navigate(`${routes.login.href}`, { replace: true });
+        try {
+          await checkAccessToken();
+          if (!cancelled) setStatus('ready');
           return;
-        });
+        } catch {
+          console.error('Access token check was failed.');
+        }
+
+        try {
+          await checkRefreshToken();
+        } catch {
+          console.error('Refresh token check was failed.');
+          if (!cancelled) {
+            setStatus('redirecting');
+            navigate(`${routes.login.href}`, { replace: true });
+          }
+          return;
+        }
 
         await refreshTokens();
         /* Make a simple request to check tokens and get data about the user */
