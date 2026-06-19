@@ -9,7 +9,7 @@ export interface UserTelegramAccountDto {
   lastName?: string;
 }
 
-export type UserTelegramAccountResponse = UserTelegramAccountDto & {
+export type PostUserTelegramAccountResponse = UserTelegramAccountDto & {
   id?: number;
   userId?: number;
   createdAt?: string;
@@ -17,7 +17,7 @@ export type UserTelegramAccountResponse = UserTelegramAccountDto & {
 };
 
 export async function addTelegramAccount(dto: UserTelegramAccountDto) {
-  return await universalFetchRequest<UserTelegramAccountResponse>(
+  return await universalFetchRequest<PostUserTelegramAccountResponse>(
     'auth/telegram-account',
     HTMLRequestMethods.POST,
     dto
