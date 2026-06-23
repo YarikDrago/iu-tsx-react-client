@@ -1,11 +1,20 @@
 import React from 'react';
 import { useParams } from 'react-router';
 
+import appData from '@/app.data';
+import {
+  getGroupNotificationSettings,
+  GetTelegramGroupNotificationSettingsDto,
+  // GroupNotificationSettingsDto,
+} from '@/function/api/getGroupNotificationSettings';
+import { patchGroupNotificationSettings } from '@/function/api/patchGroupNotificationSettings';
 import { MatchDto } from '@/pages/predictions/models/match.dto';
 import { routes } from '@/routes/routes';
 import { Breadcrumbs } from '@/shared/components/Breadcrumbs/Breadcrumbs';
+import { Switcher } from '@/shared/components/Switcher';
 import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
 
+import * as tournamentStyles from '../Tournament/Tournament.module.scss';
 import { GroupTable } from './components/GroupTable';
 import * as styles from './Group.module.scss';
 import { useGroupData } from './hooks/useGroupData';
@@ -21,6 +30,9 @@ const Group = () => {
   const groupId = Number(id);
   const [editPrediction, setEditPrediction] = React.useState<TEditPrediction | null>(null);
   const [editMatchScore, setEditMatchScore] = React.useState<MatchDto | null>(null);
+  const [notificationSettings, setNotificationSettings] =
+    React.useState<GetTelegramGroupNotificationSettingsDto | null>(null);
+  const [notificationErrorMsg, setNotificationErrorMsg] = React.useState('');
   const {
     groupGeneralData,
     matches,
@@ -38,6 +50,26 @@ const Group = () => {
     setPredictions,
     setPredictionGlossary,
   } = useGroupData(ready, groupId, id);
+
+  React.useEffect(() => {
+    if (!ready || !id || Number.isNaN(groupId)) return;
+
+    const getNotificationSettings = async () => {
+      try {
+        console.log('getGroupNotificationSettings');
+        setNotificationErrorMsg('');
+
+        const notificationSettings = await getGroupNotificationSettings(id);
+        console.log('notificationSettings', notificationSettings);
+
+        setNotificationSettings(notificationSettings);
+      } catch (e) {
+        setNotificationErrorMsg((e as Error).message);
+      }
+    };
+
+    getNotificationSettings();
+  }, [ready, id, groupId]);
 
   const sortedMembers = React.useMemo(() => {
     return sortGroupMembers(members, memberScores, memberTotalPenaltyScores);
@@ -64,6 +96,37 @@ const Group = () => {
     },
     [setMatches]
   );
+
+  const handleNotificationSettingsChange = async (
+    key: keyof GetTelegramGroupNotificationSettingsDto
+  ) => {
+    console.log('handleNotificationSettingsChange', key);
+    if (!id || notificationSettings === null) return;
+
+    const previousSettings = notificationSettings;
+    const nextSettings = {
+      ...notificationSettings,
+      [key]: !notificationSettings[key],
+    };
+
+    try {
+      setNotificationErrorMsg('');
+      appData.showLoader();
+      setNotificationSettings(nextSettings);
+
+      const updatedSettings = await patchGroupNotificationSettings(id, nextSettings);
+
+      setNotificationSettings(updatedSettings);
+    } catch (e) {
+      const message = (e as Error).message;
+
+      setNotificationSettings(previousSettings);
+      setNotificationErrorMsg(message);
+      appData.addToast(message, 'error');
+    } finally {
+      appData.hideLoader();
+    }
+  };
 
   if (groupId === undefined || Number.isNaN(groupId)) {
     return (
@@ -93,6 +156,17 @@ const Group = () => {
                 <strong>{`${groupGeneralData?.startDate} - ${groupGeneralData?.endDate}`}</strong>
               </div>
             </div>
+            {appData.role.includes('admin') && (
+              <div className={tournamentStyles.notificationSettings}>
+                <p className={tournamentStyles.notificationTitle}>Notification settings</p>
+                <Switcher
+                  label="Prediction reminder"
+                  checked={Boolean(notificationSettings?.notifyPredictionReminder)}
+                  disabled={notificationSettings === null}
+                  onChange={() => handleNotificationSettingsChange('notifyPredictionReminder')}
+                />
+              </div>
+            )}
           </header>
           <div className={styles.tableSection}>
             <GroupTable
@@ -110,6 +184,7 @@ const Group = () => {
         </section>
       )}
       {errorMsg !== '' && <p className={styles.errorMsg}>{errorMsg}</p>}
+      {notificationErrorMsg !== '' && <p className={styles.errorMsg}>{notificationErrorMsg}</p>}
       {editPrediction && (
         <PredictionEditor
           editData={editPrediction}
