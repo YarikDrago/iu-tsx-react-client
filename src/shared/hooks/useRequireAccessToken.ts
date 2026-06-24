@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 import appData from '@/app.data';
 import { checkAccessToken } from '@/function/api/checkAccessToken';
@@ -11,6 +11,7 @@ import { routes } from '@/routes/routes';
 type RequireAccessTokenStatus = 'checking' | 'ready' | 'redirecting' | 'error';
 
 export function useRequireAccessToken() {
+  const location = useLocation();
   const navigate = useNavigate();
 
   const [status, setStatus] = useState<RequireAccessTokenStatus>('checking');
@@ -20,6 +21,8 @@ export function useRequireAccessToken() {
 
   useEffect(() => {
     let cancelled = false;
+    const returnTo = `${location.pathname}${location.search}${location.hash}`;
+    const loginRedirectState = { from: returnTo };
 
     (async () => {
       try {
@@ -40,7 +43,7 @@ export function useRequireAccessToken() {
           console.error('Refresh token check was failed.');
           if (!cancelled) {
             setStatus('redirecting');
-            navigate(`${routes.login.href}`, { replace: true });
+            navigate(`${routes.login.href}`, { replace: true, state: loginRedirectState });
           }
           return;
         }
@@ -62,7 +65,7 @@ export function useRequireAccessToken() {
         if (!cancelled) {
           setError((e as Error).message);
           setStatus('error');
-          navigate(`${routes.login.href}`, { replace: true });
+          navigate(`${routes.login.href}`, { replace: true, state: loginRedirectState });
         }
       }
     })();
@@ -70,7 +73,7 @@ export function useRequireAccessToken() {
     return () => {
       cancelled = true;
     };
-  }, [navigate]);
+  }, [location.hash, location.pathname, location.search, navigate]);
 
   return { ready, status, error };
 }

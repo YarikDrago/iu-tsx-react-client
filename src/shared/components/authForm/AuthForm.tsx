@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 
 import appData from '@/app.data';
 import { login } from '@/function/api/login';
@@ -14,7 +14,24 @@ interface Props {
   isRegistration?: boolean;
 }
 
+type LoginLocationState = {
+  from?: unknown;
+};
+
+function getLoginRedirectPath(state: LoginLocationState | null) {
+  const from = state?.from;
+
+  if (typeof from !== 'string') return '/';
+  if (!from.startsWith('/') || from.startsWith('//')) return '/';
+
+  const pathname = from.split(/[?#]/)[0];
+  if (pathname === '/login' || pathname === '/signup') return '/';
+
+  return from;
+}
+
 const AuthForm = ({ isRegistration = false }: Props) => {
+  const location = useLocation();
   const navigate = useNavigate();
 
   const [email, setEmail] = React.useState('');
@@ -47,7 +64,9 @@ const AuthForm = ({ isRegistration = false }: Props) => {
           appData.changeNickname(res.nickname || '');
           appData.changeUserId(res.userId);
           appData.role = res.roles;
-          navigate('/');
+          navigate(getLoginRedirectPath(location.state as LoginLocationState | null), {
+            replace: true,
+          });
         });
       }
     } catch (e) {
