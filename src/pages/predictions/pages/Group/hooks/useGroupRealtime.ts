@@ -8,6 +8,7 @@ import {
   MatchPredictionUpdatePayload,
   TPredictionGlossary,
 } from '@/pages/predictions/pages/Group/models/models';
+import { showSystemNotification } from '@/shared/notifications/systemNotifications';
 import { socket } from '@/shared/ws/socket';
 
 interface UseGroupRealtimeParams {
@@ -123,12 +124,29 @@ export const useGroupRealtime = ({
         const idx = newMatches.findIndex((m) => m.external_id == String(match.externalId));
 
         if (idx >= 0) {
+          const previousMatch = newMatches[idx];
+          const isScoreChanged =
+            previousMatch.home_score !== match.homeScore ||
+            previousMatch.away_score !== match.awayScore;
+
           newMatches[idx] = {
-            ...newMatches[idx],
+            ...previousMatch,
             home_score: match.homeScore,
             away_score: match.awayScore,
             status: match.status,
           };
+
+          if (isScoreChanged) {
+            const homeTeam = previousMatch.home_team ?? match.homeTeam ?? 'Home team';
+            const awayTeam = previousMatch.away_team ?? match.awayTeam ?? 'Away team';
+            const homeScore = match.homeScore ?? '-';
+            const awayScore = match.awayScore ?? '-';
+
+            void showSystemNotification('Match score changed', {
+              body: `${homeTeam} ${homeScore} - ${awayScore} ${awayTeam}`,
+              tag: `match-score-${previousMatch.id}`,
+            });
+          }
         }
       }
 
