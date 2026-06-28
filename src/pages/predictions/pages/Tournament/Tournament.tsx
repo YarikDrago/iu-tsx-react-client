@@ -29,12 +29,14 @@ interface TournamentMatchesTableProps {
   matches: MatchDto[];
   onEditMatchScore: (match: MatchDto) => void;
   onHidePredictionsChange: (match: MatchDto, hidePredictions: boolean) => void;
+  onManualUpdateChange: (match: MatchDto, manualUpdate: boolean) => void;
 }
 
 const TournamentMatchesTable = ({
   matches,
   onEditMatchScore,
   onHidePredictionsChange,
+  onManualUpdateChange,
 }: TournamentMatchesTableProps) => {
   const initialScrollTargetRef = React.useRef<HTMLTableRowElement | null>(null);
   const hasScrolledToInitialMatchRef = React.useRef(false);
@@ -67,6 +69,7 @@ const TournamentMatchesTable = ({
             <th>Status</th>
             <th>Score</th>
             {appData.role.includes('admin') && <th className={'admin'}>Hide predictions</th>}
+            {appData.role.includes('admin') && <th className={'admin'}>Manual update</th>}
           </tr>
         </thead>
         <tbody>
@@ -106,6 +109,21 @@ const TournamentMatchesTable = ({
                     onChange={(e) => {
                       e.stopPropagation();
                       onHidePredictionsChange(match, e.target.checked);
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                  />
+                </td>
+              )}
+              {appData.role.includes('admin') && (
+                <td className={'admin'}>
+                  <input
+                    type="checkbox"
+                    checked={match.manualUpdate}
+                    onChange={(e) => {
+                      e.stopPropagation();
+                      onManualUpdateChange(match, e.target.checked);
                     }}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -233,6 +251,43 @@ const Tournament = () => {
     []
   );
 
+  const handleManualUpdateChange = React.useCallback(
+    async (match: MatchDto, manualUpdate: boolean) => {
+      try {
+        setErrorMsg('');
+        appData.showLoader();
+
+        const updatedMatch = await patchTournamentMatch(match.id, {
+          manualUpdate,
+        });
+
+        const nextMatch = {
+          ...match,
+          ...updatedMatch,
+          manualUpdate: updatedMatch?.manualUpdate ?? manualUpdate,
+        };
+
+        setTournamentData((prevData) => {
+          if (prevData === null) return prevData;
+
+          return {
+            ...prevData,
+            matches: prevData.matches.map((item) => (item.id === match.id ? nextMatch : item)),
+          };
+        });
+        appData.addToast('Manual update status saved', 'success');
+      } catch (e) {
+        const message = (e as Error).message;
+
+        setErrorMsg(message);
+        appData.addToast(message, 'error');
+      } finally {
+        appData.hideLoader();
+      }
+    },
+    []
+  );
+
   if (!tournamentID || Number.isNaN(tournamentId)) {
     return (
       <article className={styles.page}>
@@ -289,6 +344,7 @@ const Tournament = () => {
               matches={tournamentData.matches}
               onEditMatchScore={setEditMatchScore}
               onHidePredictionsChange={handleHidePredictionsChange}
+              onManualUpdateChange={handleManualUpdateChange}
             />
           </div>
         </section>

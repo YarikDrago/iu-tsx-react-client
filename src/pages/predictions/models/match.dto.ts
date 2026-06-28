@@ -28,6 +28,7 @@ export interface MatchDto {
   away_score: number | null;
   away_team_entity: TeamDto | null;
   hide_predictions: boolean;
+  manualUpdate: boolean;
   updated_at: string;
 }
 
@@ -65,6 +66,8 @@ export class ManualUpdateMatchDto {
   home_score?: number | null;
   awayScore?: number | null;
   away_score?: number | null;
+  manualUpdate?: boolean;
+  manual_update?: boolean;
   hidePredictions?: boolean;
   hide_predictions?: boolean;
 }
