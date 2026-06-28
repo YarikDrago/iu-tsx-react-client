@@ -1,8 +1,9 @@
 import React from 'react';
 
 import appData from '@/app.data';
+import unknownCrest from '@/assets/icons/unknown_crest.png';
 import { GroupMember } from '@/pages/predictions/models/groupMember.dto';
-import { MatchDto, MatchStatus } from '@/pages/predictions/models/match.dto';
+import { MatchDto, MatchStatus, TeamDto } from '@/pages/predictions/models/match.dto';
 import { PredictionDto } from '@/pages/predictions/models/prediction.dto';
 import {
   TEditPrediction,
@@ -53,6 +54,30 @@ const getMatchTimeParts = (match: MatchDto) => {
   const [date, time] = formatLocalDDMMYY_HHMM(match.start_time, false).split(' ');
 
   return [date, time ?? ''];
+};
+
+const TeamName = ({
+  name,
+  teamEntity,
+  className,
+}: {
+  name: string | null;
+  teamEntity: TeamDto | null;
+  className: string;
+}) => {
+  return (
+    <div className={`${styles.matchPairItem} ${styles.teamName} ${className}`}>
+      <img
+        alt=""
+        className={styles.teamCrest}
+        src={teamEntity?.crest || unknownCrest}
+        onError={(event) => {
+          event.currentTarget.src = unknownCrest;
+        }}
+      />
+      <span>{name || '???'}</span>
+    </div>
+  );
 };
 
 const getPredictionText = (
@@ -183,20 +208,16 @@ export const GroupTable = ({
               >
                 <td className={styles.matchCell}>
                   <div className={styles.matchPair}>
-                    <div
-                      className={`${styles.matchPairItem} ${styles.teamName} ${getHomeTeamResultClass(
-                        match
-                      )}`}
-                    >
-                      {match.home_team || '???'}
-                    </div>
-                    <div
-                      className={`${styles.matchPairItem} ${styles.teamName} ${getAwayTeamResultClass(
-                        match
-                      )}`}
-                    >
-                      {match.away_team || '???'}
-                    </div>
+                    <TeamName
+                      name={match.home_team}
+                      teamEntity={match.home_team_entity}
+                      className={getHomeTeamResultClass(match)}
+                    />
+                    <TeamName
+                      name={match.away_team}
+                      teamEntity={match.away_team_entity}
+                      className={getAwayTeamResultClass(match)}
+                    />
                   </div>
                   <div className={styles.matchControls}>
                     {showScore ? (
