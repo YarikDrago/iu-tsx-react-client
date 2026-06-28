@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import appData from '@/app.data';
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
+import { getAwayTeamName, getHomeTeamName } from '@/pages/predictions/models/match.dto';
 import { TEditPrediction } from '@/pages/predictions/pages/Group/models/models';
 import CloseBtn from '@/shared/components/buttons/CloseBtn/CloseBtn';
 import { formatLocalDDMMYY_HHMM } from '@/shared/utils/formatLocalDDMMYY_HHMM';
@@ -59,7 +60,7 @@ const PredictionEditor = ({ editData, onClose }: Props) => {
           <div className={styles.header}>
             <p className={styles.eyebrow}>Edit prediction</p>
             <h1 className={styles.matchTitle}>
-              {editData.match.home_team} - {editData.match.away_team}
+              {getHomeTeamName(editData.match)} - {getAwayTeamName(editData.match)}
             </h1>
             <p className={styles.matchTime}>
               {`Time: ${formatLocalDDMMYY_HHMM(editData.match.start_time, false)}`}

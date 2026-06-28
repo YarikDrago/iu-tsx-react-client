@@ -10,7 +10,12 @@ import {
 } from '@/function/api/getTournamentNotificationSettings';
 import { patchTournamentMatch } from '@/function/api/patchTournamentMatch';
 import { patchTournamentNotificationSettings } from '@/function/api/patchTournamentNotificationSettings';
-import { MatchDto, MatchStatus } from '@/pages/predictions/models/match.dto';
+import {
+  getAwayTeamName,
+  getHomeTeamName,
+  MatchDto,
+  MatchStatus,
+} from '@/pages/predictions/models/match.dto';
 import MatchScoreEditor from '@/pages/predictions/pages/Group/MatchScoreEditor';
 import {
   getAwayTeamResultClass,
@@ -79,8 +84,8 @@ const TournamentMatchesTable = ({
               ref={match.id === initialScrollTargetMatchId ? initialScrollTargetRef : null}
             >
               <td>{idx + 1}</td>
-              <td className={getHomeTeamResultClass(match)}>{match.home_team || '???'}</td>
-              <td className={getAwayTeamResultClass(match)}>{match.away_team || '???'}</td>
+              <td className={getHomeTeamResultClass(match)}>{getHomeTeamName(match)}</td>
+              <td className={getAwayTeamResultClass(match)}>{getAwayTeamName(match)}</td>
               <td className={match.status === MatchStatus.FINISHED ? styles.finished : ''}>
                 {formatLocalDDMMYY_HHMM(match.start_time, false) || 'scheduled'}
               </td>

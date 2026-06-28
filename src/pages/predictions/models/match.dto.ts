@@ -21,16 +21,22 @@ export interface MatchDto {
   tournament?: Competition;
   start_time: string | null;
   status: MatchStatus;
-  home_team: string | null;
   home_score: number | null;
   home_team_entity: TeamDto | null;
-  away_team: string | null;
   away_score: number | null;
   away_team_entity: TeamDto | null;
   hide_predictions: boolean;
   manualUpdate: boolean;
   updated_at: string;
 }
+
+export const getHomeTeamName = (match: MatchDto, fallback = '???') => {
+  return match.home_team_entity?.name || fallback;
+};
+
+export const getAwayTeamName = (match: MatchDto, fallback = '???') => {
+  return match.away_team_entity?.name || fallback;
+};
 
 export interface TeamDto {
   id: string;
@@ -55,10 +61,6 @@ export type UpsertMatchInput = {
 };
 
 export class ManualUpdateMatchDto {
-  homeTeam?: string | null;
-  home_team?: string | null;
-  awayTeam?: string | null;
-  away_team?: string | null;
   startTime?: string | Date | null;
   start_time?: string | Date | null;
   status?: MatchStatus | null;

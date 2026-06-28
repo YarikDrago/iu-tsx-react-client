@@ -2,7 +2,12 @@ import { Dispatch, RefObject, SetStateAction, useEffect } from 'react';
 
 import appData from '@/app.data';
 import { GroupMember } from '@/pages/predictions/models/groupMember.dto';
-import { MatchDto, UpsertMatchInput } from '@/pages/predictions/models/match.dto';
+import {
+  getAwayTeamName,
+  getHomeTeamName,
+  MatchDto,
+  UpsertMatchInput,
+} from '@/pages/predictions/models/match.dto';
 import { PredictionDto } from '@/pages/predictions/models/prediction.dto';
 import {
   MatchPredictionUpdatePayload,
@@ -83,6 +88,7 @@ export const useGroupRealtime = ({
               match_id: payload.match_id,
               home_score: payload.home_score,
               away_score: payload.away_score,
+              predictionMade: true,
             },
           ];
           const newPredictionGlossary: TPredictionGlossary = { ...predictionGlossaryRef.current };
@@ -109,7 +115,9 @@ export const useGroupRealtime = ({
         }
 
         appData.addToast(
-          `${user.nickname} change prediction. ID ${matchIdx + 1} | ${match.home_team}-${match.away_team} | ${payload.home_score} - ${payload.away_score}`,
+          `${user.nickname} change prediction. ID ${matchIdx + 1} | ${getHomeTeamName(
+            match
+          )}-${getAwayTeamName(match)} | ${payload.home_score} - ${payload.away_score}`,
           'info'
         );
       } catch (e) {
@@ -137,8 +145,8 @@ export const useGroupRealtime = ({
           };
 
           if (isScoreChanged) {
-            const homeTeam = previousMatch.home_team ?? match.homeTeam ?? 'Home team';
-            const awayTeam = previousMatch.away_team ?? match.awayTeam ?? 'Away team';
+            const homeTeam = getHomeTeamName(previousMatch, match.homeTeam ?? 'Home team');
+            const awayTeam = getAwayTeamName(previousMatch, match.awayTeam ?? 'Away team');
             const homeScore = match.homeScore ?? '-';
             const awayScore = match.awayScore ?? '-';
 

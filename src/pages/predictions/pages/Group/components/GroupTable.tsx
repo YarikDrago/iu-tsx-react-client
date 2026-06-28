@@ -3,7 +3,13 @@ import React from 'react';
 import appData from '@/app.data';
 import unknownCrest from '@/assets/icons/unknown_crest.png';
 import { GroupMember } from '@/pages/predictions/models/groupMember.dto';
-import { MatchDto, MatchStatus, TeamDto } from '@/pages/predictions/models/match.dto';
+import {
+  getAwayTeamName,
+  getHomeTeamName,
+  MatchDto,
+  MatchStatus,
+  TeamDto,
+} from '@/pages/predictions/models/match.dto';
 import { PredictionDto } from '@/pages/predictions/models/prediction.dto';
 import {
   TEditPrediction,
@@ -209,12 +215,12 @@ export const GroupTable = ({
                 <td className={styles.matchCell}>
                   <div className={styles.matchPair}>
                     <TeamName
-                      name={match.home_team}
+                      name={getHomeTeamName(match)}
                       teamEntity={match.home_team_entity}
                       className={getHomeTeamResultClass(match)}
                     />
                     <TeamName
-                      name={match.away_team}
+                      name={getAwayTeamName(match)}
                       teamEntity={match.away_team_entity}
                       className={getAwayTeamResultClass(match)}
                     />

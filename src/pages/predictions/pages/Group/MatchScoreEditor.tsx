@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import appData from '@/app.data';
 import { patchTournamentMatch } from '@/function/api/patchTournamentMatch';
-import { MatchDto } from '@/pages/predictions/models/match.dto';
+import { getAwayTeamName, getHomeTeamName, MatchDto } from '@/pages/predictions/models/match.dto';
 import CloseBtn from '@/shared/components/buttons/CloseBtn/CloseBtn';
 import { formatLocalDDMMYY_HHMM } from '@/shared/utils/formatLocalDDMMYY_HHMM';
 
@@ -79,7 +79,7 @@ const MatchScoreEditor = ({ match, onClose, onSaved }: Props) => {
           <div className={styles.header}>
             <p className={styles.eyebrow}>Edit match score</p>
             <h1 className={styles.matchTitle}>
-              {match.home_team || '???'} - {match.away_team || '???'}
+              {getHomeTeamName(match)} - {getAwayTeamName(match)}
             </h1>
             <p className={styles.matchTime}>
               {`Time: ${formatLocalDDMMYY_HHMM(match.start_time, false) || 'scheduled'}`}
