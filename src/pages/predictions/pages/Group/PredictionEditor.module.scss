@@ -120,12 +120,41 @@
     &::placeholder {
       color: rgba(255, 255, 255, 0.2);
     }
+
+    &:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.nullCheckbox {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  cursor: pointer;
+
+  input {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  span {
+    color: var(--muted, rgba(255, 255, 255, 0.72));
+    font-size: 0.82rem;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
   }
 }
 
 .scoreSeparator {
   align-self: end;
-  height: 54px;
+  height: 78px;
   color: var(--muted, rgba(255, 255, 255, 0.72));
   font-size: clamp(1.35rem, 1.08rem + 1vw, 2rem);
   font-weight: 800;

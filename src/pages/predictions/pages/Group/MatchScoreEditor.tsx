@@ -34,10 +34,12 @@ const MatchScoreEditor = ({ match, onClose, onSaved }: Props) => {
   const [errorMsg, setErrorMsg] = useState('');
   const [homeScore, setHomeScore] = useState<string>(toScoreInputValue(match.home_score));
   const [awayScore, setAwayScore] = useState<string>(toScoreInputValue(match.away_score));
+  const [isHomeScoreNull, setIsHomeScoreNull] = useState(match.home_score === null);
+  const [isAwayScoreNull, setIsAwayScoreNull] = useState(match.away_score === null);
 
   async function saveScore() {
-    const nextHomeScore = toScorePayloadValue(homeScore);
-    const nextAwayScore = toScorePayloadValue(awayScore);
+    const nextHomeScore = isHomeScoreNull ? null : toScorePayloadValue(homeScore);
+    const nextAwayScore = isAwayScoreNull ? null : toScorePayloadValue(awayScore);
 
     try {
       setErrorMsg('');
@@ -91,11 +93,22 @@ const MatchScoreEditor = ({ match, onClose, onSaved }: Props) => {
                 min="0"
                 step="1"
                 placeholder={'0'}
+                disabled={isHomeScoreNull}
                 value={homeScore}
                 onChange={(e) => {
                   setHomeScore(e.target.value);
                 }}
               />
+              <label className={styles.nullCheckbox}>
+                <input
+                  type="checkbox"
+                  checked={isHomeScoreNull}
+                  onChange={(e) => {
+                    setIsHomeScoreNull(e.target.checked);
+                  }}
+                />
+                <span>Set null</span>
+              </label>
             </label>
             <p className={styles.scoreSeparator}>-</p>
             <label className={styles.scoreField}>
@@ -105,11 +118,22 @@ const MatchScoreEditor = ({ match, onClose, onSaved }: Props) => {
                 min="0"
                 step="1"
                 placeholder={'0'}
+                disabled={isAwayScoreNull}
                 value={awayScore}
                 onChange={(e) => {
                   setAwayScore(e.target.value);
                 }}
               />
+              <label className={styles.nullCheckbox}>
+                <input
+                  type="checkbox"
+                  checked={isAwayScoreNull}
+                  onChange={(e) => {
+                    setIsAwayScoreNull(e.target.checked);
+                  }}
+                />
+                <span>Set null</span>
+              </label>
             </label>
           </div>
           <button
@@ -119,7 +143,10 @@ const MatchScoreEditor = ({ match, onClose, onSaved }: Props) => {
               e.stopPropagation();
               saveScore();
             }}
-            disabled={isScoreInvalid(homeScore) || isScoreInvalid(awayScore)}
+            disabled={
+              (!isHomeScoreNull && isScoreInvalid(homeScore)) ||
+              (!isAwayScoreNull && isScoreInvalid(awayScore))
+            }
           >
             Save
           </button>
