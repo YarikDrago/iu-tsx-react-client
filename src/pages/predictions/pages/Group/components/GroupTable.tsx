@@ -88,6 +88,16 @@ const getPredictionText = (
 ) => {
   const predictionIdx = predictionGlossary[member.user_id]?.[match.id];
 
+  if (predictionIdx === null || predictionIdx === undefined) {
+    return 'null - null';
+  }
+
+  const prediction = predictions[predictionIdx];
+  if (!prediction) {
+    console.error('prediction is null', match.id, member.nickname);
+    return 'null - null';
+  }
+
   // TODO also hide predictions on the server
   /* Hide predictions for the current user if a match has not been started.
    * But always display predictions for the current user */
@@ -97,18 +107,8 @@ const getPredictionText = (
       match.status !== MatchStatus.IN_PLAY &&
       match.status !== MatchStatus.FINISHED
     ) {
-      return '*** - ***';
+      return prediction.predictionMade ? '*** - ***' : 'null - null';
     }
-  }
-
-  if (predictionIdx === null || predictionIdx === undefined) {
-    return 'null - null';
-  }
-
-  const prediction = predictions[predictionIdx];
-  if (!prediction) {
-    console.error('prediction is null', match.id, member.nickname);
-    return 'null - null';
   }
 
   let predictionText = `${prediction.home_score} - ${prediction.away_score}`;

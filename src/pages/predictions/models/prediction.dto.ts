@@ -8,6 +8,7 @@ export interface PredictionDto {
   match?: unknown;
   home_score: number;
   away_score: number;
+  predictionMade: boolean;
   created_at?: string;
   updated_at?: string;
 }
