@@ -1,5 +1,57 @@
+.groupsTableSection {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.groupsTableContent {
+  display: inline-flex;
+  flex-direction: column;
+  max-width: 100%;
+}
+
+.tableActions {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin: 10px 0;
+}
+
 .tableWrapper {
   box-sizing: border-box;
+  width: auto;
+  max-width: 100%;
+}
+
+.createGroupButton {
+  width: fit-content;
+  min-height: 42px;
+  height: auto;
+  margin: 0;
+  padding: 10px 14px;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 6px;
+  background-color: #15803d;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
+
+  &:hover {
+    background-color: #166534;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.createGroupIcon {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
 }
 
 .table {
@@ -33,11 +85,23 @@
 }
 
 @media (max-width: 699px) {
+  .groupsTableSection {
+    padding: 0 12px;
+  }
+
+  .groupsTableContent {
+    width: 100%;
+  }
+
+  .tableActions {
+    padding: 0;
+  }
+
   .tableWrapper {
     align-items: stretch;
     justify-content: stretch;
     overflow-x: visible;
-    padding: 0 12px;
+    padding: 0;
   }
 
   .table {
@@ -114,5 +178,9 @@
       width: 100%;
       min-height: 40px;
     }
+  }
+
+  .createGroupButton {
+    width: 100%;
   }
 }

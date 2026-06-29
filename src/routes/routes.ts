@@ -47,6 +47,10 @@ export const routes: { [key: string]: BreadcrumbItem } = {
     href: `${PREDICTIONS_BASE}/tournament/:tournamentID`,
     label: 'Tournament',
   },
+  availableTournaments: {
+    href: `${PREDICTIONS_BASE}/tournament/available`,
+    label: 'Available tournaments',
+  },
   joinGroup: {
     href: `${PREDICTIONS_BASE}/groups/join/`,
     label: 'Join group',
