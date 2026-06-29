@@ -5,6 +5,7 @@ import { observer } from 'mobx-react';
 import appData from '@/app.data';
 import welcomePredictionFootball from '@/assets/images/football_main.png';
 import stadiumImage from '@/assets/images/stadium_s.jpg';
+import { NavigationCard } from '@/shared/components/NavigationCard/NavigationCard';
 
 import * as styles from './main.module.scss';
 
@@ -15,19 +16,7 @@ const Main = () => {
     <article className={styles.main}>
       {appData.nickname ? (
         <div className={styles.cardsBox}>
-          <div
-            className={styles.card}
-            style={
-              {
-                ['--card-bg' as any]: `url(${stadiumImage})`,
-              } as React.CSSProperties
-            }
-            onClick={() => {
-              navigate('/predictions');
-            }}
-          >
-            <h1>Prediction games</h1>
-          </div>
+          <NavigationCard title="Prediction games" image={stadiumImage} to={'/predictions'} />
         </div>
       ) : (
         <div>

@@ -1,0 +1,68 @@
+.card {
+  position: relative;
+  aspect-ratio: 3/4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: min(300px, 100%);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 20px;
+  background: none;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 200ms ease;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image: var(--card-bg);
+    background-position: center;
+    background-size: cover;
+    transform: scale(1);
+    transition: transform 200ms ease;
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  h1 {
+    margin: 0;
+    padding: 0 16px;
+    color: inherit;
+    text-align: center;
+    text-shadow: 0 0 10px #000;
+  }
+
+  &:hover {
+    box-shadow: 0 0 20px rgba(196, 255, 191, 0.18);
+
+    &::before {
+      transform: scale(1.1);
+    }
+
+    h1 {
+      color: #ffe7c2;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .card {
+    width: 100%;
+    height: 250px;
+    aspect-ratio: auto;
+
+    h1 {
+      font-size: 1.5rem;
+    }
+  }
+}
