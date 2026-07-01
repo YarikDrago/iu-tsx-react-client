@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import './default.scss';
 
@@ -10,6 +10,7 @@ import { checkHealth } from '@/function/api/checkHealth';
 import { me } from '@/function/api/me';
 import Footer from '@/layout/Footer/Footer';
 import Header from '@/layout/Header/Header';
+import HealthBanner from '@/layout/HealthBanner/HealthBanner';
 import Main from '@/layout/Main/Main';
 import GroupManager from '@/pages/predictions/components/GroupManager/GroupManager';
 import AppRoutes from '@/routes/AppRoutes';
@@ -31,29 +32,28 @@ const style = {
 } as React.CSSProperties;
 
 const App = () => {
+  const runHealthCheck = useCallback(async () => {
+    try {
+      const health = await checkHealth();
+
+      if (health.status !== 'ok' || health.database !== 'up') {
+        throw new Error('Server or database is unavailable');
+      }
+
+      appData.setHealthOk();
+    } catch (e) {
+      const err = e as Error;
+      appData.setHealthError(err.message || 'Server or database is unavailable');
+      console.error(err.message);
+    }
+  }, []);
+
   useEffect(() => {
-    let hasActiveHealthError = false;
     let isDisposed = false;
 
     const run = async () => {
-      try {
-        const health = await checkHealth();
-
-        if (isDisposed) return;
-
-        if (health.status !== 'ok' || health.database !== 'up') {
-          throw new Error('Server or database is unavailable');
-        }
-
-        hasActiveHealthError = false;
-      } catch (e) {
-        /* Anti spam condition */
-        if (isDisposed || hasActiveHealthError) return;
-        const err = e as Error;
-        appData.addToast(err.message, 'error', 30000);
-        console.error(err.message);
-        hasActiveHealthError = true;
-      }
+      if (isDisposed) return;
+      await runHealthCheck();
     };
 
     void run();
@@ -63,7 +63,7 @@ const App = () => {
       isDisposed = true;
       window.clearInterval(intervalId);
     };
-  }, []);
+  }, [runHealthCheck]);
 
   useEffect(() => {
     const run = async () => {
@@ -115,6 +115,7 @@ const App = () => {
   return (
     <article className={styles.app} style={style}>
       <Header />
+      <HealthBanner />
       <Main>
         <AppRoutes />
       </Main>

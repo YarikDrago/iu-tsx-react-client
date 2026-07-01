@@ -8,6 +8,8 @@ class AppData {
   /* User roles */
   role: string[] = [];
   loadingCount = 0;
+  healthStatus: 'ok' | 'error' = 'ok';
+  healthMessage: string = '';
   group = new GroupManagerData();
   /* The AbortController is used for aborting requests.
    * Create a new AbortController each time before requests */
@@ -65,6 +67,16 @@ class AppData {
 
   hideLoader() {
     this.loadingCount = Math.max(0, this.loadingCount - 1);
+  }
+
+  setHealthOk() {
+    this.healthStatus = 'ok';
+    this.healthMessage = '';
+  }
+
+  setHealthError(message: string) {
+    this.healthStatus = 'error';
+    this.healthMessage = message;
   }
 
   addToast(message: string, variant: ToastVariant = 'neutral', duration: number = 4000) {
