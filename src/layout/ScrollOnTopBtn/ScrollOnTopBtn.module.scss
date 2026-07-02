@@ -1,0 +1,33 @@
+.button {
+  position: fixed;
+  right: 40px;
+  bottom: 40px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 4px;
+  cursor: pointer;
+  transform: translateX(200px);
+  transition: transform 0.3s ease;
+  background-color: #454540;
+  background-image: none;
+
+  &[show] {
+    transform: translateX(0);
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    background-color: #555550;
+  }
+
+  @media screen and (max-width: 900px) {
+    right: 20px;
+    bottom: 20px;
+    width: 36px;
+    height: 36px;
+  }
+}

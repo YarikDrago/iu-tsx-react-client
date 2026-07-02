@@ -25,6 +25,7 @@ import './shared/styles/button.scss';
 import './shared/styles/toast.scss';
 import './shared/styles/input.scss';
 
+import ScrollOnTopBtn from '@/layout/ScrollOnTopBtn/ScrollOnTopBtn';
 import { ToastsContainer } from '@/shared/components/ToastsContainer/ToastsContainer';
 
 const style = {
@@ -123,6 +124,7 @@ const App = () => {
       <div id={'modal-root'}></div>
       {appData.group.isVisible && <GroupManager />}
       <ToastsContainer toasts={appData.toasts} onClose={appData.onCloseToast} />
+      <ScrollOnTopBtn />
       <GlobalLoader />
     </article>
   );
