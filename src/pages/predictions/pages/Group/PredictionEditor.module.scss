@@ -68,7 +68,7 @@
 
 .eyebrow {
   color: var(--muted, rgba(255, 255, 255, 0.72));
-  font-size: clamp(0.75rem, 0.68rem + 0.28vw, 0.9rem);
+  font-size: clamp(1rem, 0.9rem + 0.36vw, 1.18rem);
   font-weight: 700;
   line-height: 1.2;
   text-transform: uppercase;
@@ -80,6 +80,25 @@
   font-weight: 800;
   line-height: 1.08;
   overflow-wrap: anywhere;
+}
+
+.teamLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+
+  span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+}
+
+.teamCrest {
+  flex: 0 0 30px;
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
 }
 
 .matchTime {
@@ -102,11 +121,23 @@
   gap: 8px;
   min-width: 0;
 
-  span {
+  .teamLabel {
     color: var(--muted, rgba(255, 255, 255, 0.72));
-    font-size: clamp(0.78rem, 0.72rem + 0.24vw, 0.9rem);
+    font-size: clamp(0.98rem, 0.9rem + 0.32vw, 1.14rem);
     font-weight: 700;
     line-height: 1.2;
+
+    span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .teamCrest {
+    flex-basis: 22px;
+    width: 22px;
+    height: 22px;
   }
 
   input {
