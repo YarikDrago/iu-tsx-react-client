@@ -43,6 +43,17 @@ const PredictionEditor = ({ editData, onClose }: Props) => {
   const homeTeamName = getHomeTeamName(editData.match);
   const awayTeamName = getAwayTeamName(editData.match);
 
+  const changeScore = (
+    score: string,
+    setter: React.Dispatch<React.SetStateAction<string>>,
+    delta: number
+  ) => {
+    const currentScore = Number(score);
+    const nextScore = Number.isNaN(currentScore) ? 0 : Math.max(0, currentScore + delta);
+
+    setter(String(nextScore));
+  };
+
   async function savePrediction() {
     try {
       setErrorMsg('');
@@ -83,29 +94,73 @@ const PredictionEditor = ({ editData, onClose }: Props) => {
             </p>
           </div>
           <div className={styles.inputBlock}>
-            <label className={styles.scoreField}>
+            <div className={styles.scoreField}>
               <TeamLabel name={homeTeamName} teamEntity={editData.match.home_team_entity} />
-              <input
-                type="number"
-                placeholder={'0'}
-                value={homeScore}
-                onChange={(e) => {
-                  setHomeScore(e.target.value);
-                }}
-              />
-            </label>
+              <div className={styles.scoreInputControl}>
+                <button
+                  type="button"
+                  className={styles.scoreStepper}
+                  onClick={() => changeScore(homeScore, setHomeScore, -1)}
+                  disabled={Number(homeScore) <= 0}
+                  aria-label="Decrease home score"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  min="0"
+                  step="1"
+                  placeholder={'0'}
+                  aria-label="Home score"
+                  value={homeScore}
+                  onChange={(e) => {
+                    setHomeScore(e.target.value);
+                  }}
+                />
+                <button
+                  type="button"
+                  className={styles.scoreStepper}
+                  onClick={() => changeScore(homeScore, setHomeScore, 1)}
+                  aria-label="Increase home score"
+                >
+                  +
+                </button>
+              </div>
+            </div>
             <p className={styles.scoreSeparator}>-</p>
-            <label className={styles.scoreField}>
+            <div className={styles.scoreField}>
               <TeamLabel name={awayTeamName} teamEntity={editData.match.away_team_entity} />
-              <input
-                type="number"
-                placeholder={'0'}
-                value={awayScore}
-                onChange={(e) => {
-                  setAwayScore(e.target.value);
-                }}
-              />
-            </label>
+              <div className={styles.scoreInputControl}>
+                <button
+                  type="button"
+                  className={styles.scoreStepper}
+                  onClick={() => changeScore(awayScore, setAwayScore, -1)}
+                  disabled={Number(awayScore) <= 0}
+                  aria-label="Decrease away score"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  min="0"
+                  step="1"
+                  placeholder={'0'}
+                  aria-label="Away score"
+                  value={awayScore}
+                  onChange={(e) => {
+                    setAwayScore(e.target.value);
+                  }}
+                />
+                <button
+                  type="button"
+                  className={styles.scoreStepper}
+                  onClick={() => changeScore(awayScore, setAwayScore, 1)}
+                  aria-label="Increase away score"
+                >
+                  +
+                </button>
+              </div>
+            </div>
           </div>
           <button
             className={'primary'}
