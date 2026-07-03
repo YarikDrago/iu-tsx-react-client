@@ -11,10 +11,18 @@ html {
   scrollbar-width: thin;
   scrollbar-color: rgba(147, 192, 248, 0.35) transparent;
   background-color: #000;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 body {
+  max-width: 100%;
   overflow-x: hidden;
+}
+
+#root {
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 body::-webkit-scrollbar {
