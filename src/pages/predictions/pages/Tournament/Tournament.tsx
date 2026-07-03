@@ -3,6 +3,7 @@ import { useParams } from 'react-router';
 import { observer } from 'mobx-react';
 
 import appData from '@/app.data';
+import unknownCrest from '@/assets/icons/unknown_crest.png';
 import { getTournamentData, TournamentDataDto } from '@/function/api/getTournamentData';
 import {
   getTournamentNotificationSettings,
@@ -15,6 +16,7 @@ import {
   getHomeTeamName,
   MatchDto,
   MatchStatus,
+  TeamDto,
 } from '@/pages/predictions/models/match.dto';
 import MatchScoreEditor from '@/pages/predictions/pages/Group/MatchScoreEditor';
 import {
@@ -36,6 +38,30 @@ interface TournamentMatchesTableProps {
   onHidePredictionsChange: (match: MatchDto, hidePredictions: boolean) => void;
   onManualUpdateChange: (match: MatchDto, manualUpdate: boolean) => void;
 }
+
+const TeamName = ({
+  name,
+  teamEntity,
+  className,
+}: {
+  name: string | null;
+  teamEntity: TeamDto | null;
+  className: string;
+}) => {
+  return (
+    <div className={`${styles.teamName} ${className}`}>
+      <img
+        alt=""
+        className={styles.teamCrest}
+        src={teamEntity?.crest || unknownCrest}
+        onError={(event) => {
+          event.currentTarget.src = unknownCrest;
+        }}
+      />
+      <span>{name || '???'}</span>
+    </div>
+  );
+};
 
 const TournamentMatchesTable = ({
   matches,
@@ -84,8 +110,20 @@ const TournamentMatchesTable = ({
               ref={match.id === initialScrollTargetMatchId ? initialScrollTargetRef : null}
             >
               <td>{idx + 1}</td>
-              <td className={getHomeTeamResultClass(match)}>{getHomeTeamName(match)}</td>
-              <td className={getAwayTeamResultClass(match)}>{getAwayTeamName(match)}</td>
+              <td>
+                <TeamName
+                  name={getHomeTeamName(match)}
+                  teamEntity={match.home_team_entity}
+                  className={getHomeTeamResultClass(match)}
+                />
+              </td>
+              <td>
+                <TeamName
+                  name={getAwayTeamName(match)}
+                  teamEntity={match.away_team_entity}
+                  className={getAwayTeamResultClass(match)}
+                />
+              </td>
               <td className={match.status === MatchStatus.FINISHED ? styles.finished : ''}>
                 {formatLocalDDMMYY_HHMM(match.start_time, false) || 'scheduled'}
               </td>
