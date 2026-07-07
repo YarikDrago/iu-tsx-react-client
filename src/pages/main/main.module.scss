@@ -32,6 +32,11 @@
     background: linear-gradient(170deg, #3afda5, #00cfb2);
     width: 200px;
   }
+
+  :global(.link) {
+    color: rgb(147 218 243);
+    font-weight: 500;
+  }
 }
 
 .content {

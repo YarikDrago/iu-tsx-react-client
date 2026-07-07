@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { observer } from 'mobx-react';
 
 import appData from '@/app.data';
@@ -35,6 +35,12 @@ const Main = () => {
                 >
                   Sign up
                 </button>
+                <span>
+                  Have an account?{' '}
+                  <Link to={'/login'} className={'link'}>
+                    Sign in
+                  </Link>
+                </span>
               </div>
               <div className={styles.contentImage}>
                 <img src={welcomePredictionFootball} alt="Football prediction" />
