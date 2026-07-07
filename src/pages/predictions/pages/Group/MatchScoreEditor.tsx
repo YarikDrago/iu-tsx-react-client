@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 
 import appData from '@/app.data';
 import { patchTournamentMatch } from '@/function/api/patchTournamentMatch';
-import { getAwayTeamName, getHomeTeamName, MatchDto } from '@/pages/predictions/models/match.dto';
+import {
+  getAwayTeamName,
+  getHomeTeamName,
+  MatchDto,
+  MatchStatus,
+} from '@/pages/predictions/models/match.dto';
 import CloseBtn from '@/shared/components/buttons/CloseBtn/CloseBtn';
 import { formatLocalDDMMYY_HHMM } from '@/shared/utils/formatLocalDDMMYY_HHMM';
 
@@ -30,12 +35,17 @@ const isScoreInvalid = (score: string) => {
   return Number.isNaN(value) || value < 0 || !Number.isInteger(value);
 };
 
+const matchStatusOptions = Object.values(MatchStatus);
+
+const formatMatchStatus = (status: MatchStatus) => status.replace(/_/g, ' ');
+
 const MatchScoreEditor = ({ match, onClose, onSaved }: Props) => {
   const [errorMsg, setErrorMsg] = useState('');
   const [homeScore, setHomeScore] = useState<string>(toScoreInputValue(match.home_score));
   const [awayScore, setAwayScore] = useState<string>(toScoreInputValue(match.away_score));
   const [isHomeScoreNull, setIsHomeScoreNull] = useState(match.home_score === null);
   const [isAwayScoreNull, setIsAwayScoreNull] = useState(match.away_score === null);
+  const [status, setStatus] = useState<MatchStatus>(match.status);
 
   async function saveScore() {
     const nextHomeScore = isHomeScoreNull ? null : toScorePayloadValue(homeScore);
@@ -48,6 +58,7 @@ const MatchScoreEditor = ({ match, onClose, onSaved }: Props) => {
       const updatedMatch = await patchTournamentMatch(match.id, {
         homeScore: nextHomeScore,
         awayScore: nextAwayScore,
+        status: status,
       });
 
       onSaved({
@@ -55,6 +66,7 @@ const MatchScoreEditor = ({ match, onClose, onSaved }: Props) => {
         ...updatedMatch,
         home_score: updatedMatch?.home_score ?? nextHomeScore,
         away_score: updatedMatch?.away_score ?? nextAwayScore,
+        status: updatedMatch?.status ?? status,
       });
       appData.addToast('Match score saved', 'success');
       if (onClose) onClose();
@@ -136,6 +148,20 @@ const MatchScoreEditor = ({ match, onClose, onSaved }: Props) => {
               </label>
             </label>
           </div>
+          <label className={styles.statusField}>
+            <span>Match status</span>
+            <select
+              className={styles.statusSelect}
+              value={status}
+              onChange={(e) => setStatus(e.target.value as MatchStatus)}
+            >
+              {matchStatusOptions.map((matchStatus) => (
+                <option key={matchStatus} value={matchStatus}>
+                  {formatMatchStatus(matchStatus)}
+                </option>
+              ))}
+            </select>
+          </label>
           <button
             className={'primary'}
             onClick={(e) => {

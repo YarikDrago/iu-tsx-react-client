@@ -258,6 +258,39 @@
   line-height: 54px;
 }
 
+.statusField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  color: var(--muted, rgba(255, 255, 255, 0.72));
+  font-size: clamp(0.9rem, 0.82rem + 0.3vw, 1rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.statusSelect {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid var(--stroke, rgba(255, 255, 255, 0.18));
+  border-radius: 8px;
+  color: var(--text, rgba(255, 255, 255, 0.92));
+  background: rgba(0, 0, 0, 0.18);
+  font: inherit;
+  cursor: pointer;
+
+  option {
+    color: #111827;
+    background: #fff;
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba(0, 198, 255, 0.7);
+    outline-offset: 2px;
+  }
+}
+
 .errorMsg {
   box-sizing: border-box;
   width: 100%;
