@@ -5,6 +5,7 @@ import appData from '@/app.data';
 import ClipboardPlusIcon from '@/assets/icons/clipboard2-plus.svg';
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
+import { TournamentEmblem } from '@/pages/predictions/components/TournamentEmblem/TournamentEmblem';
 import { Competition } from '@/pages/predictions/models/competition.dto';
 import { Group } from '@/pages/predictions/models/group.dto';
 import { GroupMember, GroupMemberStatus } from '@/pages/predictions/models/groupMember.dto';
@@ -150,7 +151,12 @@ const MyGroups = () => {
                     >
                       {/*<td>{String(group.id)}</td>*/}
                       <td data-label="Name">{group.name}</td>
-                      <td data-label="Tournament">{group.tournament.name}</td>
+                      <td data-label="Tournament">
+                        <div className={styles.tournamentName}>
+                          <TournamentEmblem emblem={group.season.emblem} />
+                          <span>{group.tournament.name}</span>
+                        </div>
+                      </td>
                       <td data-label="Season">
                         {formatLocalDDMMYY_HHMM(group.season.start_date)} -{' '}
                         {formatLocalDDMMYY_HHMM(group.season.end_date)}{' '}

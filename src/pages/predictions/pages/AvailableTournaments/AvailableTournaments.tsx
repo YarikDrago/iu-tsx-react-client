@@ -26,7 +26,6 @@ const AvailableTournaments = () => {
 
   async function showAvailable() {
     try {
-      console.log('showAvailable');
       setShowMode('start');
       setError('');
       appData.showLoader();

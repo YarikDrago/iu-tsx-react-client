@@ -3,4 +3,5 @@ export interface Season {
   external_id: string;
   end_date: string;
   start_date: string;
+  emblem?: string | null;
 }

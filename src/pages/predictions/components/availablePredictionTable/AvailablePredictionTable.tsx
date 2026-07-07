@@ -1,7 +1,7 @@
-import React from 'react';
 import { Link } from 'react-router';
 
 import appData from '@/app.data';
+import { TournamentEmblem } from '@/pages/predictions/components/TournamentEmblem/TournamentEmblem';
 import { Competition } from '@/pages/predictions/models/competition.dto';
 import { Season } from '@/pages/predictions/models/season.dto';
 
@@ -44,7 +44,12 @@ const AvailablePredictionTable = ({ data }: AvailablePredictionTableProps) => {
             <tr key={idx}>
               {/*<td>{tournament.external_id}</td>*/}
               {/* Tournament external name */}
-              <td data-label="Name">{tournament.name}</td>
+              <td data-label="Name">
+                <div className={styles.tournamentName}>
+                  <TournamentEmblem emblem={tournament.currentSeason?.emblem} />
+                  <span>{tournament.name}</span>
+                </div>
+              </td>
               <td data-label="Start">{tournament.currentSeason?.start_date}</td>
               <td data-label="End">{tournament.currentSeason?.end_date}</td>
               <td className={styles.actions} data-label="Actions">

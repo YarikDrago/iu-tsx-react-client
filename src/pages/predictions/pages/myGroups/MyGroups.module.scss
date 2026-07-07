@@ -57,6 +57,13 @@
   height: 16px;
 }
 
+.tournamentName {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
 .table {
   box-sizing: border-box;
 
@@ -186,5 +193,13 @@
 
   .createGroupButton {
     width: 100%;
+  }
+
+  .tournamentName {
+    justify-content: flex-end;
+    max-width: min(70%, 320px);
+    text-align: right;
+    overflow-wrap: anywhere;
+    white-space: normal;
   }
 }

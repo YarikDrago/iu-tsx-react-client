@@ -12,5 +12,6 @@ export interface Competition {
     isCurrent: boolean; // true
     created_at: Date;
     updated_at: Date;
+    emblem: string | null;
   };
 }

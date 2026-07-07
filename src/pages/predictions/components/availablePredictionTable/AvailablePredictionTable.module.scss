@@ -28,6 +28,13 @@
   }
 }
 
+.tournamentName {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
 @media (max-width: 699px) {
   .tableWrapper {
     align-items: stretch;
@@ -102,6 +109,14 @@
         width: 100%;
       }
     }
+  }
+
+  .tournamentName {
+    justify-content: flex-end;
+    max-width: min(70%, 320px);
+    text-align: right;
+    overflow-wrap: anywhere;
+    white-space: normal;
   }
 }
 
