@@ -6,6 +6,7 @@ import { observer } from 'mobx-react';
 import appData from '@/app.data';
 import Cross45Icon from '@/assets/icons/x-45-lg.svg';
 import { logout } from '@/function/api/logout';
+import { routes } from '@/routes/routes';
 
 import * as styles from './ModalNavigation.module.scss';
 
@@ -63,6 +64,9 @@ const ModalNavigation = ({ isOpened, handleClose }: ModalNavigationProps) => {
             {/*<li>*/}
             {/*  <Link to={'/settings'}>Settings</Link>*/}
             {/*</li>*/}
+            <li>
+              <Link to={routes.contact.href}>{routes.contact.label}</Link>
+            </li>
             <li
               className={styles.button}
               onClick={() => {
