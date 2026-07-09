@@ -5,10 +5,12 @@ import appData from '@/app.data';
 import { me } from '@/function/api/me';
 import { sendContactMessage } from '@/function/api/sendContactMessage';
 import { routes } from '@/routes/routes';
+import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
 
 import * as styles from './Contact.module.scss';
 
 const Contact = () => {
+  useRequireAccessToken();
   const [email, setEmail] = React.useState(appData.email);
   const [message, setMessage] = React.useState('');
   const [error, setError] = React.useState('');
