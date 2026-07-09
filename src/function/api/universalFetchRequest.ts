@@ -9,8 +9,8 @@ type UniversalFetchOptions = {
 };
 
 type ApiErrorPayload = {
-  message?: string;
-  error?: string;
+  message?: unknown;
+  error?: unknown;
 };
 
 function isJsonResponse(contentType: string | null) {
@@ -37,8 +37,16 @@ async function readResponseBody(response: Response) {
 
 function getErrorMessage(status: number, statusText: string, payload: unknown) {
   const p = payload as ApiErrorPayload | null;
-  const msg = p?.message || p?.error;
+  const msg = formatErrorValue(p?.message || p?.error);
   return msg ? `${status} ${msg}` : `${status} ${statusText || 'Request failed'}`;
+}
+
+function formatErrorValue(value: unknown): string {
+  if (typeof value === 'string') return value;
+  if (Array.isArray(value)) return value.map(formatErrorValue).filter(Boolean).join(', ');
+  if (value && typeof value === 'object') return JSON.stringify(value);
+
+  return '';
 }
 
 function shouldTryRefresh(response: Response, payload: unknown) {
@@ -46,7 +54,7 @@ function shouldTryRefresh(response: Response, payload: unknown) {
 
   /* Sometimes backend returns 400/403 with text about access token. */
   const p = payload as ApiErrorPayload | null;
-  const msg = (p?.message || p?.error || '').toLowerCase();
+  const msg = formatErrorValue(p?.message || p?.error).toLowerCase();
 
   return (
     response.status === 403 ||
