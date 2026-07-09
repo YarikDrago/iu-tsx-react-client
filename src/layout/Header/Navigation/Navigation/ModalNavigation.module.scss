@@ -39,6 +39,16 @@
       list-style: none;
       color: #fff;
       font-size: 1.2rem;
+
+      &.userInfo {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #878787;
+        color: gray;
+      }
     }
 
     a,
@@ -84,15 +94,4 @@
       fill: var(--clr-hover, red);
     }
   }
-}
-
-.userInfo {
-  display: flex;
-  flex-direction: column;
-  //align-items: center;
-  gap: 10px;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-  border-bottom: 1px solid #878787;
-  color: gray;
 }
