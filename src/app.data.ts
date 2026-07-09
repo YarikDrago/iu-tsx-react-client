@@ -15,6 +15,7 @@ class AppData {
    * Create a new AbortController each time before requests */
   abortRequestSignal: AbortController | null = null;
   private _user_id: number = -1;
+  private _email: string = '';
 
   constructor() {
     makeAutoObservable(this);
@@ -30,6 +31,10 @@ class AppData {
 
   public get userId(): number {
     return this._user_id;
+  }
+
+  public get email(): string {
+    return this._email;
   }
 
   /* Toast notifications */
@@ -55,6 +60,10 @@ class AppData {
   changeUserId(userId: number) {
     this._user_id = userId;
     Cookies.set('user_id', userId.toString());
+  }
+
+  changeEmail(email: string) {
+    this._email = email;
   }
 
   checkUserId() {

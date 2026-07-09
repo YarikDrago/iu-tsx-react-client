@@ -72,10 +72,12 @@ const App = () => {
         .then((data) => {
           appData.changeNickname(data.nickname);
           appData.changeUserId(data.userId);
+          appData.changeEmail(data.email ?? '');
           appData.role = data.roles;
         })
         .catch(() => {
           appData.changeNickname('');
+          appData.changeEmail('');
           appData.role = [];
         });
     };

@@ -1,0 +1,114 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  width: 100%;
+  min-height: 100%;
+  padding: 32px 16px;
+  box-sizing: border-box;
+}
+
+.panel {
+  color: var(--text);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: min(100%, 520px);
+  padding: 36px;
+  border-radius: 8px;
+  background:
+    radial-gradient(900px 320px at -20% -30%, rgba(124, 92, 255, 0.28), transparent 55%),
+    radial-gradient(720px 300px at 120% 0%, rgba(0, 198, 255, 0.2), transparent 60%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.06));
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  h1,
+  p {
+    margin: 0;
+  }
+
+  h1 {
+    font-size: 28px;
+    line-height: 34px;
+  }
+
+  @media (max-width: 600px) {
+    padding: 24px;
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.textarea {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 160px;
+  padding: 11px 12px;
+  font-family: Montserrat, sans-serif;
+  font-size: 16px;
+  line-height: 22px;
+  resize: vertical;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--stroke, gray);
+  color: var(--text, white);
+  outline: none;
+  transition:
+    border-color 140ms ease,
+    box-shadow 140ms ease,
+    filter 140ms ease;
+
+  &::placeholder {
+    color: var(--muted, gray);
+  }
+
+  &:hover {
+    border-color: var(--strokeHover, blue);
+  }
+
+  &:focus-visible {
+    border-color: rgba(0, 198, 255, 0.7);
+    box-shadow:
+      0 0 0 4px rgba(0, 198, 255, 0.14),
+      0 0 22px rgba(0, 198, 255, 0.18);
+  }
+}
+
+.errorMsg {
+  min-height: 20px;
+  color: #ff6b6b;
+  font-weight: 700;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.linkButton {
+  width: 100%;
+}

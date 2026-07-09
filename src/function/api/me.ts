@@ -5,6 +5,7 @@ interface MeResponse {
   nickname: string;
   userId: number;
   roles: string[];
+  email?: string;
 }
 
 export async function me(): Promise<MeResponse> {

@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router';
 
 import { ActivateAsync } from '@/pages/activate/Activate.async';
 import { AuthAsync } from '@/pages/auth/Auth.async';
+import { ContactAsync } from '@/pages/contact/index.async';
 import { MainAsync } from '@/pages/main/index.async';
 import { PredictionsAsync } from '@/pages/predictions/index.async';
 import { ApiCompetitionMatchesAsync } from '@/pages/predictions/pages/ApiCompetitionMatches';
@@ -24,6 +25,7 @@ const AppRoutes = () => {
         <Route path={routes.activate.href} element={<ActivateAsync />} />
         <Route path={routes.resetPassword.href} element={<ResetPasswordAsync />} />
         <Route path={routes.settings.href} element={<SettingsAsync />} />
+        <Route path={routes.contact.href} element={<ContactAsync />} />
         <Route path={routes.predictions.href} element={<PredictionsAsync />} />
         <Route path={routes.apiCompetition.href} element={<ApiCompetitionMatchesAsync />} />
         <Route path={routes.myGroups.href} element={<MyGroupsAsync />} />

@@ -27,6 +27,10 @@ export const routes: { [key: string]: BreadcrumbItem } = {
     href: '/settings',
     label: 'Settings',
   },
+  contact: {
+    href: '/service/contact',
+    label: 'Contact us',
+  },
   predictions: {
     href: `${PREDICTIONS_BASE}`,
     label: 'Predictions',
