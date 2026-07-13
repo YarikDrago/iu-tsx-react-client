@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { observer } from 'mobx-react';
 
+import appData from '@/app.data';
 import IULogo from '@/assets/images/logo-IU.svg';
 import { routes } from '@/routes/routes';
 
@@ -17,6 +19,11 @@ const Footer = () => {
             {link.label}
           </Link>
         ))}
+        {appData.role.includes('admin') && (
+          <Link className={`button admin ${styles.adminLink}`} to={routes.privacy.href}>
+            {routes.privacy.label}
+          </Link>
+        )}
       </nav>
       <IULogo width={50} height={50} />
       <div className={styles.line}>
@@ -26,4 +33,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default observer(Footer);

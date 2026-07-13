@@ -31,6 +31,10 @@ export const routes: { [key: string]: BreadcrumbItem } = {
     href: '/service/contact',
     label: 'Contact us',
   },
+  privacy: {
+    href: '/privacy',
+    label: 'Privacy Policy',
+  },
   predictions: {
     href: `${PREDICTIONS_BASE}`,
     label: 'Predictions',

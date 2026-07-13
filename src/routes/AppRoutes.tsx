@@ -12,6 +12,7 @@ import { GroupAsync } from '@/pages/predictions/pages/Group';
 import { JoinToGroupAsync } from '@/pages/predictions/pages/JoinToGroup/index.async';
 import { MyGroupsAsync } from '@/pages/predictions/pages/myGroups/index.async';
 import { TournamentAsync } from '@/pages/predictions/pages/Tournament';
+import { PrivacyPolicyAsync } from '@/pages/privacyPolicy/index.async';
 import { ResetPasswordAsync } from '@/pages/resetPassword';
 import { SettingsAsync } from '@/pages/settings/index.async';
 import { routes } from '@/routes/routes';
@@ -26,6 +27,7 @@ const AppRoutes = () => {
         <Route path={routes.resetPassword.href} element={<ResetPasswordAsync />} />
         <Route path={routes.settings.href} element={<SettingsAsync />} />
         <Route path={routes.contact.href} element={<ContactAsync />} />
+        <Route path={routes.privacy.href} element={<PrivacyPolicyAsync />} />
         <Route path={routes.predictions.href} element={<PredictionsAsync />} />
         <Route path={routes.apiCompetition.href} element={<ApiCompetitionMatchesAsync />} />
         <Route path={routes.myGroups.href} element={<MyGroupsAsync />} />
