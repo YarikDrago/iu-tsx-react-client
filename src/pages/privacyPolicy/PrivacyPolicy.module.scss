@@ -11,6 +11,27 @@
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   color: var(--text);
+
+  a {
+    color: #32ffce;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    transition:
+      color 0.2s ease-in-out,
+      text-shadow 0.2s ease-in-out;
+
+    &:hover,
+    &:focus-visible {
+      color: #8fffe7;
+      text-shadow: 0 0 14px rgba(50, 255, 206, 0.45);
+    }
+
+    &:focus-visible {
+      outline: 2px solid rgba(50, 255, 206, 0.7);
+      outline-offset: 4px;
+    }
+  }
 }
 
 .header {
@@ -27,6 +48,16 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+  h2 {
+    font-size: 28px;
+    line-height: 34px;
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.86);
+    line-height: 24px;
+  }
 }
 
 .list {
@@ -34,6 +65,30 @@
   flex-direction: column;
   gap: 8px;
   padding-left: 20px;
+}
+
+.details {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+
+  div {
+    display: grid;
+    grid-template-columns: minmax(130px, 180px) 1fr;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  dt {
+    color: var(--muted);
+    font-weight: 700;
+  }
+
+  dd {
+    margin: 0;
+    color: var(--text);
+  }
 }
 
 .restricted {
@@ -49,4 +104,26 @@
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   color: var(--text);
+}
+
+@media (max-width: 640px) {
+  .privacy,
+  .restricted {
+    width: min(100% - 24px, 920px);
+    padding: 24px;
+  }
+
+  .section {
+    h2 {
+      font-size: 24px;
+      line-height: 30px;
+    }
+  }
+
+  .details {
+    div {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+  }
 }
