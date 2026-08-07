@@ -1,0 +1,35 @@
+.colorLayer,
+.imageLayer {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.colorLayer {
+  animation: slideIn 420ms ease-out both;
+}
+
+.imageLayer {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  animation: slideIn 560ms ease-out both;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .colorLayer,
+  .imageLayer {
+    animation: none;
+  }
+}

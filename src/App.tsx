@@ -5,9 +5,9 @@ import './default.scss';
 import { observer } from 'mobx-react';
 
 import appData from '@/app.data';
-import bg from '@/assets/images/background.jpg';
 import { checkHealth } from '@/function/api/checkHealth';
 import { me } from '@/function/api/me';
+import BackgroundImage from '@/layout/BackgroundImage/BackgroundImage';
 import Footer from '@/layout/Footer/Footer';
 import Header from '@/layout/Header/Header';
 import HealthBanner from '@/layout/HealthBanner/HealthBanner';
@@ -27,10 +27,6 @@ import './shared/styles/input.scss';
 
 import ScrollOnTopBtn from '@/layout/ScrollOnTopBtn/ScrollOnTopBtn';
 import { ToastsContainer } from '@/shared/components/ToastsContainer/ToastsContainer';
-
-const style = {
-  ['--app-bg' as never]: `url(${bg})`,
-} as React.CSSProperties;
 
 const App = () => {
   const runHealthCheck = useCallback(async () => {
@@ -116,7 +112,8 @@ const App = () => {
   }, []);
 
   return (
-    <article className={styles.app} style={style}>
+    <article className={styles.app}>
+      <BackgroundImage />
       <Header />
       <HealthBanner />
       <Main>
