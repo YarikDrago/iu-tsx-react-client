@@ -1,6 +1,14 @@
 import { BreadcrumbItem } from '@/shared/components/Breadcrumbs/Breadcrumbs';
 
 const PREDICTIONS_BASE = '/predictions';
+const PRODUCTS_BASE = '/products';
+
+const productsRoutes: { [key: string]: BreadcrumbItem } = {
+  bread: {
+    href: `${PRODUCTS_BASE}/bread`,
+    label: 'Bread',
+  },
+};
 
 export const routes: { [key: string]: BreadcrumbItem } = {
   home: {
@@ -63,4 +71,6 @@ export const routes: { [key: string]: BreadcrumbItem } = {
     href: `${PREDICTIONS_BASE}/groups/join/`,
     label: 'Join group',
   },
+
+  ...productsRoutes,
 };

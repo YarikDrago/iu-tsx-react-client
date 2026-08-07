@@ -18,6 +18,12 @@ const Main = () => {
       {appData.nickname ? (
         <div className={styles.cardsBox}>
           <NavigationCard title="Prediction games" image={stadiumImage} to={routes.myGroups.href} />
+          <NavigationCard
+            title="Bread"
+            to={routes.bread.href}
+            forAdmin={true}
+            isDisplaed={appData.role.includes('admin')}
+          />
         </div>
       ) : (
         <div>

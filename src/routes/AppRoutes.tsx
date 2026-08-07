@@ -13,6 +13,7 @@ import { JoinToGroupAsync } from '@/pages/predictions/pages/JoinToGroup/index.as
 import { MyGroupsAsync } from '@/pages/predictions/pages/myGroups/index.async';
 import { TournamentAsync } from '@/pages/predictions/pages/Tournament';
 import { PrivacyPolicyAsync } from '@/pages/privacyPolicy/index.async';
+import { BreadPageAsync } from '@/pages/products/pages/bread';
 import { ResetPasswordAsync } from '@/pages/resetPassword';
 import { SettingsAsync } from '@/pages/settings/index.async';
 import { routes } from '@/routes/routes';
@@ -36,6 +37,7 @@ const AppRoutes = () => {
         <Route path={routes.availableTournaments.href} element={<AvailableTournamentsAsync />} />
         <Route path={routes.tournament.href} element={<TournamentAsync />} />
         <Route path={routes.joinGroup.href} element={<JoinToGroupAsync />} />
+        <Route path={routes.bread.href} element={<BreadPageAsync />} />
         <Route path={routes.home.href} element={<MainAsync />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
