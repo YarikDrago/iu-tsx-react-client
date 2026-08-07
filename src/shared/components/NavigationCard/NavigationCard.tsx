@@ -5,14 +5,23 @@ import * as styles from './NavigationCard.module.scss';
 
 interface NavigationCardProps {
   title: string;
-  image: string;
   to: string;
+  image?: string;
+  isDisplaed?: boolean;
+  forAdmin?: boolean;
 }
 
-export const NavigationCard = ({ title, image, to }: NavigationCardProps) => {
+export const NavigationCard = ({
+  title,
+  image,
+  to,
+  isDisplaed = true,
+  forAdmin = false,
+}: NavigationCardProps) => {
+  if (!isDisplaed) return null;
   return (
     <Link
-      className={styles.card}
+      className={`${styles.card} ${forAdmin ? styles.forAdmin : ''}`}
       style={
         {
           ['--card-bg' as any]: `url(${image})`,
