@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { matchPath, useLocation } from 'react-router';
 
+import { routes } from '@/routes/routes';
+
 import * as styles from './BackgroundImage.module.scss';
 
 type BackgroundImageModule = {
@@ -28,7 +30,16 @@ const defaultBackground: PageBackground = {
 const pageBackgrounds: Array<{
   path: string;
   background: PageBackground;
-}> = [];
+}> = [
+  {
+    path: routes.bread.href,
+    background: {
+      color: '#ffffff',
+      imageId: 'bread-bg',
+      image: () => import('@/assets/images/products/honey-bg-2.png'),
+    },
+  },
+];
 
 const BackgroundImage = () => {
   const { pathname } = useLocation();
