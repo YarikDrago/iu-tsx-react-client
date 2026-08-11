@@ -2,13 +2,17 @@ import React, { useState } from 'react';
 
 import BagPlusIcon from '@/assets/icons/bag-plus.svg';
 import cheeseCakeImage from '@/assets/images/products/bread/cheesecake.png';
-import { Chips } from '@/shared/components/Chips';
 import { classNames } from '@/shared/utils/classNames';
 
 import styles from './BreadPage.module.scss';
+import {
+  calculateProductPrice,
+  formatPrice,
+  ProductSizeId,
+  productSizeOptions,
+} from './productSizeOptions';
 
 const productTitle = 'Торт Медовик';
-const productSizes = ['S (4- portions)', 'M (6- portions)', 'L (8 portions)', 'XL (12-portions)'];
 const productSections = [
   {
     id: 'product-details',
@@ -28,8 +32,8 @@ const productSections = [
 ];
 
 const BreadPage = () => {
-  const [selectedSize, setSelectedSize] = useState(productSizes[0]);
-  const productPrice = 24;
+  const [selectedSizeId, setSelectedSizeId] = useState<ProductSizeId>(productSizeOptions[0].id);
+  const productPrice = calculateProductPrice(selectedSizeId);
 
   const scrollToSection = (sectionId: string) => {
     document.getElementById(sectionId)?.scrollIntoView({
@@ -54,15 +58,32 @@ const BreadPage = () => {
           <h1 className={classNames(styles.title, styles.titleContainer)}>{productTitle}</h1>
           <div className={styles.sizeSelector}>
             <p className={styles.sizeTitle}>Size</p>
-            <Chips
-              options={productSizes}
-              value={selectedSize}
-              onChange={setSelectedSize}
-              ariaLabel="Size"
-              className={styles.sizeChips}
-              chipClassName={styles.sizeChip}
-              activeChipClassName={styles.sizeChipActive}
-            />
+            <div className={styles.sizeCards} role="radiogroup" aria-label="Size">
+              {productSizeOptions.map(({ id, title, weight, portions, price, image }) => {
+                const isSelected = selectedSizeId === id;
+
+                return (
+                  <button
+                    key={id}
+                    type="button"
+                    role="radio"
+                    aria-checked={isSelected}
+                    className={classNames(styles.sizeCard, isSelected && styles.sizeCardActive)}
+                    onClick={() => setSelectedSizeId(id)}
+                  >
+                    <div className={styles.sizeCardImage}>
+                      <img src={image} alt="" aria-hidden="true" />
+                    </div>
+                    <div className={styles.sizeCardInfo}>
+                      <p>{title}</p>
+                      <p>{weight}</p>
+                      <p>{portions}</p>
+                      <p>{formatPrice(price)}</p>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
           </div>
           <div className={styles.sectionNav} aria-label="Product information sections">
             {productSections.map(({ id, title }) => (
@@ -82,7 +103,7 @@ const BreadPage = () => {
           <div className={styles.buyBar}>
             <button type="button" className={styles.buyButton}>
               <BagPlusIcon />
-              Add to cart | EUR {productPrice}
+              Add to cart | {formatPrice(productPrice)}
             </button>
           </div>
         </div>
