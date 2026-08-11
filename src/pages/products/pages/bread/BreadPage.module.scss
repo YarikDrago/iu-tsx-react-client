@@ -348,6 +348,60 @@
   }
 }
 
+.messageField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #30260c;
+
+  span:first-child {
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 700;
+  }
+
+  input {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 46px;
+    padding: 12px 14px;
+    border: 1px solid rgb(48 38 12 / 0.22);
+    border-radius: 8px;
+    background: rgb(255 255 255 / 0.42);
+    color: #30260c;
+    font-family: Montserrat, sans-serif;
+    font-size: 15px;
+    line-height: 20px;
+    transition:
+      background-color 140ms ease,
+      border-color 140ms ease,
+      box-shadow 140ms ease;
+
+    &::placeholder {
+      color: rgb(48 38 12 / 0.54);
+    }
+
+    &:hover {
+      border-color: rgb(149 63 5 / 0.42);
+      background: rgb(255 255 255 / 0.56);
+    }
+
+    &:focus-visible {
+      border-color: #953f05;
+      outline: 2px solid rgb(48 38 12 / 0.22);
+      outline-offset: 2px;
+      box-shadow: 0 8px 20px rgb(48 38 12 / 0.12);
+    }
+  }
+}
+
+.messageCounter {
+  align-self: flex-end;
+  font-size: 12px;
+  line-height: 16px;
+  color: rgb(48 38 12 / 0.72);
+}
+
 .sectionNav {
   display: flex;
   flex-direction: column;

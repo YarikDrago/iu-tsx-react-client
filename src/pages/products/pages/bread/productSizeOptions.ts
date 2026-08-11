@@ -5,9 +5,11 @@ import cakeIcon12Pc from '@/assets/images/products/bread/cake-icon-12pc.svg?url'
 
 export type ProductSizeId = 's' | 'm' | 'l' | 'xl';
 
+const LETTER_PRICE = 0.2;
+
 export type ProductPriceOptions = {
   glutenFree?: boolean;
-  cakeMessage?: boolean;
+  cakeMessage?: string;
   decorateBox?: boolean;
 };
 
@@ -18,6 +20,7 @@ export type ProductSizeOption = {
   portions: string;
   price: number;
   image: string;
+  messageMaxLength: number;
 };
 
 export const productSizeOptions: ProductSizeOption[] = [
@@ -28,6 +31,7 @@ export const productSizeOptions: ProductSizeOption[] = [
     portions: '4 portions',
     price: 24,
     image: cakeIcon4Pc,
+    messageMaxLength: 20,
   },
   {
     id: 'm',
@@ -36,6 +40,7 @@ export const productSizeOptions: ProductSizeOption[] = [
     portions: '6 portions',
     price: 32,
     image: cakeIcon6Pc,
+    messageMaxLength: 30,
   },
   {
     id: 'l',
@@ -44,6 +49,7 @@ export const productSizeOptions: ProductSizeOption[] = [
     portions: '8 portions',
     price: 42,
     image: cakeIcon8Pc,
+    messageMaxLength: 30,
   },
   {
     id: 'xl',
@@ -52,19 +58,23 @@ export const productSizeOptions: ProductSizeOption[] = [
     portions: '12 portions',
     price: 58,
     image: cakeIcon12Pc,
+    messageMaxLength: 40,
   },
 ];
 
+export const getProductSizeOption = (sizeId: ProductSizeId) => {
+  return productSizeOptions.find(({ id }) => id === sizeId) ?? productSizeOptions[0];
+};
+
 export const calculateProductPrice = (sizeId: ProductSizeId, options: ProductPriceOptions = {}) => {
-  const selectedSize = productSizeOptions.find(({ id }) => id === sizeId);
-  let price = selectedSize?.price ?? productSizeOptions[0].price;
+  let price = getProductSizeOption(sizeId).price;
 
   if (options.glutenFree) {
     price += 6;
   }
 
   if (options.cakeMessage) {
-    price += 4;
+    price += options.cakeMessage.length * LETTER_PRICE;
   }
 
   if (options.decorateBox) {
@@ -75,5 +85,5 @@ export const calculateProductPrice = (sizeId: ProductSizeId, options: ProductPri
 };
 
 export const formatPrice = (price: number) => {
-  return `EUR ${price}`;
+  return `EUR ${Number.isInteger(price) ? price : price.toFixed(2)}`;
 };

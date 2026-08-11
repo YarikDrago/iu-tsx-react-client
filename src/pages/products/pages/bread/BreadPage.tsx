@@ -8,6 +8,7 @@ import styles from './BreadPage.module.scss';
 import {
   calculateProductPrice,
   formatPrice,
+  getProductSizeOption,
   ProductSizeId,
   productSizeOptions,
 } from './productSizeOptions';
@@ -33,7 +34,20 @@ const productSections = [
 
 const BreadPage = () => {
   const [selectedSizeId, setSelectedSizeId] = useState<ProductSizeId>(productSizeOptions[0].id);
-  const productPrice = calculateProductPrice(selectedSizeId);
+  const [cakeMessage, setCakeMessage] = useState('');
+  const selectedSize = getProductSizeOption(selectedSizeId);
+  const productPrice = calculateProductPrice(selectedSizeId, { cakeMessage });
+
+  const handleSizeChange = (sizeId: ProductSizeId) => {
+    const nextSize = getProductSizeOption(sizeId);
+
+    setSelectedSizeId(sizeId);
+    setCakeMessage((message) => message.slice(0, nextSize.messageMaxLength));
+  };
+
+  const handleCakeMessageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCakeMessage(event.target.value.slice(0, selectedSize.messageMaxLength));
+  };
 
   const scrollToSection = (sectionId: string) => {
     document.getElementById(sectionId)?.scrollIntoView({
@@ -69,7 +83,7 @@ const BreadPage = () => {
                     role="radio"
                     aria-checked={isSelected}
                     className={classNames(styles.sizeCard, isSelected && styles.sizeCardActive)}
-                    onClick={() => setSelectedSizeId(id)}
+                    onClick={() => handleSizeChange(id)}
                   >
                     <div className={styles.sizeCardImage}>
                       <img src={image} alt="" aria-hidden="true" />
@@ -85,6 +99,19 @@ const BreadPage = () => {
               })}
             </div>
           </div>
+          <label className={styles.messageField}>
+            <span>Message on cake (max {selectedSize.messageMaxLength} letters)</span>
+            <input
+              type="text"
+              value={cakeMessage}
+              maxLength={selectedSize.messageMaxLength}
+              onChange={handleCakeMessageChange}
+              placeholder="Enter message"
+            />
+            <span className={styles.messageCounter}>
+              {cakeMessage.length}/{selectedSize.messageMaxLength}
+            </span>
+          </label>
           <div className={styles.sectionNav} aria-label="Product information sections">
             {productSections.map(({ id, title }) => (
               <button
