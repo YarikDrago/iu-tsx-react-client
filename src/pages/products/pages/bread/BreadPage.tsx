@@ -8,9 +8,35 @@ import styles from './BreadPage.module.scss';
 
 const productTitle = 'Торт Медовик';
 const productSizes = ['S (4- portions)', 'M (6- portions)', 'L (8 portions)', 'XL (12-portions)'];
+const productSections = [
+  {
+    id: 'product-details',
+    title: 'Product details',
+    text:
+      'Мягкие коржи, насыщенный крем и аккуратная сладость делают этот торт хорошим выбором для\n' +
+      '            праздника или спокойного вечера дома.',
+  },
+  {
+    id: 'nutrition-ingredients',
+    title: 'Nutrition & ingredients',
+    text: 'Contains wheat flour, eggs, dairy, honey, and sugar. Nutrition details can be expanded here later.',
+  },
+  {
+    id: 'care-instructions',
+    title: 'Care Instructions',
+    text: 'Keep refrigerated and serve chilled. For the best texture, remove from the fridge shortly before serving.',
+  },
+];
 
 const BreadPage = () => {
   const [selectedSize, setSelectedSize] = useState(productSizes[0]);
+
+  const scrollToSection = (sectionId: string) => {
+    document.getElementById(sectionId)?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  };
 
   return (
     <section className={styles.page}>
@@ -39,17 +65,32 @@ const BreadPage = () => {
               activeChipClassName={styles.sizeChipActive}
             />
           </div>
-          <h2>Нежный торт для семейного чаепития</h2>
-          <p>
-            Мягкие коржи, насыщенный крем и аккуратная сладость делают этот торт хорошим выбором для
-            праздника или спокойного вечера дома.
-          </p>
-          <p>
-            Изображение уже размещено в отдельной зоне галереи: позже сюда можно добавить несколько
-            фотографий, стрелки переключения и миниатюры.
-          </p>
+          <div className={styles.sectionNav} aria-label="Product information sections">
+            {productSections.map(({ id, title }) => (
+              <button
+                key={id}
+                type="button"
+                className={styles.sectionButton}
+                onClick={() => scrollToSection(id)}
+              >
+                <span className={styles.sectionButtonIcon} aria-hidden="true">
+                  →
+                </span>
+                <span>{title}</span>
+              </button>
+            ))}
+          </div>
         </div>
       </article>
+
+      <div className={styles.productSections}>
+        {productSections.map(({ id, title, text }) => (
+          <section key={id} id={id} className={styles.productSection}>
+            <h2>{title}</h2>
+            <p>{text}</p>
+          </section>
+        ))}
+      </div>
     </section>
   );
 };
