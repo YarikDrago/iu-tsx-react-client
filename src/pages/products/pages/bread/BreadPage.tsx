@@ -5,6 +5,8 @@ import cheeseCakeImage from '@/assets/images/products/bread/cheesecake.png';
 import { classNames } from '@/shared/utils/classNames';
 
 import styles from './BreadPage.module.scss';
+import { ProductAttributeId } from './productAttributes';
+import { ProductAttributesBlock } from './ProductAttributesBlock';
 import {
   calculateProductPrice,
   formatPrice,
@@ -35,8 +37,12 @@ const productSections = [
 const BreadPage = () => {
   const [selectedSizeId, setSelectedSizeId] = useState<ProductSizeId>(productSizeOptions[0].id);
   const [cakeMessage, setCakeMessage] = useState('');
+  const [selectedAttributeIds, setSelectedAttributeIds] = useState<ProductAttributeId[]>([]);
   const selectedSize = getProductSizeOption(selectedSizeId);
-  const productPrice = calculateProductPrice(selectedSizeId, { cakeMessage });
+  const productPrice = calculateProductPrice(selectedSizeId, {
+    cakeMessage,
+    attributeIds: selectedAttributeIds,
+  });
 
   const handleSizeChange = (sizeId: ProductSizeId) => {
     const nextSize = getProductSizeOption(sizeId);
@@ -112,6 +118,10 @@ const BreadPage = () => {
               {cakeMessage.length}/{selectedSize.messageMaxLength}
             </span>
           </label>
+          <ProductAttributesBlock
+            selectedAttributeIds={selectedAttributeIds}
+            onChange={setSelectedAttributeIds}
+          />
           <div className={styles.sectionNav} aria-label="Product information sections">
             {productSections.map(({ id, title }) => (
               <button

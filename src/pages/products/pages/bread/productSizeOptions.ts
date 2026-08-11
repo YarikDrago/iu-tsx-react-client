@@ -3,14 +3,17 @@ import cakeIcon6Pc from '@/assets/images/products/bread/cake-icon-6pc.svg?url';
 import cakeIcon8Pc from '@/assets/images/products/bread/cake-icon-8pc.svg?url';
 import cakeIcon12Pc from '@/assets/images/products/bread/cake-icon-12pc.svg?url';
 
+import { calculateAttributesPrice, ProductAttributeId } from './productAttributes';
+
 export type ProductSizeId = 's' | 'm' | 'l' | 'xl';
 
-const LETTER_PRICE = 0.2;
+const LETTER_PRICE = 0.5;
 
 export type ProductPriceOptions = {
   glutenFree?: boolean;
   cakeMessage?: string;
   decorateBox?: boolean;
+  attributeIds?: ProductAttributeId[];
 };
 
 export type ProductSizeOption = {
@@ -80,6 +83,8 @@ export const calculateProductPrice = (sizeId: ProductSizeId, options: ProductPri
   if (options.decorateBox) {
     price += 5;
   }
+
+  price += calculateAttributesPrice(options.attributeIds);
 
   return price;
 };
