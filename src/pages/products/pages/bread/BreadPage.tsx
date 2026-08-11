@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import BagPlusIcon from '@/assets/icons/bag-plus.svg';
 import cheeseCakeImage from '@/assets/images/products/bread/cheesecake.png';
 import { Chips } from '@/shared/components/Chips';
 import { classNames } from '@/shared/utils/classNames';
@@ -12,9 +13,7 @@ const productSections = [
   {
     id: 'product-details',
     title: 'Product details',
-    text:
-      'Мягкие коржи, насыщенный крем и аккуратная сладость делают этот торт хорошим выбором для\n' +
-      '            праздника или спокойного вечера дома.',
+    text: 'Мягкие коржи, насыщенный крем и аккуратная сладость делают этот торт хорошим выбором для праздника или спокойного вечера дома.',
   },
   {
     id: 'nutrition-ingredients',
@@ -30,6 +29,7 @@ const productSections = [
 
 const BreadPage = () => {
   const [selectedSize, setSelectedSize] = useState(productSizes[0]);
+  const productPrice = 24;
 
   const scrollToSection = (sectionId: string) => {
     document.getElementById(sectionId)?.scrollIntoView({
@@ -46,7 +46,6 @@ const BreadPage = () => {
 
           <div className={styles.gallery} aria-label={productTitle}>
             <div className={styles.imageViewport}>
-              {/*<img src={breadImage} alt={productTitle} />*/}
               <img src={cheeseCakeImage} alt={productTitle} />
             </div>
           </div>
@@ -79,6 +78,12 @@ const BreadPage = () => {
                 <span>{title}</span>
               </button>
             ))}
+          </div>
+          <div className={styles.buyBar}>
+            <button type="button" className={styles.buyButton}>
+              <BagPlusIcon />
+              Add to cart | EUR {productPrice}
+            </button>
           </div>
         </div>
       </article>
