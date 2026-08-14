@@ -5,6 +5,7 @@ import cheeseCakeImage from '@/assets/images/products/bread/cheesecake.png';
 import { classNames } from '@/shared/utils/classNames';
 
 import styles from './BreadPage.module.scss';
+import { SizeCard } from './components/SizeCard/SizeCard';
 import { ProductAttributeId } from './productAttributes';
 import { ProductAttributesBlock } from './ProductAttributesBlock';
 import {
@@ -79,30 +80,14 @@ const BreadPage = () => {
           <div className={styles.sizeSelector}>
             <p className={styles.sizeTitle}>Size</p>
             <div className={styles.sizeCards} role="radiogroup" aria-label="Size">
-              {productSizeOptions.map(({ id, title, weight, portions, price, image }) => {
-                const isSelected = selectedSizeId === id;
-
-                return (
-                  <button
-                    key={id}
-                    type="button"
-                    role="radio"
-                    aria-checked={isSelected}
-                    className={classNames(styles.sizeCard, isSelected && styles.sizeCardActive)}
-                    onClick={() => handleSizeChange(id)}
-                  >
-                    <div className={styles.sizeCardImage}>
-                      <img src={image} alt="" aria-hidden="true" />
-                    </div>
-                    <div className={styles.sizeCardInfo}>
-                      <p>{title}</p>
-                      <p>{weight}</p>
-                      <p>{portions}</p>
-                      <p>{formatPrice(price)}</p>
-                    </div>
-                  </button>
-                );
-              })}
+              {productSizeOptions.map((option) => (
+                <SizeCard
+                  key={option.id}
+                  option={option}
+                  isSelected={selectedSizeId === option.id}
+                  onSelect={handleSizeChange}
+                />
+              ))}
             </div>
           </div>
           <label className={styles.messageField}>
