@@ -13,6 +13,7 @@
   color: #30260c;
   font-family: Montserrat, sans-serif;
   box-shadow: none;
+  backdrop-filter: blur(3px);
   transition:
     background-color 140ms ease,
     border-color 140ms ease,
