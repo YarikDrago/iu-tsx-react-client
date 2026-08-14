@@ -6,6 +6,7 @@ import { AuthAsync } from '@/pages/auth/Auth.async';
 import { ContactAsync } from '@/pages/contact/index.async';
 import { MainAsync } from '@/pages/main/index.async';
 import { PredictionsAsync } from '@/pages/predictions/index.async';
+import { AllApiTournamentsPageAsync } from '@/pages/predictions/pages/AllApiTournamentsPage';
 import { ApiCompetitionMatchesAsync } from '@/pages/predictions/pages/ApiCompetitionMatches';
 import { AvailableTournamentsAsync } from '@/pages/predictions/pages/AvailableTournaments';
 import { GroupAsync } from '@/pages/predictions/pages/Group';
@@ -30,6 +31,7 @@ const AppRoutes = () => {
         <Route path={routes.contact.href} element={<ContactAsync />} />
         <Route path={routes.privacy.href} element={<PrivacyPolicyAsync />} />
         <Route path={routes.predictions.href} element={<PredictionsAsync />} />
+        <Route path={routes.allApiTournaments.href} element={<AllApiTournamentsPageAsync />} />
         <Route path={routes.apiCompetition.href} element={<ApiCompetitionMatchesAsync />} />
         <Route path={routes.myGroups.href} element={<MyGroupsAsync />} />
         <Route path={routes.group.href} element={<GroupAsync />} />

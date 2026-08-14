@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 import { observer } from 'mobx-react';
 
 import appData from '@/app.data';
@@ -6,11 +7,6 @@ import availableTournamentsImage from '@/assets/images/Available_tournaments.png
 import myGroupsImage from '@/assets/images/My_groups.png';
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
-import AllApiTournaments from '@/pages/predictions/components/allApiTournaments/AllApiTournaments';
-import {
-  FootballCompetitionApi,
-  FootballCompetitionsApi,
-} from '@/pages/predictions/models/football_api.dto';
 import { routes } from '@/routes/routes';
 import { Breadcrumbs } from '@/shared/components/Breadcrumbs/Breadcrumbs';
 import { NavigationCard } from '@/shared/components/NavigationCard/NavigationCard';
@@ -20,32 +16,14 @@ import * as styles from './Predictions.module.scss';
 
 const Predictions = () => {
   const { ready } = useRequireAccessToken();
+  const navigate = useNavigate();
   const [error, setError] = useState<string>('');
-  const [competitionsApi, setCompetitionsApi] = useState<FootballCompetitionApi[] | null>(null);
 
   useEffect(() => {
     if (ready) {
       showAvailable();
     }
   }, [ready]);
-
-  async function getCompetitionsApi() {
-    try {
-      setCompetitionsApi(null);
-      setError('');
-      appData.showLoader();
-      const data = await universalFetchRequest<FootballCompetitionsApi>(
-        'tournaments/api',
-        HTMLRequestMethods.GET,
-        {}
-      );
-      setCompetitionsApi(data.competitions);
-    } catch (e) {
-      setError((e as Error).message);
-    } finally {
-      appData.hideLoader();
-    }
-  }
 
   async function showAvailable() {
     try {
@@ -105,7 +83,7 @@ const Predictions = () => {
               <button
                 className={'admin'}
                 onClick={() => {
-                  getCompetitionsApi();
+                  navigate(routes.allApiTournaments.href);
                 }}
               >
                 Show all API tournaments
@@ -133,7 +111,6 @@ const Predictions = () => {
         <p>Loading...</p>
       )}
       {error && <p className={styles.error}>{error}</p>}
-      {competitionsApi && <AllApiTournaments competitions={competitionsApi} />}
     </article>
   );
 };
