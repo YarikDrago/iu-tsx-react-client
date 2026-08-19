@@ -66,6 +66,7 @@ const AllApiTournaments = ({ competitions }: Props) => {
           <tr>
             <th colSpan={2}>Competition</th>
             <th colSpan={3}>Season</th>
+            <th colSpan={2}></th>
           </tr>
           <tr>
             <th>Name</th>
@@ -75,7 +76,7 @@ const AllApiTournaments = ({ competitions }: Props) => {
             <th>End</th>
             <th>In DB</th>
             <th>Is observable</th>
-            <th>Actions</th>
+            {/*<th>Actions</th>*/}
           </tr>
         </thead>
         <tbody>
@@ -105,30 +106,30 @@ const AllApiTournaments = ({ competitions }: Props) => {
                   {competition.isObservable ? 'ON' : 'OFF'}
                 </button>
               </td>
-              <td className={[styles.monoCell, styles.action].join(' ')}>
-                {competition.inDb ? (
-                  <button
-                    className={[styles.button, styles.delete].join(' ')}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      deleteCompetition(competition.id);
-                    }}
-                  >
-                    X
-                  </button>
-                ) : (
-                  <button
-                    className={[styles.button, styles.add].join(' ')}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      addCompetition(competition.id);
-                    }}
-                  >
-                    {' '}
-                    +{' '}
-                  </button>
-                )}
-              </td>
+              {/*<td className={[styles.monoCell, styles.action].join(' ')}>*/}
+              {/*  {competition.inDb ? (*/}
+              {/*    <button*/}
+              {/*      className={[styles.button, styles.delete].join(' ')}*/}
+              {/*      onClick={(e) => {*/}
+              {/*        e.stopPropagation();*/}
+              {/*        deleteCompetition(competition.id);*/}
+              {/*      }}*/}
+              {/*    >*/}
+              {/*      X*/}
+              {/*    </button>*/}
+              {/*  ) : (*/}
+              {/*    <button*/}
+              {/*      className={[styles.button, styles.add].join(' ')}*/}
+              {/*      onClick={(e) => {*/}
+              {/*        e.stopPropagation();*/}
+              {/*        addCompetition(competition.id);*/}
+              {/*      }}*/}
+              {/*    >*/}
+              {/*      {' '}*/}
+              {/*      +{' '}*/}
+              {/*    </button>*/}
+              {/*  )}*/}
+              {/*</td>*/}
             </tr>
           ))}
         </tbody>
