@@ -6,7 +6,6 @@ import appData from '@/app.data';
 import { me } from '@/function/api/me';
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
-import AllApiTournaments from '@/pages/predictions/components/allApiTournaments/AllApiTournaments';
 import {
   FootballCompetitionApi,
   FootballCompetitionsApi,
@@ -15,6 +14,7 @@ import { routes } from '@/routes/routes';
 import { Breadcrumbs } from '@/shared/components/Breadcrumbs/Breadcrumbs';
 import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
 
+import AllApiTournaments from './AllApiTournaments';
 import * as styles from './AllApiTournamentsPage.module.scss';
 
 const AllApiTournamentsPage = () => {
