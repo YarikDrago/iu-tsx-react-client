@@ -23,6 +23,15 @@ const AllApiTournamentsPage = () => {
   const [error, setError] = useState<string>('');
   const [competitionsApi, setCompetitionsApi] = useState<FootballCompetitionApi[] | null>(null);
 
+  function changeCompetitionObservableStatus(id: number, isObservable: boolean) {
+    setCompetitionsApi(
+      (prev) =>
+        prev?.map((competition) =>
+          competition.id === id ? { ...competition, isObservable } : competition
+        ) ?? null
+    );
+  }
+
   useEffect(() => {
     if (!ready) return;
 
@@ -75,7 +84,12 @@ const AllApiTournamentsPage = () => {
       <Breadcrumbs items={[routes.home, routes.predictions, routes.allApiTournaments]} />
       {!ready && <p>Loading...</p>}
       {ready && error && <p className={styles.error}>{error}</p>}
-      {ready && competitionsApi && <AllApiTournaments competitions={competitionsApi} />}
+      {ready && competitionsApi && (
+        <AllApiTournaments
+          competitions={competitionsApi}
+          onCompetitionObservableStatusChange={changeCompetitionObservableStatus}
+        />
+      )}
     </article>
   );
 };

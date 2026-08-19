@@ -11,9 +11,10 @@ import * as styles from './AllApiTournaments.module.scss';
 
 interface Props {
   competitions: FootballCompetitionApi[];
+  onCompetitionObservableStatusChange: (id: number, isObservable: boolean) => void;
 }
 
-const AllApiTournaments = ({ competitions }: Props) => {
+const AllApiTournaments = ({ competitions, onCompetitionObservableStatusChange }: Props) => {
   const navigate = useNavigate();
 
   if (!competitions.length) return <p>No data to show</p>;
@@ -45,13 +46,12 @@ const AllApiTournaments = ({ competitions }: Props) => {
   async function updateCompetitionObservableStatus(competition: FootballCompetitionApi) {
     try {
       appData.showLoader();
-      const isObservable = !competition.isObservable;
       const id = competition.id;
-      const response = await universalFetchRequest(`tournaments/${id}`, HTMLRequestMethods.PATCH, {
-        isObservable: isObservable,
+      const isObservable = !competition.isObservable;
+      await universalFetchRequest<void>(`tournaments/${id}`, HTMLRequestMethods.PATCH, {
+        isObservable,
       });
-      console.log('Response:', response);
-      // TODO change status
+      onCompetitionObservableStatusChange(id, isObservable);
     } catch (e) {
       console.error(e);
     } finally {
@@ -96,7 +96,11 @@ const AllApiTournaments = ({ competitions }: Props) => {
                   disabled={!competition.inDb}
                   className={[
                     styles.button,
-                    competition.inDb ? (competition.isObservable ? styles.add : styles.delete) : '',
+                    competition.inDb
+                      ? competition.isObservable
+                        ? styles.add
+                        : styles.deleteButton
+                      : '',
                   ].join(' ')}
                   onClick={(e) => {
                     e.stopPropagation();
