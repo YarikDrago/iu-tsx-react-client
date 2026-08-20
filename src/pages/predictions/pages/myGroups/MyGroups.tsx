@@ -28,6 +28,25 @@ export interface GroupSummary {
   members: GroupMember[];
 }
 
+function isSeasonFinished(endDate: string) {
+  const dateOnlyMatch = endDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  const seasonEnd = dateOnlyMatch
+    ? new Date(Number(dateOnlyMatch[1]), Number(dateOnlyMatch[2]) - 1, Number(dateOnlyMatch[3]))
+    : new Date(endDate);
+
+  if (Number.isNaN(seasonEnd.getTime())) return false;
+
+  const today = new Date();
+  const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const firstDayAfterSeason = new Date(
+    seasonEnd.getFullYear(),
+    seasonEnd.getMonth(),
+    seasonEnd.getDate() + 1
+  );
+
+  return todayStart >= firstDayAfterSeason;
+}
+
 const MyGroups = () => {
   const { ready } = useRequireAccessToken();
   const navigate = useNavigate();
@@ -157,7 +176,15 @@ const MyGroups = () => {
                           <span>{group.tournament.name}</span>
                         </div>
                       </td>
-                      <td data-label="Season">
+                      {/* Season date */}
+                      <td
+                        className={
+                          isSeasonFinished(group.season.end_date)
+                            ? styles.finishedSeason
+                            : undefined
+                        }
+                        data-label="Season"
+                      >
                         {formatLocalDDMMYY_HHMM(group.season.start_date)} -{' '}
                         {formatLocalDDMMYY_HHMM(group.season.end_date)}{' '}
                       </td>
