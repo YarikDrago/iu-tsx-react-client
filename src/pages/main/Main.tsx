@@ -5,6 +5,7 @@ import { observer } from 'mobx-react';
 import appData from '@/app.data';
 import welcomePredictionFootball from '@/assets/images/football_main.png';
 import stadiumImage from '@/assets/images/stadium_s.jpg';
+import backgroundImage from '@/assets/images/vocabulary_background.png';
 import { routes } from '@/routes/routes';
 import { NavigationCard } from '@/shared/components/NavigationCard/NavigationCard';
 
@@ -18,6 +19,13 @@ const Main = () => {
       {appData.nickname ? (
         <div className={styles.cardsBox}>
           <NavigationCard title="Prediction games" image={stadiumImage} to={routes.myGroups.href} />
+          <NavigationCard
+            title="Vocabulary"
+            image={backgroundImage}
+            to={routes.vocabulary.href}
+            forAdmin={true}
+            isDisplaed={appData.role.includes('admin')}
+          />
           <NavigationCard
             title="Bread"
             to={routes.bread.href}

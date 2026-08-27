@@ -1,0 +1,159 @@
+.vocabulary {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: min(1100px, 100%);
+  margin: 0 auto;
+}
+
+.toolbar,
+.form,
+.item {
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.06)),
+    rgba(8, 16, 28, 0.62);
+  box-shadow:
+    0 16px 46px rgba(0, 0, 0, 0.28),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.toolbar {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.field,
+.form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--text, #fff);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.field select,
+.form input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 42px;
+  padding: 9px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 4px;
+  background: rgba(11, 23, 38, 0.84);
+  color: var(--text, #fff);
+  font-family: Montserrat, sans-serif;
+  font-size: 15px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+  border-radius: 8px;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.message,
+.error,
+.empty {
+  margin: 0;
+  font-weight: 700;
+}
+
+.message {
+  color: #86efac;
+}
+
+.error {
+  color: #fca5a5;
+}
+
+.items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.item {
+  min-height: 112px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.itemContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+  padding: 14px;
+}
+
+.words {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+
+  p,
+  span {
+    margin: 0;
+  }
+
+  p {
+    overflow-wrap: anywhere;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 800;
+  }
+
+  span {
+    color: rgba(255, 255, 255, 0.54);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  span {
+    padding: 3px 7px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 11px;
+    font-weight: 700;
+  }
+}
+
+.adminMeta {
+  border-color: rgba(203, 124, 238, 0.58) !important;
+  background: rgba(203, 124, 238, 0.16) !important;
+  color: #f3d4ff !important;
+}
+
+@media (max-width: 760px) {
+  .toolbar,
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -17,6 +17,7 @@ import { PrivacyPolicyAsync } from '@/pages/privacyPolicy/index.async';
 import { BreadPageAsync } from '@/pages/products/pages/bread';
 import { ResetPasswordAsync } from '@/pages/resetPassword';
 import { SettingsAsync } from '@/pages/settings/index.async';
+import { VocabularyAsync } from '@/pages/vocabulary/index.async';
 import { routes } from '@/routes/routes';
 
 const AppRoutes = () => {
@@ -30,6 +31,7 @@ const AppRoutes = () => {
         <Route path={routes.settings.href} element={<SettingsAsync />} />
         <Route path={routes.contact.href} element={<ContactAsync />} />
         <Route path={routes.privacy.href} element={<PrivacyPolicyAsync />} />
+        <Route path={routes.vocabulary.href} element={<VocabularyAsync />} />
         <Route path={routes.predictions.href} element={<PredictionsAsync />} />
         <Route path={routes.allApiTournaments.href} element={<AllApiTournamentsPageAsync />} />
         <Route path={routes.apiCompetition.href} element={<ApiCompetitionMatchesAsync />} />
