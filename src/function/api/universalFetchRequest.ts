@@ -66,13 +66,16 @@ function shouldTryRefresh(response: Response, payload: unknown) {
 async function refreshTokensOnce() {
   if (!refreshInFlight) {
     refreshInFlight = (async () => {
-      const url = `/auth/refresh-tokens`;
+      const url = `/api/auth/refresh-tokens`;
 
       const response = await fetch(url, {
         method: 'GET',
         credentials: 'include',
+        cache: 'no-store',
         headers: {
           'Content-Type': 'application/json',
+          'Cache-Control': 'no-store',
+          Pragma: 'no-cache',
         },
       });
 
@@ -100,12 +103,15 @@ export async function universalFetchRequest<TResponse = unknown>(
 
   const headers = {
     'Content-Type': 'application/json',
+    'Cache-Control': 'no-store',
+    Pragma: 'no-cache',
   };
 
   const init: RequestInit = {
     method,
     headers,
     credentials: 'include',
+    cache: 'no-store',
   };
   /* Add body to the request if it is not GET or HEAD method */
   if (method !== HTMLRequestMethods.GET && method !== HTMLRequestMethods.HEAD) {
