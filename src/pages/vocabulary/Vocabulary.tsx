@@ -5,6 +5,7 @@ import { getLanguages, LanguageDto } from '@/function/api/getLanguages';
 import {
   createVocabularyItem,
   getVocabularyItems,
+  updateVocabularyItem,
   UserVocabularyItemDto,
   UserVocabularyItemStatus,
 } from '@/function/api/vocabulary';
@@ -20,6 +21,7 @@ const DEFAULT_STATUS: UserVocabularyItemStatus = 'active';
 const DEFAULT_SOURCE_LANGUAGE_CODE = 'ru';
 const DEFAULT_TARGET_LANGUAGE_CODE = 'en';
 type VocabularyMode = 'library' | 'practice';
+type VocabularyStatusFilter = UserVocabularyItemStatus | 'all';
 
 const shuffleVocabularyItems = (items: UserVocabularyItemDto[]) => {
   const next = [...items];
@@ -39,7 +41,7 @@ const Vocabulary = () => {
   const [items, setItems] = useState<UserVocabularyItemDto[]>([]);
   const [sourceLanguageId, setSourceLanguageId] = useState<string>('');
   const [targetLanguageId, setTargetLanguageId] = useState<string>('');
-  const [status, setStatus] = useState<UserVocabularyItemStatus>(DEFAULT_STATUS);
+  const [status, setStatus] = useState<VocabularyStatusFilter>(DEFAULT_STATUS);
   const [sourceText, setSourceText] = useState('');
   const [targetText, setTargetText] = useState('');
   const [error, setError] = useState('');
@@ -52,6 +54,7 @@ const Vocabulary = () => {
 
   const selectedSourceLanguageId = sourceLanguageId ? Number(sourceLanguageId) : undefined;
   const selectedTargetLanguageId = targetLanguageId ? Number(targetLanguageId) : undefined;
+  const selectedStatus = mode === 'practice' ? DEFAULT_STATUS : status;
   const practiceItems = useMemo(() => items.filter((item) => item.status === 'active'), [items]);
   const currentPracticeItem = practiceQueue[practiceIndex];
 
@@ -62,7 +65,7 @@ const Vocabulary = () => {
       const data = await getVocabularyItems({
         sourceLanguageId: selectedSourceLanguageId,
         targetLanguageId: selectedTargetLanguageId,
-        status: mode === 'practice' ? DEFAULT_STATUS : status,
+        status: selectedStatus === 'all' ? undefined : selectedStatus,
       });
       setItems(data);
     } catch (e) {
@@ -70,7 +73,7 @@ const Vocabulary = () => {
     } finally {
       appData.hideLoader();
     }
-  }, [mode, selectedSourceLanguageId, selectedTargetLanguageId, status]);
+  }, [selectedSourceLanguageId, selectedStatus, selectedTargetLanguageId]);
 
   useEffect(() => {
     if (!ready) return;
@@ -156,6 +159,24 @@ const Vocabulary = () => {
       setSourceText('');
       setTargetText('');
       setMsg('Vocabulary item added');
+      await loadItems();
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      appData.hideLoader();
+    }
+  }
+
+  async function handleVocabularyItemStatusChange(
+    itemId: number,
+    nextStatus: UserVocabularyItemStatus
+  ) {
+    try {
+      setError('');
+      setMsg('');
+      appData.showLoader();
+      await updateVocabularyItem(itemId, { status: nextStatus });
+      setMsg(nextStatus === 'archived' ? 'Vocabulary item archived' : 'Vocabulary item restored');
       await loadItems();
     } catch (e) {
       setError((e as Error).message);
@@ -261,8 +282,9 @@ const Vocabulary = () => {
                 <select
                   id="itemStatus"
                   value={status}
-                  onChange={(event) => setStatus(event.target.value as UserVocabularyItemStatus)}
+                  onChange={(event) => setStatus(event.target.value as VocabularyStatusFilter)}
                 >
+                  <option value="all">All</option>
                   <option value="active">Active</option>
                   <option value="archived">Archived</option>
                 </select>
@@ -313,6 +335,7 @@ const Vocabulary = () => {
                       item={item}
                       languages={languages}
                       isAdmin={isAdmin}
+                      onStatusChange={handleVocabularyItemStatusChange}
                     />
                   ))
                 )}

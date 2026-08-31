@@ -39,6 +39,10 @@ export interface CreateVocabularyItemPayload {
   targetText: string;
 }
 
+export interface UpdateVocabularyItemPayload {
+  status: UserVocabularyItemStatus;
+}
+
 export interface GetVocabularyItemsQuery {
   sourceLanguageId?: number;
   targetLanguageId?: number;
@@ -76,6 +80,14 @@ export async function createVocabularyItem(payload: CreateVocabularyItemPayload)
   return await universalFetchRequest<UserVocabularyItemDto>(
     'vocabulary/my-items',
     HTMLRequestMethods.POST,
+    payload
+  );
+}
+
+export async function updateVocabularyItem(itemId: number, payload: UpdateVocabularyItemPayload) {
+  return await universalFetchRequest<UserVocabularyItemDto>(
+    `vocabulary/my-items/${itemId}`,
+    HTMLRequestMethods.PATCH,
     payload
   );
 }
