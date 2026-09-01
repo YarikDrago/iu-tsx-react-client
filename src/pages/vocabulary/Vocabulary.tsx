@@ -4,24 +4,26 @@ import appData from '@/app.data';
 import { getLanguages, LanguageDto } from '@/function/api/getLanguages';
 import {
   createVocabularyItem,
+  deleteVocabularyItem,
   getVocabularyItems,
   updateVocabularyItem,
   UserVocabularyItemDto,
-  UserVocabularyItemStatus,
+  VisibleUserVocabularyItemStatus,
 } from '@/function/api/vocabulary';
 import { routes } from '@/routes/routes';
 import { Breadcrumbs } from '@/shared/components/Breadcrumbs/Breadcrumbs';
 import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
 
+import DeleteVocabularyItemModal from './DeleteVocabularyItemModal';
 import LearningCard from './LearningCard';
 import PracticeCard from './PracticeCard';
 import * as styles from './Vocabulary.module.scss';
 
-const DEFAULT_STATUS: UserVocabularyItemStatus = 'active';
+const DEFAULT_STATUS: VisibleUserVocabularyItemStatus = 'active';
 const DEFAULT_SOURCE_LANGUAGE_CODE = 'ru';
 const DEFAULT_TARGET_LANGUAGE_CODE = 'en';
 type VocabularyMode = 'library' | 'practice';
-type VocabularyStatusFilter = UserVocabularyItemStatus | 'all';
+type VocabularyStatusFilter = VisibleUserVocabularyItemStatus | 'all';
 
 const shuffleVocabularyItems = (items: UserVocabularyItemDto[]) => {
   const next = [...items];
@@ -50,6 +52,7 @@ const Vocabulary = () => {
   const [practiceIndex, setPracticeIndex] = useState(0);
   const [isPracticeAnswerVisible, setIsPracticeAnswerVisible] = useState(false);
   const [practiceStats, setPracticeStats] = useState({ again: 0, know: 0 });
+  const [itemPendingDelete, setItemPendingDelete] = useState<UserVocabularyItemDto | null>(null);
   const isAdmin = appData.role.includes('admin');
 
   const selectedSourceLanguageId = sourceLanguageId ? Number(sourceLanguageId) : undefined;
@@ -169,7 +172,7 @@ const Vocabulary = () => {
 
   async function handleVocabularyItemStatusChange(
     itemId: number,
-    nextStatus: UserVocabularyItemStatus
+    nextStatus: VisibleUserVocabularyItemStatus
   ) {
     try {
       setError('');
@@ -177,6 +180,24 @@ const Vocabulary = () => {
       appData.showLoader();
       await updateVocabularyItem(itemId, { status: nextStatus });
       setMsg(nextStatus === 'archived' ? 'Vocabulary item archived' : 'Vocabulary item restored');
+      await loadItems();
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      appData.hideLoader();
+    }
+  }
+
+  async function handleVocabularyItemDelete() {
+    if (!itemPendingDelete) return;
+
+    try {
+      setError('');
+      setMsg('');
+      appData.showLoader();
+      await deleteVocabularyItem(itemPendingDelete.id);
+      setItemPendingDelete(null);
+      setMsg('Vocabulary item deleted');
       await loadItems();
     } catch (e) {
       setError((e as Error).message);
@@ -213,6 +234,7 @@ const Vocabulary = () => {
 
   function handleModeChange(nextMode: VocabularyMode) {
     setMode(nextMode);
+    setItemPendingDelete(null);
     setError('');
     setMsg('');
   }
@@ -336,6 +358,7 @@ const Vocabulary = () => {
                       languages={languages}
                       isAdmin={isAdmin}
                       onStatusChange={handleVocabularyItemStatusChange}
+                      onDelete={() => setItemPendingDelete(item)}
                     />
                   ))
                 )}
@@ -355,6 +378,14 @@ const Vocabulary = () => {
               onKnow={() => handlePracticeAnswer('know')}
               onRestart={() => restartPractice(false)}
               onShuffle={() => restartPractice(true)}
+            />
+          )}
+          {itemPendingDelete && (
+            <DeleteVocabularyItemModal
+              item={itemPendingDelete}
+              languages={languages}
+              onCancel={() => setItemPendingDelete(null)}
+              onConfirm={handleVocabularyItemDelete}
             />
           )}
         </>

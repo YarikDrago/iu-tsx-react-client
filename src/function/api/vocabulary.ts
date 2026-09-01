@@ -1,7 +1,8 @@
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 
-export type UserVocabularyItemStatus = 'active' | 'archived';
+export type UserVocabularyItemStatus = 'active' | 'archived' | 'deleted';
+export type VisibleUserVocabularyItemStatus = Exclude<UserVocabularyItemStatus, 'deleted'>;
 export type ConceptStatus = 'private' | 'pending' | 'verified' | 'rejected' | 'merged';
 
 export interface VocabularyWordDto {
@@ -40,13 +41,13 @@ export interface CreateVocabularyItemPayload {
 }
 
 export interface UpdateVocabularyItemPayload {
-  status: UserVocabularyItemStatus;
+  status: VisibleUserVocabularyItemStatus;
 }
 
 export interface GetVocabularyItemsQuery {
   sourceLanguageId?: number;
   targetLanguageId?: number;
-  status?: UserVocabularyItemStatus;
+  status?: VisibleUserVocabularyItemStatus;
 }
 
 function toQueryString(query: GetVocabularyItemsQuery) {
@@ -89,5 +90,13 @@ export async function updateVocabularyItem(itemId: number, payload: UpdateVocabu
     `vocabulary/my-items/${itemId}`,
     HTMLRequestMethods.PATCH,
     payload
+  );
+}
+
+export async function deleteVocabularyItem(itemId: number) {
+  return await universalFetchRequest<UserVocabularyItemDto>(
+    `vocabulary/my-items/${itemId}`,
+    HTMLRequestMethods.DELETE,
+    {}
   );
 }

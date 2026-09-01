@@ -183,6 +183,8 @@
 
 .itemActions {
   display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
   justify-content: flex-end;
 }
 
@@ -200,6 +202,15 @@
 
   &:hover {
     background: rgba(255, 255, 255, 0.16);
+  }
+}
+
+.itemDeleteAction {
+  border-color: rgba(252, 165, 165, 0.24);
+  background: rgba(252, 165, 165, 0.14);
+
+  &:hover {
+    background: rgba(252, 165, 165, 0.22);
   }
 }
 
@@ -341,6 +352,111 @@
     color: #fff;
     font-size: 20px;
     font-weight: 800;
+  }
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(0, 0, 0, 0.62);
+}
+
+.confirmModal {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: min(440px, 100%);
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.06)),
+    rgba(8, 16, 28, 0.96);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+
+  h2,
+  p {
+    margin: 0;
+  }
+
+  h2 {
+    color: #fff;
+    font-size: 22px;
+    line-height: 1.2;
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.45;
+  }
+}
+
+.confirmWords {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 6px 10px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+
+  span {
+    color: rgba(255, 255, 255, 0.56);
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  strong {
+    overflow-wrap: anywhere;
+    color: #fff;
+    font-size: 15px;
+    line-height: 1.35;
+  }
+}
+
+.confirmActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.confirmCancel,
+.confirmDelete {
+  width: auto;
+  min-width: 92px;
+  min-height: 38px;
+  height: auto;
+  padding: 8px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.confirmCancel {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.16);
+  }
+}
+
+.confirmDelete {
+  border-color: rgba(252, 165, 165, 0.34);
+  background: rgba(252, 165, 165, 0.18);
+  color: #fff;
+
+  &:hover {
+    background: rgba(252, 165, 165, 0.28);
   }
 }
 

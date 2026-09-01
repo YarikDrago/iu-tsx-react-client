@@ -1,5 +1,5 @@
 import { LanguageDto } from '@/function/api/getLanguages';
-import { UserVocabularyItemDto, UserVocabularyItemStatus } from '@/function/api/vocabulary';
+import { UserVocabularyItemDto, VisibleUserVocabularyItemStatus } from '@/function/api/vocabulary';
 
 import * as styles from './Vocabulary.module.scss';
 
@@ -7,10 +7,17 @@ type LearningCardProps = {
   item: UserVocabularyItemDto;
   languages: LanguageDto[];
   isAdmin: boolean;
-  onStatusChange: (itemId: number, nextStatus: UserVocabularyItemStatus) => void;
+  onStatusChange: (itemId: number, nextStatus: VisibleUserVocabularyItemStatus) => void;
+  onDelete: () => void;
 };
 
-const LearningCard = ({ item, languages, isAdmin, onStatusChange }: LearningCardProps) => {
+const LearningCard = ({
+  item,
+  languages,
+  isAdmin,
+  onStatusChange,
+  onDelete,
+}: LearningCardProps) => {
   const getWordForLanguage = (languageId: number) =>
     item.concept.words.find((word) => word.languageId === languageId)?.text ?? '';
 
@@ -44,6 +51,13 @@ const LearningCard = ({ item, languages, isAdmin, onStatusChange }: LearningCard
             onClick={() => onStatusChange(item.id, nextStatus)}
           >
             {statusActionLabel}
+          </button>
+          <button
+            type="button"
+            className={`${styles.itemAction} ${styles.itemDeleteAction}`}
+            onClick={onDelete}
+          >
+            Delete
           </button>
         </div>
       </div>
