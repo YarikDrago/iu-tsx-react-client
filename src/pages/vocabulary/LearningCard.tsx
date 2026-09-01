@@ -8,6 +8,7 @@ type LearningCardProps = {
   languages: LanguageDto[];
   isAdmin: boolean;
   onStatusChange: (itemId: number, nextStatus: VisibleUserVocabularyItemStatus) => void;
+  onEdit: () => void;
   onDelete: () => void;
 };
 
@@ -16,6 +17,7 @@ const LearningCard = ({
   languages,
   isAdmin,
   onStatusChange,
+  onEdit,
   onDelete,
 }: LearningCardProps) => {
   const getWordForLanguage = (languageId: number) =>
@@ -30,6 +32,7 @@ const LearningCard = ({
   const target = getWordForLanguage(item.targetLanguageId);
   const nextStatus = item.status === 'active' ? 'archived' : 'active';
   const statusActionLabel = item.status === 'active' ? 'Archive' : 'Restore';
+  const canEdit = item.concept.status === 'private';
 
   return (
     <article className={styles.item}>
@@ -45,6 +48,15 @@ const LearningCard = ({
           {isAdmin && <span className={styles.adminMeta}>concept: {item.concept.status}</span>}
         </div>
         <div className={styles.itemActions}>
+          {canEdit && (
+            <button
+              type="button"
+              className={`${styles.itemAction} ${styles.itemEditAction}`}
+              onClick={onEdit}
+            >
+              Edit
+            </button>
+          )}
           <button
             type="button"
             className={styles.itemAction}

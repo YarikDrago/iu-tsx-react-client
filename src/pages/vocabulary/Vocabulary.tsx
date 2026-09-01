@@ -7,6 +7,8 @@ import {
   deleteVocabularyItem,
   getVocabularyItems,
   updateVocabularyItem,
+  updateVocabularyItemContent,
+  UpdateVocabularyItemContentPayload,
   UserVocabularyItemDto,
   VisibleUserVocabularyItemStatus,
 } from '@/function/api/vocabulary';
@@ -15,6 +17,7 @@ import { Breadcrumbs } from '@/shared/components/Breadcrumbs/Breadcrumbs';
 import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
 
 import DeleteVocabularyItemModal from './DeleteVocabularyItemModal';
+import EditVocabularyItemModal from './EditVocabularyItemModal';
 import LearningCard from './LearningCard';
 import PracticeCard from './PracticeCard';
 import * as styles from './Vocabulary.module.scss';
@@ -53,6 +56,7 @@ const Vocabulary = () => {
   const [isPracticeAnswerVisible, setIsPracticeAnswerVisible] = useState(false);
   const [practiceStats, setPracticeStats] = useState({ again: 0, know: 0 });
   const [itemPendingDelete, setItemPendingDelete] = useState<UserVocabularyItemDto | null>(null);
+  const [itemPendingEdit, setItemPendingEdit] = useState<UserVocabularyItemDto | null>(null);
   const isAdmin = appData.role.includes('admin');
 
   const selectedSourceLanguageId = sourceLanguageId ? Number(sourceLanguageId) : undefined;
@@ -206,6 +210,24 @@ const Vocabulary = () => {
     }
   }
 
+  async function handleVocabularyItemContentSave(payload: UpdateVocabularyItemContentPayload) {
+    if (!itemPendingEdit) return;
+
+    try {
+      setError('');
+      setMsg('');
+      appData.showLoader();
+      await updateVocabularyItemContent(itemPendingEdit.id, payload);
+      setItemPendingEdit(null);
+      setMsg('Vocabulary item updated');
+      await loadItems();
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      appData.hideLoader();
+    }
+  }
+
   function handlePracticeAnswer(answer: 'again' | 'know') {
     if (!currentPracticeItem) return;
 
@@ -235,6 +257,7 @@ const Vocabulary = () => {
   function handleModeChange(nextMode: VocabularyMode) {
     setMode(nextMode);
     setItemPendingDelete(null);
+    setItemPendingEdit(null);
     setError('');
     setMsg('');
   }
@@ -358,6 +381,7 @@ const Vocabulary = () => {
                       languages={languages}
                       isAdmin={isAdmin}
                       onStatusChange={handleVocabularyItemStatusChange}
+                      onEdit={() => setItemPendingEdit(item)}
                       onDelete={() => setItemPendingDelete(item)}
                     />
                   ))
@@ -386,6 +410,14 @@ const Vocabulary = () => {
               languages={languages}
               onCancel={() => setItemPendingDelete(null)}
               onConfirm={handleVocabularyItemDelete}
+            />
+          )}
+          {itemPendingEdit && (
+            <EditVocabularyItemModal
+              item={itemPendingEdit}
+              languages={languages}
+              onCancel={() => setItemPendingEdit(null)}
+              onSave={handleVocabularyItemContentSave}
             />
           )}
         </>

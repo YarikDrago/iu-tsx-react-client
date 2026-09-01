@@ -44,6 +44,13 @@ export interface UpdateVocabularyItemPayload {
   status: VisibleUserVocabularyItemStatus;
 }
 
+export interface UpdateVocabularyItemContentPayload {
+  sourceLanguageId: number;
+  targetLanguageId: number;
+  sourceText: string;
+  targetText: string;
+}
+
 export interface GetVocabularyItemsQuery {
   sourceLanguageId?: number;
   targetLanguageId?: number;
@@ -98,5 +105,16 @@ export async function deleteVocabularyItem(itemId: number) {
     `vocabulary/my-items/${itemId}`,
     HTMLRequestMethods.DELETE,
     {}
+  );
+}
+
+export async function updateVocabularyItemContent(
+  itemId: number,
+  payload: UpdateVocabularyItemContentPayload
+) {
+  return await universalFetchRequest<UserVocabularyItemDto>(
+    `vocabulary/my-items/${itemId}/content`,
+    HTMLRequestMethods.PATCH,
+    payload
   );
 }
