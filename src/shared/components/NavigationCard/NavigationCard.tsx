@@ -8,6 +8,7 @@ interface NavigationCardProps {
   to: string;
   image?: string;
   isDisplaed?: boolean;
+  /** Apply a special admin style */
   forAdmin?: boolean;
 }
 

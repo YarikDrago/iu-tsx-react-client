@@ -14,6 +14,7 @@ import {
 } from '@/function/api/vocabulary';
 import { routes } from '@/routes/routes';
 import { Breadcrumbs } from '@/shared/components/Breadcrumbs/Breadcrumbs';
+import { USER_ROLES } from '@/shared/constants/userRoles';
 import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
 
 import DeleteVocabularyItemModal from './DeleteVocabularyItemModal';
@@ -57,7 +58,7 @@ const Vocabulary = () => {
   const [practiceStats, setPracticeStats] = useState({ again: 0, know: 0 });
   const [itemPendingDelete, setItemPendingDelete] = useState<UserVocabularyItemDto | null>(null);
   const [itemPendingEdit, setItemPendingEdit] = useState<UserVocabularyItemDto | null>(null);
-  const isAdmin = appData.role.includes('admin');
+  const isAdmin = appData.role.includes(USER_ROLES.Admin);
 
   const selectedSourceLanguageId = sourceLanguageId ? Number(sourceLanguageId) : undefined;
   const selectedTargetLanguageId = targetLanguageId ? Number(targetLanguageId) : undefined;

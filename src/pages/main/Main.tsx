@@ -8,11 +8,14 @@ import stadiumImage from '@/assets/images/stadium_s.jpg';
 import backgroundImage from '@/assets/images/vocabulary_background.png';
 import { routes } from '@/routes/routes';
 import { NavigationCard } from '@/shared/components/NavigationCard/NavigationCard';
+import { USER_ROLES } from '@/shared/constants/userRoles';
 
 import * as styles from './main.module.scss';
 
 const Main = () => {
   const navigate = useNavigate();
+  const canSeeTestingFeatures =
+    appData.role.includes(USER_ROLES.Admin) || appData.role.includes(USER_ROLES.Tester);
 
   return (
     <article className={styles.main}>
@@ -24,13 +27,13 @@ const Main = () => {
             image={backgroundImage}
             to={routes.vocabulary.href}
             forAdmin={true}
-            isDisplaed={appData.role.includes('admin')}
+            isDisplaed={canSeeTestingFeatures}
           />
           <NavigationCard
             title="Bread"
             to={routes.bread.href}
             forAdmin={true}
-            isDisplaed={appData.role.includes('admin')}
+            isDisplaed={canSeeTestingFeatures}
           />
         </div>
       ) : (
