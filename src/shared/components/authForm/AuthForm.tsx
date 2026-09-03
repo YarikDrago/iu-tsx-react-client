@@ -122,6 +122,9 @@ const AuthForm = ({ isRegistration = false }: Props) => {
               <input
                 type="text"
                 placeholder={'Email'}
+                autoFocus={true}
+                autoCapitalize={'off'}
+                autoCorrect={'off'}
                 value={email}
                 onChange={(e) => {
                   setErrorMsg('');
