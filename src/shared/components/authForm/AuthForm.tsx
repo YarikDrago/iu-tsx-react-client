@@ -120,11 +120,14 @@ const AuthForm = ({ isRegistration = false }: Props) => {
             <>
               <p>Email</p>
               <input
-                type="text"
+                type="email"
+                name={'email'}
                 placeholder={'Email'}
+                autoComplete={'email'}
                 autoFocus={true}
                 autoCapitalize={'off'}
                 autoCorrect={'off'}
+                required={true}
                 value={email}
                 onChange={(e) => {
                   setErrorMsg('');
@@ -139,6 +142,11 @@ const AuthForm = ({ isRegistration = false }: Props) => {
               <input
                 type="text"
                 placeholder={'nickname'}
+                name={'nickname'}
+                autoFocus={true}
+                autoCapitalize={'off'}
+                autoCorrect={'off'}
+                required={true}
                 value={nickname}
                 onChange={(e) => {
                   setErrorMsg('');
@@ -153,6 +161,7 @@ const AuthForm = ({ isRegistration = false }: Props) => {
               <input
                 className={'border-2'}
                 type="password"
+                required={true}
                 value={password}
                 placeholder={'Password'}
                 onChange={(e) => {
