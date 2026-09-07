@@ -2,34 +2,49 @@ import React, { FormEvent, useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { LanguageDto } from '@/function/api/getLanguages';
-import {
-  UpdateVocabularyItemContentPayload,
-  UserVocabularyItemDto,
-} from '@/function/api/vocabulary';
+import { CreateVocabularyItemPayload, UserVocabularyItemDto } from '@/function/api/vocabulary';
 
 import * as styles from './Vocabulary.module.scss';
 
-type EditVocabularyItemModalProps = {
-  item: UserVocabularyItemDto;
+type VocabularyItemFormMode = 'create' | 'edit';
+
+type VocabularyItemFormModalProps = {
+  mode: VocabularyItemFormMode;
+  item?: UserVocabularyItemDto;
   languages: LanguageDto[];
+  initialSourceLanguageId?: number;
+  initialTargetLanguageId?: number;
   onCancel: () => void;
-  onSave: (payload: UpdateVocabularyItemContentPayload) => Promise<void>;
+  onSave: (payload: CreateVocabularyItemPayload) => Promise<void>;
 };
 
-const EditVocabularyItemModal = ({
+const VocabularyItemFormModal = ({
+  mode,
   item,
   languages,
+  initialSourceLanguageId,
+  initialTargetLanguageId,
   onCancel,
   onSave,
-}: EditVocabularyItemModalProps) => {
+}: VocabularyItemFormModalProps) => {
   const portalRoot = useMemo(() => document.getElementById('modal-root') ?? document.body, []);
   const getWordForLanguage = (languageId: number) =>
-    item.concept.words.find((word) => word.languageId === languageId)?.text ?? '';
+    item?.concept.words.find((word) => word.languageId === languageId)?.text ?? '';
+  const defaultSourceLanguageId =
+    initialSourceLanguageId ?? item?.sourceLanguageId ?? languages[0]?.id;
+  const defaultTargetLanguageId =
+    initialTargetLanguageId ??
+    item?.targetLanguageId ??
+    languages.find((language) => language.id !== defaultSourceLanguageId)?.id;
 
-  const [sourceLanguageId, setSourceLanguageId] = useState(String(item.sourceLanguageId));
-  const [targetLanguageId, setTargetLanguageId] = useState(String(item.targetLanguageId));
-  const [sourceText, setSourceText] = useState(getWordForLanguage(item.sourceLanguageId));
-  const [targetText, setTargetText] = useState(getWordForLanguage(item.targetLanguageId));
+  const [sourceLanguageId, setSourceLanguageId] = useState(String(defaultSourceLanguageId ?? ''));
+  const [targetLanguageId, setTargetLanguageId] = useState(String(defaultTargetLanguageId ?? ''));
+  const [sourceText, setSourceText] = useState(
+    item ? getWordForLanguage(item.sourceLanguageId) : ''
+  );
+  const [targetText, setTargetText] = useState(
+    item ? getWordForLanguage(item.targetLanguageId) : ''
+  );
   const [formError, setFormError] = useState('');
 
   useEffect(() => {
@@ -50,6 +65,11 @@ const EditVocabularyItemModal = ({
     const nextTargetLanguageId = Number(targetLanguageId);
     const nextSourceText = sourceText.trim();
     const nextTargetText = targetText.trim();
+
+    if (!nextSourceLanguageId || !nextTargetLanguageId) {
+      setFormError('Choose From and To languages');
+      return;
+    }
 
     if (nextSourceLanguageId === nextTargetLanguageId) {
       setFormError('From and To languages must be different');
@@ -73,13 +93,13 @@ const EditVocabularyItemModal = ({
   const content = (
     <div className={styles.modalOverlay} onClick={onCancel}>
       <section
-        className={styles.confirmModal}
+        className={`${styles.confirmModal} ${styles.formModal}`}
         role="dialog"
         aria-modal="true"
-        aria-labelledby="editVocabularyItemTitle"
+        aria-labelledby="vocabularyItemFormTitle"
         onClick={(event) => event.stopPropagation()}
       >
-        <h2 id="editVocabularyItemTitle">Edit word</h2>
+        <h2 id="vocabularyItemFormTitle">{mode === 'create' ? 'Add word' : 'Edit word'}</h2>
         <form className={styles.editForm} onSubmit={handleSubmit}>
           <div className={styles.editGrid}>
             <label>
@@ -108,21 +128,25 @@ const EditVocabularyItemModal = ({
                 ))}
               </select>
             </label>
-            <label>
+            <label className={styles.textField}>
               <span>From</span>
-              <input
+              <textarea
                 value={sourceText}
+                placeholder="Input word or phrase..."
                 maxLength={255}
                 required
+                rows={3}
                 onChange={(event) => setSourceText(event.target.value)}
               />
             </label>
-            <label>
+            <label className={styles.textField}>
               <span>To</span>
-              <input
+              <textarea
                 value={targetText}
+                placeholder="Input word or phrase..."
                 maxLength={255}
                 required
+                rows={3}
                 onChange={(event) => setTargetText(event.target.value)}
               />
             </label>
@@ -133,7 +157,7 @@ const EditVocabularyItemModal = ({
               Cancel
             </button>
             <button type="submit" className={styles.confirmSave}>
-              Save
+              {mode === 'create' ? 'Add word' : 'Save'}
             </button>
           </div>
         </form>
@@ -144,4 +168,4 @@ const EditVocabularyItemModal = ({
   return createPortal(content, portalRoot);
 };
 
-export default EditVocabularyItemModal;
+export default VocabularyItemFormModal;

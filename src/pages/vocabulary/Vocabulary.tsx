@@ -1,14 +1,14 @@
-import React, { FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import appData from '@/app.data';
 import { getLanguages, LanguageDto } from '@/function/api/getLanguages';
 import {
   createVocabularyItem,
+  CreateVocabularyItemPayload,
   deleteVocabularyItem,
   getVocabularyItems,
   updateVocabularyItem,
   updateVocabularyItemContent,
-  UpdateVocabularyItemContentPayload,
   UserVocabularyItemDto,
   VisibleUserVocabularyItemStatus,
 } from '@/function/api/vocabulary';
@@ -18,10 +18,10 @@ import { USER_ROLES } from '@/shared/constants/userRoles';
 import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
 
 import DeleteVocabularyItemModal from './DeleteVocabularyItemModal';
-import EditVocabularyItemModal from './EditVocabularyItemModal';
 import LearningCard from './LearningCard';
 import PracticeCard from './PracticeCard';
 import * as styles from './Vocabulary.module.scss';
+import VocabularyItemFormModal from './VocabularyItemFormModal';
 
 const DEFAULT_STATUS: VisibleUserVocabularyItemStatus = 'active';
 const DEFAULT_SOURCE_LANGUAGE_CODE = 'ru';
@@ -48,14 +48,13 @@ const Vocabulary = () => {
   const [sourceLanguageId, setSourceLanguageId] = useState<string>('');
   const [targetLanguageId, setTargetLanguageId] = useState<string>('');
   const [status, setStatus] = useState<VocabularyStatusFilter>(DEFAULT_STATUS);
-  const [sourceText, setSourceText] = useState('');
-  const [targetText, setTargetText] = useState('');
   const [error, setError] = useState('');
   const [msg, setMsg] = useState('');
   const [practiceQueue, setPracticeQueue] = useState<UserVocabularyItemDto[]>([]);
   const [practiceIndex, setPracticeIndex] = useState(0);
   const [isPracticeAnswerVisible, setIsPracticeAnswerVisible] = useState(false);
   const [practiceStats, setPracticeStats] = useState({ again: 0, know: 0 });
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [itemPendingDelete, setItemPendingDelete] = useState<UserVocabularyItemDto | null>(null);
   const [itemPendingEdit, setItemPendingEdit] = useState<UserVocabularyItemDto | null>(null);
   const isAdmin = appData.role.includes(USER_ROLES.Admin);
@@ -81,7 +80,7 @@ const Vocabulary = () => {
     } finally {
       appData.hideLoader();
     }
-  }, [selectedSourceLanguageId, selectedStatus, selectedTargetLanguageId]);
+  }, [selectedSourceLanguageId, selectedTargetLanguageId, selectedStatus]);
 
   useEffect(() => {
     if (!ready) return;
@@ -141,31 +140,13 @@ const Vocabulary = () => {
     restartPractice(false);
   }, [mode, restartPractice]);
 
-  async function handleSaveLearningCard(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    if (!selectedSourceLanguageId || !selectedTargetLanguageId) {
-      setError('Choose From and To languages');
-      return;
-    }
-
-    if (selectedSourceLanguageId === selectedTargetLanguageId) {
-      setError('From and To languages must be different');
-      return;
-    }
-
+  async function handleVocabularyItemCreate(payload: CreateVocabularyItemPayload) {
     try {
       setError('');
       setMsg('');
       appData.showLoader();
-      await createVocabularyItem({
-        sourceLanguageId: selectedSourceLanguageId,
-        targetLanguageId: selectedTargetLanguageId,
-        sourceText,
-        targetText,
-      });
-      setSourceText('');
-      setTargetText('');
+      await createVocabularyItem(payload);
+      setIsCreateModalOpen(false);
       setMsg('Vocabulary item added');
       await loadItems();
     } catch (e) {
@@ -211,7 +192,7 @@ const Vocabulary = () => {
     }
   }
 
-  async function handleVocabularyItemContentSave(payload: UpdateVocabularyItemContentPayload) {
+  async function handleVocabularyItemContentSave(payload: CreateVocabularyItemPayload) {
     if (!itemPendingEdit) return;
 
     try {
@@ -257,6 +238,7 @@ const Vocabulary = () => {
 
   function handleModeChange(nextMode: VocabularyMode) {
     setMode(nextMode);
+    setIsCreateModalOpen(false);
     setItemPendingDelete(null);
     setItemPendingEdit(null);
     setError('');
@@ -343,33 +325,19 @@ const Vocabulary = () => {
 
           {mode === 'library' ? (
             <>
-              <form className={styles.form} onSubmit={handleSaveLearningCard}>
-                <div className={styles.formGrid}>
-                  <label>
-                    <span>From</span>
-                    <input
-                      value={sourceText}
-                      onChange={(event) => setSourceText(event.target.value)}
-                      placeholder="Input word or phrase..."
-                      maxLength={255}
-                      required
-                    />
-                  </label>
-                  <label>
-                    <span>To</span>
-                    <input
-                      value={targetText}
-                      onChange={(event) => setTargetText(event.target.value)}
-                      placeholder="Input word or phrase..."
-                      maxLength={255}
-                      required
-                    />
-                  </label>
-                </div>
-                <button className="primary" type="submit">
+              <section className={styles.libraryActions}>
+                <button
+                  className="primary"
+                  type="button"
+                  onClick={() => {
+                    setItemPendingEdit(null);
+                    setItemPendingDelete(null);
+                    setIsCreateModalOpen(true);
+                  }}
+                >
                   Add word
                 </button>
-              </form>
+              </section>
 
               <section className={styles.items}>
                 {items.length === 0 ? (
@@ -382,8 +350,16 @@ const Vocabulary = () => {
                       languages={languages}
                       isAdmin={isAdmin}
                       onStatusChange={handleVocabularyItemStatusChange}
-                      onEdit={() => setItemPendingEdit(item)}
-                      onDelete={() => setItemPendingDelete(item)}
+                      onEdit={() => {
+                        setIsCreateModalOpen(false);
+                        setItemPendingDelete(null);
+                        setItemPendingEdit(item);
+                      }}
+                      onDelete={() => {
+                        setIsCreateModalOpen(false);
+                        setItemPendingEdit(null);
+                        setItemPendingDelete(item);
+                      }}
                     />
                   ))
                 )}
@@ -414,11 +390,22 @@ const Vocabulary = () => {
             />
           )}
           {itemPendingEdit && (
-            <EditVocabularyItemModal
+            <VocabularyItemFormModal
+              mode="edit"
               item={itemPendingEdit}
               languages={languages}
               onCancel={() => setItemPendingEdit(null)}
               onSave={handleVocabularyItemContentSave}
+            />
+          )}
+          {isCreateModalOpen && (
+            <VocabularyItemFormModal
+              mode="create"
+              languages={languages}
+              initialSourceLanguageId={selectedSourceLanguageId}
+              initialTargetLanguageId={selectedTargetLanguageId}
+              onCancel={() => setIsCreateModalOpen(false)}
+              onSave={handleVocabularyItemCreate}
             />
           )}
         </>
