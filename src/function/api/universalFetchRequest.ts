@@ -13,6 +13,10 @@ type ApiErrorPayload = {
   error?: unknown;
 };
 
+function isFormDataBody(body: unknown): body is FormData {
+  return typeof FormData !== 'undefined' && body instanceof FormData;
+}
+
 function isJsonResponse(contentType: string | null) {
   return !!contentType && contentType.includes('application/json');
 }
@@ -100,12 +104,16 @@ export async function universalFetchRequest<TResponse = unknown>(
   options: UniversalFetchOptions = {}
 ): Promise<TResponse> {
   const url = `/api/${path}`;
+  const isFormData = isFormDataBody(body);
 
-  const headers = {
-    'Content-Type': 'application/json',
+  const headers: HeadersInit = {
     'Cache-Control': 'no-store',
     Pragma: 'no-cache',
   };
+
+  if (!isFormData) {
+    headers['Content-Type'] = 'application/json';
+  }
 
   const init: RequestInit = {
     method,
@@ -115,7 +123,7 @@ export async function universalFetchRequest<TResponse = unknown>(
   };
   /* Add body to the request if it is not GET or HEAD method */
   if (method !== HTMLRequestMethods.GET && method !== HTMLRequestMethods.HEAD) {
-    init.body = JSON.stringify(body);
+    init.body = isFormData ? body : JSON.stringify(body);
   }
   /* Add an abort signal to the request if the AbortController is existed */
   if (appData.abortRequestSignal) {
