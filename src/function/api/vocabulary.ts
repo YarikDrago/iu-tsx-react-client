@@ -3,7 +3,7 @@ import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 
 export type UserVocabularyItemStatus = 'active' | 'archived' | 'deleted';
 export type VisibleUserVocabularyItemStatus = Exclude<UserVocabularyItemStatus, 'deleted'>;
-export type ConceptStatus = 'private' | 'pending' | 'verified' | 'rejected' | 'merged';
+export type ConceptStatus = 'private' | 'pending' | 'verified' | 'rejected' | 'merged' | 'blocked';
 
 export interface VocabularyWordDto {
   id: number;
@@ -13,7 +13,7 @@ export interface VocabularyWordDto {
 
 export interface VocabularyImageDto {
   id: number;
-  imageUrl: string;
+  imageUrl: string | null;
   isPrimary: boolean;
 }
 
@@ -49,6 +49,11 @@ export interface UpdateVocabularyItemContentPayload {
   targetLanguageId: number;
   sourceText: string;
   targetText: string;
+}
+
+export interface UpdateVocabularyItemPrimaryImageOptions {
+  imageAltText?: string;
+  imageSourceUrl?: string;
 }
 
 export interface GetVocabularyItemsQuery {
@@ -116,5 +121,36 @@ export async function updateVocabularyItemContent(
     `vocabulary/my-items/${itemId}/content`,
     HTMLRequestMethods.PATCH,
     payload
+  );
+}
+
+export async function updateVocabularyItemPrimaryImage(
+  itemId: number,
+  file: File,
+  options: UpdateVocabularyItemPrimaryImageOptions = {}
+) {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  if (options.imageAltText) {
+    formData.append('imageAltText', options.imageAltText);
+  }
+
+  if (options.imageSourceUrl) {
+    formData.append('imageSourceUrl', options.imageSourceUrl);
+  }
+
+  return await universalFetchRequest<UserVocabularyItemDto>(
+    `vocabulary/my-items/${itemId}/primary-image`,
+    HTMLRequestMethods.PUT,
+    formData
+  );
+}
+
+export async function deleteVocabularyItemPrimaryImage(itemId: number) {
+  return await universalFetchRequest<UserVocabularyItemDto>(
+    `vocabulary/my-items/${itemId}/primary-image`,
+    HTMLRequestMethods.DELETE,
+    {}
   );
 }
