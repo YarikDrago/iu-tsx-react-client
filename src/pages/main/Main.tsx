@@ -16,6 +16,8 @@ const Main = () => {
   const navigate = useNavigate();
   const canSeeTestingFeatures =
     appData.role.includes(USER_ROLES.Admin) || appData.role.includes(USER_ROLES.Tester);
+  const canManageUsers =
+    appData.role.includes(USER_ROLES.Admin) || appData.role.includes(USER_ROLES.VpnAdmin);
 
   return (
     <article className={styles.main}>
@@ -34,6 +36,12 @@ const Main = () => {
             to={routes.bread.href}
             forAdmin={true}
             isDisplaed={canSeeTestingFeatures}
+          />
+          <NavigationCard
+            title="Users"
+            to={routes.adminUsers.href}
+            forAdmin={true}
+            isDisplaed={canManageUsers}
           />
         </div>
       ) : (

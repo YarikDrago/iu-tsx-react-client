@@ -3,6 +3,7 @@ import { BreadcrumbItem } from '@/shared/components/Breadcrumbs/Breadcrumbs';
 const PREDICTIONS_BASE = '/predictions';
 const PRODUCTS_BASE = '/products';
 const VOCABULARY_BASE = '/vocabulary';
+const ADMIN_BASE = '/admin';
 
 const productsRoutes: { [key: string]: BreadcrumbItem } = {
   bread: {
@@ -47,6 +48,10 @@ export const routes: { [key: string]: BreadcrumbItem } = {
   vocabulary: {
     href: VOCABULARY_BASE,
     label: 'Vocabulary',
+  },
+  adminUsers: {
+    href: `${ADMIN_BASE}/users`,
+    label: 'Users',
   },
   predictions: {
     href: `${PREDICTIONS_BASE}`,

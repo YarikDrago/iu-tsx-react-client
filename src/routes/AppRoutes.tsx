@@ -2,6 +2,7 @@ import React from 'react';
 import { Navigate, Route, Routes } from 'react-router';
 
 import { ActivateAsync } from '@/pages/activate/Activate.async';
+import { AdminUsersAsync } from '@/pages/admin/users/index.async';
 import { AuthAsync } from '@/pages/auth/Auth.async';
 import { ContactAsync } from '@/pages/contact/index.async';
 import { MainAsync } from '@/pages/main/index.async';
@@ -31,6 +32,7 @@ const AppRoutes = () => {
         <Route path={routes.settings.href} element={<SettingsAsync />} />
         <Route path={routes.contact.href} element={<ContactAsync />} />
         <Route path={routes.privacy.href} element={<PrivacyPolicyAsync />} />
+        <Route path={routes.adminUsers.href} element={<AdminUsersAsync />} />
         <Route path={routes.vocabulary.href} element={<VocabularyAsync />} />
         <Route path={routes.predictions.href} element={<PredictionsAsync />} />
         <Route path={routes.allApiTournaments.href} element={<AllApiTournamentsPageAsync />} />
