@@ -43,3 +43,16 @@ export async function getAdminUsers(params: GetAdminUsersParams = {}): Promise<A
     {}
   );
 }
+
+export async function getAvailableAdminRoles(): Promise<string[]> {
+  return await universalFetchRequest('admin/users/available-roles', HTMLRequestMethods.GET, {});
+}
+
+export async function updateAdminUserRoles(
+  userId: number,
+  roles: string[]
+): Promise<AdminUserListItem> {
+  return await universalFetchRequest(`admin/users/${userId}/roles`, HTMLRequestMethods.PUT, {
+    roles,
+  });
+}

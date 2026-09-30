@@ -3,7 +3,12 @@ import { useNavigate } from 'react-router';
 import { observer } from 'mobx-react';
 
 import appData from '@/app.data';
-import { AdminUserListItem, getAdminUsers } from '@/function/api/adminUsers';
+import {
+  AdminUserListItem,
+  getAdminUsers,
+  getAvailableAdminRoles,
+  updateAdminUserRoles,
+} from '@/function/api/adminUsers';
 import { me } from '@/function/api/me';
 import { routes } from '@/routes/routes';
 import { Breadcrumbs } from '@/shared/components/Breadcrumbs/Breadcrumbs';
@@ -11,6 +16,7 @@ import { USER_ROLES } from '@/shared/constants/userRoles';
 import { useRequireAccessToken } from '@/shared/hooks/useRequireAccessToken';
 
 import * as styles from './AdminUsers.module.scss';
+import EditUserRolesModal from './EditUserRolesModal';
 
 const PAGE_SIZE = 20;
 
@@ -25,6 +31,8 @@ const AdminUsers = () => {
   const [searchInput, setSearchInput] = useState('');
   const [search, setSearch] = useState('');
   const [error, setError] = useState('');
+  const [availableRoles, setAvailableRoles] = useState<string[]>([]);
+  const [userPendingEdit, setUserPendingEdit] = useState<AdminUserListItem | null>(null);
 
   useEffect(() => {
     if (!tokenReady) return;
@@ -50,6 +58,10 @@ const AdminUsers = () => {
           return;
         }
 
+        const roles = await getAvailableAdminRoles();
+        if (cancelled) return;
+
+        setAvailableRoles(roles);
         setIsAuthorized(true);
       } catch (e) {
         if (!cancelled) setError((e as Error).message);
@@ -93,6 +105,17 @@ const AdminUsers = () => {
     setSearchInput('');
     setSearch('');
     setPage(1);
+  };
+
+  const handleRolesSave = async (roles: string[]) => {
+    if (!userPendingEdit) return;
+
+    const updatedUser = await updateAdminUserRoles(userPendingEdit.id, roles);
+    setUsers((currentUsers) =>
+      currentUsers.map((user) => (user.id === updatedUser.id ? updatedUser : user))
+    );
+    setUserPendingEdit(null);
+    appData.addToast('Roles were successfully changed', 'success');
   };
 
   if (!isAuthorized && !error) return null;
@@ -161,10 +184,20 @@ const AdminUsers = () => {
                       <span className={styles.status}>{user.status ?? 'Unknown'}</span>
                     </td>
                     <td>
-                      <div className={styles.roles}>
-                        {user.roles.length > 0
-                          ? user.roles.map((role) => <span key={role}>{role}</span>)
-                          : 'No roles'}
+                      <div className={styles.rolesCell}>
+                        <div className={styles.roles}>
+                          {user.roles.length > 0
+                            ? user.roles.map((role) => <span key={role}>{role}</span>)
+                            : 'No roles'}
+                        </div>
+                        <button
+                          type="button"
+                          className={`admin ${styles.editRolesButton}`}
+                          disabled={availableRoles.length === 0}
+                          onClick={() => setUserPendingEdit(user)}
+                        >
+                          Edit
+                        </button>
                       </div>
                     </td>
                     <td>
@@ -199,6 +232,15 @@ const AdminUsers = () => {
             Next
           </button>
         </nav>
+      )}
+
+      {userPendingEdit && (
+        <EditUserRolesModal
+          user={userPendingEdit}
+          availableRoles={availableRoles}
+          onCancel={() => setUserPendingEdit(null)}
+          onSave={handleRolesSave}
+        />
       )}
     </article>
   );
