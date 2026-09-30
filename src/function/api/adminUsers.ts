@@ -1,6 +1,8 @@
 import { universalFetchRequest } from '@/function/api/universalFetchRequest';
 import { HTMLRequestMethods } from '@/models/htmlRequestMethods';
 
+const ADMIN_USERS_API_PATH = 'management/users';
+
 export type VpnStatus = 'active' | 'suspended' | 'banned';
 
 export interface AdminUserListItem {
@@ -38,21 +40,27 @@ export async function getAdminUsers(params: GetAdminUsersParams = {}): Promise<A
   const query = searchParams.toString();
 
   return await universalFetchRequest(
-    `admin/users${query ? `?${query}` : ''}`,
+    `${ADMIN_USERS_API_PATH}${query ? `?${query}` : ''}`,
     HTMLRequestMethods.GET,
     {}
   );
 }
 
 export async function getAvailableAdminRoles(): Promise<string[]> {
-  return await universalFetchRequest('admin/users/available-roles', HTMLRequestMethods.GET, {});
+  return await universalFetchRequest(
+    `${ADMIN_USERS_API_PATH}/available-roles`,
+    HTMLRequestMethods.GET,
+    {}
+  );
 }
 
 export async function updateAdminUserRoles(
   userId: number,
   roles: string[]
 ): Promise<AdminUserListItem> {
-  return await universalFetchRequest(`admin/users/${userId}/roles`, HTMLRequestMethods.PUT, {
-    roles,
-  });
+  return await universalFetchRequest(
+    `${ADMIN_USERS_API_PATH}/${userId}/roles`,
+    HTMLRequestMethods.PUT,
+    { roles }
+  );
 }
