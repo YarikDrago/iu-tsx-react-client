@@ -3,10 +3,20 @@ import { createPortal } from 'react-dom';
 
 import { LanguageDto } from '@/function/api/getLanguages';
 import { CreateVocabularyItemPayload, UserVocabularyItemDto } from '@/function/api/vocabulary';
+import {
+  ImageUploadCropper,
+  ImageUploadCropperResult,
+} from '@/shared/components/ImageUploadCropper';
 
 import * as styles from './Vocabulary.module.scss';
 
 type VocabularyItemFormMode = 'create' | 'edit';
+const MAX_IMAGE_FILE_SIZE_MB = 2;
+
+export type VocabularyItemFormSubmitPayload = CreateVocabularyItemPayload & {
+  imageFile?: File;
+  removeImage?: boolean;
+};
 
 type VocabularyItemFormModalProps = {
   mode: VocabularyItemFormMode;
@@ -15,7 +25,7 @@ type VocabularyItemFormModalProps = {
   initialSourceLanguageId?: number;
   initialTargetLanguageId?: number;
   onCancel: () => void;
-  onSave: (payload: CreateVocabularyItemPayload) => Promise<void>;
+  onSave: (payload: VocabularyItemFormSubmitPayload) => Promise<void>;
 };
 
 const VocabularyItemFormModal = ({
@@ -45,7 +55,13 @@ const VocabularyItemFormModal = ({
   const [targetText, setTargetText] = useState(
     item ? getWordForLanguage(item.targetLanguageId) : ''
   );
+  const [imageResult, setImageResult] = useState<ImageUploadCropperResult | null>(null);
+  const [shouldRemoveImage, setShouldRemoveImage] = useState(false);
   const [formError, setFormError] = useState('');
+  const primaryImage =
+    item?.concept.images.find((image) => image.isPrimary && image.imageUrl) ??
+    item?.concept.images.find((image) => image.imageUrl);
+  const canEditImage = mode === 'create' || item?.concept.status === 'private';
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -81,12 +97,19 @@ const VocabularyItemFormModal = ({
       return;
     }
 
+    if (imageResult && imageResult.file.size > MAX_IMAGE_FILE_SIZE_MB * 1024 * 1024) {
+      setFormError(`Final image must be ${MAX_IMAGE_FILE_SIZE_MB} MB or smaller`);
+      return;
+    }
+
     setFormError('');
     await onSave({
       sourceLanguageId: nextSourceLanguageId,
       targetLanguageId: nextTargetLanguageId,
       sourceText: nextSourceText,
       targetText: nextTargetText,
+      imageFile: imageResult?.file,
+      removeImage: !imageResult && shouldRemoveImage,
     });
   }
 
@@ -151,6 +174,49 @@ const VocabularyItemFormModal = ({
               />
             </label>
           </div>
+          {canEditImage && (
+            <section className={styles.imageFormSection} aria-label="Word image">
+              <div className={styles.imageFormHeader}>
+                <h3>Image</h3>
+                {primaryImage && !imageResult && !shouldRemoveImage && (
+                  <button
+                    type="button"
+                    className={styles.imageRemoveButton}
+                    onClick={() => setShouldRemoveImage(true)}
+                  >
+                    Remove image
+                  </button>
+                )}
+              </div>
+              {primaryImage?.imageUrl && !imageResult && !shouldRemoveImage && (
+                <img
+                  className={styles.currentImagePreview}
+                  src={primaryImage.imageUrl}
+                  alt=""
+                  loading="lazy"
+                />
+              )}
+              {shouldRemoveImage && !imageResult && (
+                <p className={styles.imageStateMessage}>Image will be removed after saving.</p>
+              )}
+              <ImageUploadCropper
+                label="image"
+                maxOriginalFileSizeMb={8}
+                onChange={(result) => {
+                  setImageResult(result);
+                  if (result) setShouldRemoveImage(false);
+                }}
+              />
+              {imageResult && (
+                <img
+                  className={styles.currentImagePreview}
+                  src={imageResult.previewUrl}
+                  alt=""
+                  loading="lazy"
+                />
+              )}
+            </section>
+          )}
           {formError && <p className={styles.modalError}>{formError}</p>}
           <div className={styles.confirmActions}>
             <button type="button" className={styles.confirmCancel} onClick={onCancel}>

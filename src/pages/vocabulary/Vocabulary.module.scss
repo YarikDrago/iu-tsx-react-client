@@ -113,9 +113,18 @@
 }
 
 .item {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
   min-height: 112px;
   overflow: hidden;
   border-radius: 8px;
+}
+
+.itemImage {
+  width: 100%;
+  height: 100%;
+  min-height: 132px;
+  object-fit: cover;
 }
 
 .itemContent {
@@ -278,6 +287,14 @@
   }
 }
 
+.practiceImage {
+  width: min(360px, 100%);
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  align-self: center;
+  border-radius: 8px;
+}
+
 .practiceLabel,
 .practiceHint,
 .practiceAnswer span {
@@ -397,8 +414,15 @@
 
 .formModal {
   width: min(680px, 100%);
+  max-height: calc(100vh - 36px);
+  max-height: calc(100dvh - 36px);
   gap: 18px;
+  overflow: hidden;
   padding: 24px;
+
+  h2 {
+    flex-shrink: 0;
+  }
 }
 
 .confirmWords {
@@ -468,6 +492,19 @@
   display: flex;
   flex-direction: column;
   gap: 18px;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.editForm .confirmActions {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  margin-right: -4px;
+  padding-top: 12px;
+  background:
+    linear-gradient(180deg, rgba(8, 16, 28, 0), rgba(8, 16, 28, 0.96) 26%), rgba(8, 16, 28, 0.96);
 }
 
 .editGrid {
@@ -510,6 +547,58 @@
   grid-column: 1 / -1;
 }
 
+.imageFormSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.imageFormHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+
+  h3 {
+    margin: 0;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 800;
+  }
+}
+
+.imageRemoveButton {
+  width: auto;
+  min-height: 34px;
+  height: auto;
+  padding: 6px 10px;
+  border: 1px solid rgba(252, 165, 165, 0.28);
+  background: rgba(252, 165, 165, 0.14);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+
+  &:hover {
+    background: rgba(252, 165, 165, 0.22);
+  }
+}
+
+.currentImagePreview {
+  width: min(260px, 100%);
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.imageStateMessage {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.68) !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+}
+
 .modalError {
   margin: 0;
   color: #fca5a5 !important;
@@ -531,6 +620,15 @@
   .toolbar,
   .editGrid {
     grid-template-columns: 1fr;
+  }
+
+  .item {
+    grid-template-columns: 1fr;
+  }
+
+  .itemImage {
+    height: auto;
+    aspect-ratio: 4 / 3;
   }
 
   .practiceCard {
