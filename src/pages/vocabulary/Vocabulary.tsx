@@ -4,11 +4,12 @@ import appData from '@/app.data';
 import { getLanguages, LanguageDto } from '@/function/api/getLanguages';
 import {
   createVocabularyItem,
-  CreateVocabularyItemPayload,
   deleteVocabularyItem,
+  deleteVocabularyItemPrimaryImage,
   getVocabularyItems,
   updateVocabularyItem,
   updateVocabularyItemContent,
+  updateVocabularyItemPrimaryImage,
   UserVocabularyItemDto,
   VisibleUserVocabularyItemStatus,
 } from '@/function/api/vocabulary';
@@ -21,7 +22,9 @@ import DeleteVocabularyItemModal from './DeleteVocabularyItemModal';
 import LearningCard from './LearningCard';
 import PracticeCard from './PracticeCard';
 import * as styles from './Vocabulary.module.scss';
-import VocabularyItemFormModal from './VocabularyItemFormModal';
+import VocabularyItemFormModal, {
+  VocabularyItemFormSubmitPayload,
+} from './VocabularyItemFormModal';
 
 const DEFAULT_STATUS: VisibleUserVocabularyItemStatus = 'active';
 const DEFAULT_SOURCE_LANGUAGE_CODE = 'ru';
@@ -39,6 +42,29 @@ const shuffleVocabularyItems = (items: UserVocabularyItemDto[]) => {
 
   return next;
 };
+
+async function applyVocabularyItemImageChange(
+  itemId: number,
+  payload: VocabularyItemFormSubmitPayload
+) {
+  if (payload.imageFile) {
+    await updateVocabularyItemPrimaryImage(itemId, payload.imageFile);
+    return;
+  }
+
+  if (payload.removeImage) {
+    await deleteVocabularyItemPrimaryImage(itemId);
+  }
+}
+
+function toVocabularyItemTextPayload(payload: VocabularyItemFormSubmitPayload) {
+  return {
+    sourceLanguageId: payload.sourceLanguageId,
+    targetLanguageId: payload.targetLanguageId,
+    sourceText: payload.sourceText,
+    targetText: payload.targetText,
+  };
+}
 
 const Vocabulary = () => {
   const { ready } = useRequireAccessToken();
@@ -140,15 +166,24 @@ const Vocabulary = () => {
     restartPractice(false);
   }, [mode, restartPractice]);
 
-  async function handleVocabularyItemCreate(payload: CreateVocabularyItemPayload) {
+  async function handleVocabularyItemCreate(payload: VocabularyItemFormSubmitPayload) {
     try {
       setError('');
       setMsg('');
       appData.showLoader();
-      await createVocabularyItem(payload);
+      const createdItem = await createVocabularyItem(toVocabularyItemTextPayload(payload));
+      let imageError = '';
+
+      try {
+        await applyVocabularyItemImageChange(createdItem.id, payload);
+      } catch (e) {
+        imageError = `Vocabulary item added, but image update failed: ${(e as Error).message}`;
+      }
+
       setIsCreateModalOpen(false);
-      setMsg('Vocabulary item added');
       await loadItems();
+      setMsg('Vocabulary item added');
+      if (imageError) setError(imageError);
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -192,17 +227,29 @@ const Vocabulary = () => {
     }
   }
 
-  async function handleVocabularyItemContentSave(payload: CreateVocabularyItemPayload) {
+  async function handleVocabularyItemContentSave(payload: VocabularyItemFormSubmitPayload) {
     if (!itemPendingEdit) return;
 
     try {
       setError('');
       setMsg('');
       appData.showLoader();
-      await updateVocabularyItemContent(itemPendingEdit.id, payload);
+      const updatedItem = await updateVocabularyItemContent(
+        itemPendingEdit.id,
+        toVocabularyItemTextPayload(payload)
+      );
+      let imageError = '';
+
+      try {
+        await applyVocabularyItemImageChange(updatedItem.id, payload);
+      } catch (e) {
+        imageError = `Vocabulary item updated, but image update failed: ${(e as Error).message}`;
+      }
+
       setItemPendingEdit(null);
-      setMsg('Vocabulary item updated');
       await loadItems();
+      setMsg('Vocabulary item updated');
+      if (imageError) setError(imageError);
     } catch (e) {
       setError((e as Error).message);
     } finally {

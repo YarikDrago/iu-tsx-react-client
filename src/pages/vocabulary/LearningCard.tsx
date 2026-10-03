@@ -33,9 +33,15 @@ const LearningCard = ({
   const nextStatus = item.status === 'active' ? 'archived' : 'active';
   const statusActionLabel = item.status === 'active' ? 'Archive' : 'Restore';
   const canEdit = item.concept.status === 'private';
+  const primaryImage =
+    item.concept.images.find((image) => image.isPrimary && image.imageUrl) ??
+    item.concept.images.find((image) => image.imageUrl);
 
   return (
     <article className={styles.item}>
+      {primaryImage?.imageUrl && (
+        <img className={styles.itemImage} src={primaryImage.imageUrl} alt="" loading="lazy" />
+      )}
       <div className={styles.itemContent}>
         <div className={styles.words}>
           <p>{source}</p>

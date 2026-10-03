@@ -78,6 +78,9 @@ const PracticeCard = ({
 
   const fromText = getWordForLanguage(item.sourceLanguageId);
   const toText = getWordForLanguage(item.targetLanguageId);
+  const primaryImage =
+    item.concept.images.find((image) => image.isPrimary && image.imageUrl) ??
+    item.concept.images.find((image) => image.imageUrl);
 
   return (
     <section className={styles.practicePanel}>
@@ -90,6 +93,9 @@ const PracticeCard = ({
       </div>
 
       <button type="button" className={styles.practiceCard} onClick={onReveal}>
+        {primaryImage?.imageUrl && (
+          <img className={styles.practiceImage} src={primaryImage.imageUrl} alt="" loading="lazy" />
+        )}
         <span className={styles.practiceLabel}>
           From ({getLanguageLabel(item.sourceLanguageId)})
         </span>
